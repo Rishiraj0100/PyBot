@@ -30,7 +30,7 @@ logging.basicConfig(level=logging.INFO)
 bot.blacklisted_users = []
 bot.cwd = cwd
 
-bot.version = '0.1.beta'
+bot.version = '7'
 
 bot.colors = {
   'WHITE': 0xFFFFFF,
@@ -72,7 +72,15 @@ async def on_message(message):
         return
 
 
-    
+    if f"<@!{bot.user.id}>" in message.content:
+        data = cogs._json.read_json('prefixes')
+        if str(message.guild.id) in data:
+            prefix = data[str(message.guild.id)]
+        else:
+            prefix = '-'
+        prefixMsg = await message.channel.send(f"My prefix here is `{prefix}` \nI was developed by `Jash_2312`", delete_after=10)
+        await prefixMsg.add_reaction('👀')
+
     await bot.process_commands(message)
 
 if __name__ == '__main__':

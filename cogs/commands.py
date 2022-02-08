@@ -19,9 +19,6 @@ class Commands(commands.Cog):
 
     @commands.command(name="statistics", aliases=["stat", "stats", "details"])
     async def stats(self, ctx):
-        """
-        A usefull command that displays bot statistics.
-        """
         pythonVersion = platform.python_version()
         dpyVersion = discord.__version__
         serverCount = len(self.bot.guilds)
@@ -44,17 +41,11 @@ class Commands(commands.Cog):
     @commands.command(aliases=['disconnect', 'close', 'stopbot'])
     @commands.is_owner()
     async def logout(self, ctx):
-        """
-        If the user running the command owns the bot then this will disconnect the bot from discord.
-        """
         await ctx.send(f"Hey {ctx.author.mention}, I am now logging out :wave:")
         await self.bot.logout()
 
     @commands.command()
     async def echo(self, ctx, *, message=None):
-        """
-        A simple command that repeats the users input back to them.
-        """
         message = message or "Please provide the message to be repeated."
         await ctx.message.delete()
         await ctx.send(message)
@@ -62,9 +53,6 @@ class Commands(commands.Cog):
     @commands.command(name="blacklist", aliases=["botban", "block", "bl"])
     @commands.is_owner()
     async def blacklist(self, ctx, user: discord.Member):
-        """
-        Blacklist someone from the bot
-        """
         if ctx.message.author.id == user.id:
             await ctx.send("Hey, you cannot blacklist yourself!")
             return
@@ -78,9 +66,6 @@ class Commands(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def unblacklist(self, ctx, user: discord.Member):
-        """
-        Unblacklist someone from the bot
-        """
         self.bot.blacklisted_users.remove(user.id)
         data = _json.read_json("blacklist")
         data["blacklistedUsers"].remove(user.id)
@@ -91,9 +76,6 @@ class Commands(commands.Cog):
     @commands.has_permissions(administrator=True)
     @commands.cooldown(1, 5, commands.BucketType.guild)
     async def prefix(self, ctx, *, pre='-'):
-        """
-        Set a custom prefix for a guild
-        """
         data = _json.read_json('prefixes')
         data[str(ctx.message.guild.id)] = pre
         _json.write_json(data, 'prefixes')
@@ -154,10 +136,6 @@ class Commands(commands.Cog):
     @commands.bot_has_permissions(embed_links=True)
     @commands.cooldown(1, 5, commands.BucketType.member)
     async def user_info(self, ctx: commands.Context, *, member: discord.Member = None):
-        
-        """
-        Get the basic stats about the user
-        """
         target = member or ctx.author
         roles = list(target.roles)
         embed = discord.Embed(
