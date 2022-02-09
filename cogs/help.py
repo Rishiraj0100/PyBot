@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-import utils.json
 from discord.ui import Button, View
 
 class Help(commands.Cog):
@@ -30,7 +29,7 @@ class Help(commands.Cog):
         """
         data = await self.bot.prefix.get_by_id(ctx.guild.id)
         if not data or "prefix" not in data:
-            PREFIX = "$"
+            PREFIX = "-"
         else:
             PREFIX = data["prefix"]
         

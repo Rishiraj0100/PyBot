@@ -8,6 +8,7 @@ import os
 from utils.mongo import Document
 import motor.motor_asyncio
 import utils.json
+import time
 
 os.environ["SHELL"]="/bin/bash"
 import os;os.environ["JISHAKU_NO_UNDERSCORE"]="t"
@@ -70,7 +71,6 @@ bot.colors = {
   'DARK_NAVY': 0x2C3E50
 }
 bot.color_list = [c for c in bot.colors.values()]
-bot.load_extension ('jishaku')
 @bot.event
 async def on_ready():
 
@@ -81,6 +81,7 @@ async def on_ready():
     bot.db = bot.mongo["dot"]
     bot.prefix = Document(bot.db, "prefix")
     bot.blacklist = Document(bot.db, "blacklist")
+    bot.afk = Document(bot.db, "afk")
     
     print("-------------------------\nInitialized Database\n-------------------------")
 
@@ -91,10 +92,74 @@ async def on_message(message):
     if message.author.id == bot.user.id:
         return
 
-
     if message.author.id in bot.blacklisted_users:
         return
 
+    data = await bot.afk.get_by_id(message.author.id)
+    if not data or "afk" not in data:
+        pass
+    else:
+        if message.content.startswith('#'):
+            return
+        await bot.afk.delete(message.author.id)
+        
+        try:
+            a = message.author.nick
+            a = a.replace('[AFK]', '')
+            await message.author.edit(nick=f'{a}')
+        except:
+            pass
+        if len(data["ping"]) == 0:
+            pmsg  = '\n**You were not pinged during your AFK.**'
+        else:
+            pmsg = f'**You were pinged {len(data["ping"])} times.\n\nClick Below to View them.**'
+        start = data["time"]
+        s = time.time()-start
+        s = int(s)
+        if s> 3600 :
+            t = f'{int(s/3600)} hours, {int(s/60 - s/3600)} minutes'
+        elif s> 60:
+            t = f'{int(s/60)} minutes and {int(s - s/60)} seconds'
+        else:
+            t = f'{int(s)} seconds'
+        embed = discord.Embed(color=0x3498DB, description=f'Welcome Back **{message.author}**, I have removed your AFK.\nYou were afk for {t}\n{pmsg}')
+        view = discord.ui.View()
+        # i = 0
+        for link in data["ping"]:
+            but = discord.ui.Button(url=link, label='Go to Message')
+            view.add_item(but)
+            # i+=1
+        if not view:
+            view = None
+        await message.channel.send(embed=embed, view=view)
+    a = None
+    res = message.content.split()
+    for word in res:
+        if word.startswith('<@!'):
+            a = word
+    if a:
+        a = a.replace('<@!','')
+        a = a.replace('>', '')
+        a = int(a)
+        try:
+            aa = await bot.fetch_user(a)
+            name = aa.name
+        except:
+            name = 'User'
+        afk = await bot.afk.get_by_id(a)
+        if not afk or "afk" not in afk:
+            pass
+        else:
+            if "reason" not in afk:
+                reason = 'I am AFK :)'
+            else:
+                reason = afk["reason"]
+            await message.channel.send(f'{name} is AFK - {reason}')
+            l = afk["ping"]
+            if not l:
+                l = []
+            l.append(f'https://discordapp.com/channels/{message.guild.id}/{message.channel.id}/{message.id}')
+            await bot.afk.upsert({"_id": a, "ping": l})
 
     if f"<@!{bot.user.id}>" in message.content:
         data = await bot.prefix.get_by_id(message.guild.id)
@@ -105,6 +170,8 @@ async def on_message(message):
         prefixMsg = await message.channel.send(f"My prefix here is `{prefix}` \nI was developed by `Jash_2312`", delete_after=10)
 
     await bot.process_commands(message)
+
+bot.load_extension ('jishaku')
 
 if __name__ == '__main__':
 
