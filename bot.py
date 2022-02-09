@@ -5,32 +5,45 @@ from pathlib import Path
 import logging
 import datetime
 import os
+from utils.mongo import Document
+import motor.motor_asyncio
+import utils.json
+
 os.environ["SHELL"]="/bin/bash"
 import os;os.environ["JISHAKU_NO_UNDERSCORE"]="t"
 os.environ["JISHAKU_FORCE_PAGINATOR"]="t"
-
-import cogs._json
 
 cwd = Path(__file__).parents[0]
 cwd = str(cwd)
 print(f"{cwd}\n-----")
 
-def get_prefix(bot, message):
-    data = cogs._json.read_json('prefixes')
-    if not str(message.guild.id) in data:
-        return commands.when_mentioned_or('-')(bot, message)
-    return commands.when_mentioned_or(data[str(message.guild.id)])(bot, message)
+async def get_prefix(bot, message):
+    # If dm's
+    if not message.guild:
+        return commands.when_mentioned_or("-")(bot, message)
+    try:
+        data = await bot.prefix.find(message.guild.id)
+        if message.author.id == 939887303403405402:
+            return commands.when_mentioned_or('')(bot, message)
+        if not data or "prefix" not in data:
+            return commands.when_mentioned_or("-")(bot, message)
+        return commands.when_mentioned_or(data["prefix"])(bot, message)
+    except:
+        return commands.when_mentioned_or("-")(bot, message)
 
-#Defining a few things
-secret_file = json.load(open(cwd+'/bot_config/secrets.json'))
-bot = commands.Bot(command_prefix=get_prefix, case_insensitive=True, owner_id=749559849460826112)
-bot.config_token = secret_file['token']
+intents = discord.Intents.all()
+secret_file = json.load(open(cwd+'/config/config.json'))
+bot = commands.Bot(command_prefix=get_prefix, case_insensitive=True, owner_id=749559849460826112, intents=intents)
+
 logging.basicConfig(level=logging.INFO)
 
 bot.blacklisted_users = []
 bot.cwd = cwd
 
-bot.version = '7'
+bot.config_token = secret_file['token']
+bot.connection_url = secret_file["mongo"]
+
+bot.version = '0.1 beta'
 
 bot.colors = {
   'WHITE': 0xFFFFFF,
@@ -59,7 +72,16 @@ bot.color_list = [c for c in bot.colors.values()]
 async def on_ready():
 
     print(f"-----\nLogged in as: {bot.user.name} : {bot.user.id}\n-----\nMy current prefix is: -\n-----")
-    await bot.change_presence(activity=discord.Game(name=f"Hi, my names {bot.user.name}.\nUse - to interact with me!")) # This changes the bots 'activity'
+    await bot.change_presence(activity=discord.Game(name=f"Hi, my name is {bot.user.name}.\nUse - to interact with me!"))
+
+    bot.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(bot.connection_url))
+    bot.db = bot.mongo["dot"]
+    bot.prefix = Document(bot.db, "prefix")
+    bot.blacklist = Document(bot.db, "blacklist")
+    
+    print("-------------------------\nInitialized Database\n-------------------------")
+
+bot.remove_command('help')
 
 @bot.event
 async def on_message(message):
@@ -73,13 +95,12 @@ async def on_message(message):
 
 
     if f"<@!{bot.user.id}>" in message.content:
-        data = cogs._json.read_json('prefixes')
-        if str(message.guild.id) in data:
-            prefix = data[str(message.guild.id)]
+        data = await bot.prefix.get_by_id(message.guild.id)
+        if not data or "prefix" not in data:
+            prefix = "-"
         else:
-            prefix = '-'
+            prefix = data["prefix"]
         prefixMsg = await message.channel.send(f"My prefix here is `{prefix}` \nI was developed by `Jash_2312`", delete_after=10)
-        await prefixMsg.add_reaction('👀')
 
     await bot.process_commands(message)
 
@@ -89,5 +110,5 @@ if __name__ == '__main__':
         if file.endswith(".py") and not file.startswith("_"):
             bot.load_extension(f"cogs.{file[:-3]}")
     
-bot.load_extension ('jishaku') 
+bot.load_extension ('jishaku')
 bot.run(bot.config_token)

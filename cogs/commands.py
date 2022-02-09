@@ -50,37 +50,28 @@ class Commands(commands.Cog):
         await ctx.message.delete()
         await ctx.send(message)
 
-    @commands.command(name="blacklist", aliases=["botban", "block", "bl"])
-    @commands.is_owner()
-    async def blacklist(self, ctx, user: discord.Member):
-        if ctx.message.author.id == user.id:
-            await ctx.send("Hey, you cannot blacklist yourself!")
-            return
-
-        self.bot.blacklisted_users.append(user.id)
-        data = _json.read_json("blacklist")
-        data["blacklistedUsers"].append(user.id)
-        _json.write_json(data, "blacklist")
-        await ctx.send(f"Hey, I have blacklisted {user.name} for you.")
-
-    @commands.command()
-    @commands.is_owner()
-    async def unblacklist(self, ctx, user: discord.Member):
-        self.bot.blacklisted_users.remove(user.id)
-        data = _json.read_json("blacklist")
-        data["blacklistedUsers"].remove(user.id)
-        _json.write_json(data, "blacklist")
-        await ctx.send(f"Hey, I have unblacklisted {user.name} for you.")
-
     @commands.command()
     @commands.has_permissions(administrator=True)
     @commands.cooldown(1, 5, commands.BucketType.guild)
-    async def prefix(self, ctx, *, pre='-'):
-        data = _json.read_json('prefixes')
-        data[str(ctx.message.guild.id)] = pre
-        _json.write_json(data, 'prefixes')
-        await ctx.send(f"The guild prefix has been set to `{pre}`. Use `{pre}prefix <prefix>` to change it again!")
-        
+    async def prefix(self, ctx, *, prefix='-'):
+        if(prefix == None):
+            data = await self.bot.prefix.get_by_id(ctx.guild.id)
+            if not data or "prefix" not in data:
+                prefix = "$"
+            else:
+                prefix = data["prefix"]
+            await ctx.send(f'My prefix for this server is `{prefix}`\nYou can start with `{prefix}help`')
+        else:
+            await self.bot.prefix.upsert({"_id": ctx.guild.id, "prefix": prefix})
+            await ctx.send(f"The guild prefix has been set to `{prefix}`. Use `{prefix}prefix [prefix]` to change it again!")
+    
+    @prefix.error
+    async def prefix_error(self, ctx, error):
+        if isinstance(error, commands.MissingPermissions):
+            embed = discord.Embed(description='**❌ You lack Administrator Permissions to use this command.**', color=0x00ff0000)
+            await ctx.send(embed=embed)
+
+
     @commands.command(name="Ping", aliases=["latency", "speed", "p"])
     @commands.cooldown(1, 5, commands.BucketType.member)
     async def ping(self, ctx: commands.Context):
