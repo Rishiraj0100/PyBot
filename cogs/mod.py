@@ -10,19 +10,67 @@ class Moderation(commands.Cog):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 
-    @commands.command()
+    @commands.command(name='kick', usage='kick <member> [reason]', brief='$kick @Ankush Get Out!')
+    @commands.has_guild_permissions(kick_members=True)
+    @commands.bot_has_guild_permissions(kick_members=True)
     @commands.guild_only()
-    @commands.has_guild_permissions(ban_members=True)
-    async def kick(self, ctx, member: discord.Member, *, reason=None):
+    async def kick(self, ctx, member: discord.Member, *,reason=None):
         """
-        Kick a member
+        Kick a Member
         """
-        await ctx.guild.kick(user=member, reason=reason)
+        await ctx.message.delete()
+        if(member.id == ctx.author.id):
+            embed = discord.Embed(description='**❌ You cannot kick Yourself**', color=0x3498DB)
+            return await ctx.send(embed=embed)
 
-        channel = self.bot.get_channel(704301090471936253)
-        embed = discord.Embed(title=f"{ctx.author.name} kicked: {member.name}", description=reason)
-        await channel.send(embed=embed)
+        if(member not in ctx.guild.members):
+            embed = discord.Embed(description='**❌ Given Member is not in the Server.**', color=0x3498DB)
+            return await ctx.send(embed=embed)
 
+        if(ctx.author.top_role <= member.top_role and ctx.author.id != ctx.guild.owner_id):
+            embed = discord.Embed(description=f'**❌ You cannot do this action on this user due to role hierarchy.**', colour=0xff0000)
+            return await ctx.send(embed=embed)
+
+        if(ctx.guild.me.top_role <= member.top_role):
+            embed = discord.Embed(description=f'**❌ My Highest Role ({ctx.guild.me.top_role.mention}) is below or equal to **{member.mention}**\'s Highest Role ({member.top_role.mention})**', colour=0xff0000)
+            return await ctx.send(embed=embed)
+
+        if(reason):
+            embed = discord.Embed(description=f'<a:tick:940166589863583786> **{member} was Kicked** | {reason}', color=0xff0000)
+            await ctx.send(embed=embed)
+            memberembed = discord.Embed(description=f'**You have been kick from {ctx.guild.name}** for {reason}', color=0xff0000)
+            try:
+                await member.send(embed=memberembed)
+            except:
+                pass
+            await member.kick(reason=f'Responsible Moderator: {ctx.author} (ID: {ctx.author.id}) - {reason}')
+        else:
+            embed = discord.Embed(description=f'<a:tick:940166589863583786> **{member} was Kicked** | No Reason Given', color=0xff0000)
+            await ctx.send(embed=embed)
+            memberembed = discord.Embed(description=f'**You have been kicked from {ctx.guild.name}**', color=0xff0000)
+            try:
+                await member.send(embed=memberembed)
+            except:
+                pass
+            await member.kick(reason=f'Responsible Moderator: {ctx.author} (ID: {ctx.author.id})')
+
+    @kick.error
+    async def kick_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            embed = discord.Embed(description='**❌ Please mention a Member to Kick**', color=0x3498DB)
+            await ctx.send(embed=embed)
+
+        elif isinstance(error, commands.BotMissingPermissions):
+            embed = discord.Embed(description='**❌ I dont have Permissions to Kick Members**', color=0x3498DB)
+            await ctx.send(embed=embed)
+        
+        elif isinstance(error, commands.MissingPermissions):
+            embed = discord.Embed(description='**❌ You lack Permissions to Kick Members**', color=0x3498DB)
+            await ctx.send(embed=embed)
+        
+        elif isinstance(error, commands.guild_only):
+            embed = discord.Embed(description='**❌ This command can only be used in a Server**', color=0x3498DB)
+            await ctx.send(embed=embed)
     @commands.command()
     @commands.guild_only()
     @commands.has_guild_permissions(ban_members=True)
