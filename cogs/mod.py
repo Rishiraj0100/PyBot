@@ -121,6 +121,8 @@ class Moderation(commands.Cog):
         await self.bot.afk.upsert({"_id": ctx.author.id, "time": time.time()})
         if data or "guild" in data:
             l = data["guild"]
+            if ctx.guild.id in l:
+                return
             l.append(ctx.guild.id)
             await self.bot.afk.upsert({"_id": ctx.author.id, "guild": l})
         else:
