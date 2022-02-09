@@ -106,21 +106,24 @@ class Moderation(commands.Cog):
     @commands.guild_only()
     async def afk(self, ctx, *,reason='I am AFK :)'):
         data = await self.bot.afk.get_by_id(ctx.author.id)
-        if not data or "afk" not in data:
-            if ctx.author.nick:
-                a = ctx.author.nick
-            else:
-                a = ctx.author.name
-            try:
-                await ctx.author.edit(nick=f'[AFK] {a}')
-            except:
-                pass
-            await self.bot.afk.upsert({"_id": ctx.author.id, "afk": True})
-            await self.bot.afk.upsert({"_id": ctx.author.id, "reason": reason})
-            await self.bot.afk.upsert({"_id": ctx.author.id, "ping": []})
-            await self.bot.afk.upsert({"_id": ctx.author.id, "time": time.time()})
+        # if not data or "afk" not in data:
+        if ctx.author.nick:
+            a = ctx.author.nick
+        else:
+            a = ctx.author.name
+        try:
+            await ctx.author.edit(nick=f'[AFK] {a}')
+        except:
+            pass
+        await self.bot.afk.upsert({"_id": ctx.author.id, "afk": True})
+        await self.bot.afk.upsert({"_id": ctx.author.id, "reason": reason})
+        await self.bot.afk.upsert({"_id": ctx.author.id, "ping": []})
+        await self.bot.afk.upsert({"_id": ctx.author.id, "time": time.time()})
+        if data or "guild" in data:
+            await self.bot.afk.insert({"_id": ctx.author.id, "guild": ctx.guild.id})
+        else:
             await self.bot.afk.upsert({"_id": ctx.author.id, "guild": ctx.guild.id})
-            await ctx.reply(f'Your AFK is now set to: {reason}')
+        await ctx.reply(f'Your AFK is now set to: {reason}')
 
 def setup(bot):
     bot.add_cog(Moderation(bot))
