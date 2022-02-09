@@ -36,7 +36,7 @@ class Moderation(commands.Cog):
             return await ctx.send(embed=embed)
 
         if(reason):
-            embed = discord.Embed(description=f'<a:tick:940166589863583786> **{member} was Kicked** | {reason}', color=0xff0000)
+            embed = discord.Embed(description=f'<a:tick:940816615237357608> **{member} was Kicked** | {reason}', color=0xff0000)
             await ctx.send(embed=embed)
             memberembed = discord.Embed(description=f'**You have been kick from {ctx.guild.name}** for {reason}', color=0xff0000)
             try:
@@ -45,7 +45,7 @@ class Moderation(commands.Cog):
                 pass
             await member.kick(reason=f'Responsible Moderator: {ctx.author} (ID: {ctx.author.id}) - {reason}')
         else:
-            embed = discord.Embed(description=f'<a:tick:940166589863583786> **{member} was Kicked** | No Reason Given', color=0xff0000)
+            embed = discord.Embed(description=f'<a:tick:940816615237357608> **{member} was Kicked** | No Reason Given', color=0xff0000)
             await ctx.send(embed=embed)
             memberembed = discord.Embed(description=f'**You have been kicked from {ctx.guild.name}**', color=0xff0000)
             try:
