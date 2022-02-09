@@ -71,7 +71,6 @@ bot.colors = {
 }
 bot.color_list = [c for c in bot.colors.values()]
 bot.load_extension ('jishaku')
-discord.opus.load_opus('opus')
 @bot.event
 async def on_ready():
 
@@ -86,7 +85,6 @@ async def on_ready():
     print("-------------------------\nInitialized Database\n-------------------------")
 
 bot.remove_command('help')
-
 @bot.event
 async def on_message(message):
 
