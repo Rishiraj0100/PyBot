@@ -9,6 +9,7 @@ from utils.mongo import Document
 import motor.motor_asyncio
 import utils.json
 import time
+import calendar
 
 os.environ["SHELL"]="/bin/bash"
 import os;os.environ["JISHAKU_NO_UNDERSCORE"]="t"
@@ -79,9 +80,9 @@ async def on_ready():
 
     bot.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(bot.connection_url))
     bot.db = bot.mongo["dot"]
+    bot.afk = Document(bot.db, "afk")
     bot.prefix = Document(bot.db, "prefix")
     bot.blacklist = Document(bot.db, "blacklist")
-    bot.afk = Document(bot.db, "afk")
     
     print("-------------------------\nInitialized Database\n-------------------------")
 
@@ -99,7 +100,7 @@ async def on_message(message):
     if not data or "afk" not in data:
         pass
     else:
-        if message.content.startswith('#'):
+        if message.content.startswith('#') or message.guild.id == data["guild"]:
             return
         await bot.afk.delete(message.author.id)
         
@@ -111,18 +112,15 @@ async def on_message(message):
             pass
         if len(data["ping"]) == 0:
             pmsg  = '\n**You were not pinged during your AFK.**'
+        elif len(data["ping"]) == 1:
+            pmsg = f'**You were pinged {len(data["ping"])} time.\n\nClick Below to View them.**'
         else:
             pmsg = f'**You were pinged {len(data["ping"])} times.\n\nClick Below to View them.**'
-        start = data["time"]
-        s = time.time()-start
-        s = int(s)
-        if s> 3600 :
-            t = f'{int(s/3600)} hours, {int(s/60 - s/3600)} minutes'
-        elif s> 60:
-            t = f'{int(s/60)} minutes and {int(s - s/60)} seconds'
-        else:
-            t = f'{int(s)} seconds'
-        embed = discord.Embed(color=0x3498DB, description=f'Welcome Back **{message.author}**, I have removed your AFK.\nYou were afk for {t}\n{pmsg}')
+        obj = time.gmtime(data["time"])
+        epoch = time.asctime(obj)
+        global ab
+        ab = calendar.timegm(time.strptime(f'{epoch} UTC', '%a %b %d %H:%M:%S %Y UTC'))
+        embed = discord.Embed(color=0x3498DB, description=f'Welcome Back **{message.author}**, I have removed your AFK.\nYou had went afk <t:{ab}:R>\n{pmsg}')
         view = discord.ui.View()
         # i = 0
         for link in data["ping"]:
@@ -143,10 +141,11 @@ async def on_message(message):
         a = int(a)
         try:
             aa = await bot.fetch_user(a)
-            name = aa.name
+            name = aa
         except:
             name = 'User'
         afk = await bot.afk.get_by_id(a)
+
         if not afk or "afk" not in afk:
             pass
         else:
@@ -154,7 +153,10 @@ async def on_message(message):
                 reason = 'I am AFK :)'
             else:
                 reason = afk["reason"]
-            await message.channel.send(f'{name} is AFK - {reason}')
+            if message.guild.id == afk["guild"]:
+                return
+
+            await message.channel.send(f'**{name}** went afk <t:{ab}:R> : {reason}')
             l = afk["ping"]
             if not l:
                 l = []
