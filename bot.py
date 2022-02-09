@@ -100,7 +100,12 @@ async def on_message(message):
     if not data or "afk" not in data:
         pass
     else:
-        if message.content.startswith('#') or message.guild.id == data["guild"]:
+        if "guild" not in data:
+            pass
+        else:
+            if message.guild.id != data["guild"]:
+                return
+        if message.content.startswith('#'):
             return
         await bot.afk.delete(message.author.id)
         
@@ -153,9 +158,8 @@ async def on_message(message):
                 reason = 'I am AFK :)'
             else:
                 reason = afk["reason"]
-            if message.guild.id == afk["guild"]:
+            if message.guild.id != afk["guild"]:
                 return
-
             await message.channel.send(f'**{name}** went afk <t:{ab}:R> : {reason}')
             l = afk["ping"]
             if not l:
