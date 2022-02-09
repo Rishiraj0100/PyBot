@@ -17,8 +17,6 @@ cwd = Path(__file__).parents[0]
 cwd = str(cwd)
 print(f"{cwd}\n-----")
 
-owners = [749559849460826112, 939887303403405402]
-
 async def get_prefix(bot, message):
     # If dm's
     if not message.guild:
@@ -35,7 +33,10 @@ async def get_prefix(bot, message):
 
 intents = discord.Intents.all()
 secret_file = json.load(open(cwd+'/config/config.json'))
-bot = commands.Bot(command_prefix=get_prefix, case_insensitive=True, owner_ids= set(owners), intents=intents)
+
+owners = [749559849460826112, 939887303403405402]
+
+bot = commands.Bot(command_prefix=get_prefix, case_insensitive=True, owner_ids = set(owners), intents=intents)
 
 logging.basicConfig(level=logging.INFO)
 
