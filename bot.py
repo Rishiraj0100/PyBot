@@ -71,7 +71,7 @@ bot.colors = {
 }
 bot.color_list = [c for c in bot.colors.values()]
 bot.load_extension ('jishaku')
-
+discord.opus.load_opus()
 @bot.event
 async def on_ready():
 
