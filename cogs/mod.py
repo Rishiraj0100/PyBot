@@ -120,7 +120,7 @@ class Moderation(commands.Cog):
             await self.bot.afk.upsert({"_id": ctx.author.id, "ping": []})
             await self.bot.afk.upsert({"_id": ctx.author.id, "time": time.time()})
             await self.bot.afk.upsert({"_id": ctx.author.id, "guild": ctx.guild.id})
-            await ctx.reply(f'Your AFK is now set to: I\'m AFK :)')
+            await ctx.reply(f'Your AFK is now set to: {reason}')
 
 def setup(bot):
     bot.add_cog(Moderation(bot))
