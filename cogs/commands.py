@@ -34,7 +34,7 @@ class Commands(commands.Cog):
         embed.add_field(name='Bot Developers:', value="<@749559849460826112>")
 
         embed.set_footer(text=f"Stats | {self.bot.user.name}")
-        embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
+        embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.display_avatar.url)
 
         await ctx.send(embed=embed)
        
@@ -135,7 +135,7 @@ class Commands(commands.Cog):
             timestamp=datetime.datetime.utcnow(),
         )
 
-        embed.set_thumbnail(url=target.avatar_url)
+        embed.set_thumbnail(url=target.display_avatar.url)
         embed.set_footer(text=f"ID: {target.id}")
         fields = [
             ("Name", str(target), True),
