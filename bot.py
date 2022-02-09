@@ -105,15 +105,16 @@ async def on_message(message):
         else:
             if message.guild.id not in data["guild"]:
                 return
-        if message.content.startswith('#'):
-            return
         li = data["guild"]
         li.remove(message.guild.id)
         await bot.afk.upsert({"_id": message.author.id, "guild": li})
+        if message.content.startswith('#'):
+            return
         
         try:
             a = message.author.nick
             a = a.replace('[AFK]', '')
+            a = a.replace('AFK', '')
             await message.author.edit(nick=f'{a}')
         except:
             pass
