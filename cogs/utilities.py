@@ -107,7 +107,7 @@ class Utilities(commands.Cog):
         embed.set_footer(text=f"ID: {role.id}")
         await ctx.reply(embed=embed)
         
-    @commands.command(name='channelstats', aliases=['cs', 'channelinfo'], usage='channelstats [channel_id]', brief='-channelstats #general')
+    @commands.command(name='channelstats', aliases=['cs', 'channelinfo'], usage='channelstats [channel]', brief='-channelstats #general')
     @commands.bot_has_guild_permissions(manage_channels=True)
     async def channelstats(self, ctx):
         channel: discord.Channel=ctx.channel
