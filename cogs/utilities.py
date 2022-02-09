@@ -122,6 +122,7 @@ class Utilities(commands.Cog):
         embed.add_field(name="Channel Creation Time", value=channel.created_at, inline=False)
         embed.add_field(name="Channel Permissions Synced", value=channel.permissions_synced, inline=False)
         embed.add_field(name="Channel Hash", value=hash(channel), inline=False)
+        await ctx.reply(embed=embed)
     
     
 
