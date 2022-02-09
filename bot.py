@@ -33,7 +33,7 @@ async def get_prefix(bot, message):
 
 intents = discord.Intents.all()
 secret_file = json.load(open(cwd+'/config/config.json'))
-bot = commands.Bot(command_prefix=get_prefix, case_insensitive=True, owner_id=749559849460826112, intents=intents)
+bot = commands.Bot(command_prefix=get_prefix, case_insensitive=True, owner_id=939887303403405402, intents=intents)
 
 logging.basicConfig(level=logging.INFO)
 
@@ -67,6 +67,7 @@ bot.colors = {
   'DARK_NAVY': 0x2C3E50
 }
 bot.color_list = [c for c in bot.colors.values()]
+bot.load_extension ('jishaku')
 
 @bot.event
 async def on_ready():
@@ -109,6 +110,5 @@ if __name__ == '__main__':
     for file in os.listdir(cwd+"/cogs"):
         if file.endswith(".py") and not file.startswith("_"):
             bot.load_extension(f"cogs.{file[:-3]}")
-    
-bot.load_extension ('jishaku')
+
 bot.run(bot.config_token)
