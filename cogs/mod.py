@@ -120,9 +120,11 @@ class Moderation(commands.Cog):
         await self.bot.afk.upsert({"_id": ctx.author.id, "ping": []})
         await self.bot.afk.upsert({"_id": ctx.author.id, "time": time.time()})
         if data or "guild" in data:
-            await self.bot.afk.insert({"_id": ctx.author.id, "guild": ctx.guild.id})
+            l = data["guild"]
+            l.append(ctx.guild.id)
+            await self.bot.afk.upsert({"_id": ctx.author.id, "guild": l})
         else:
-            await self.bot.afk.upsert({"_id": ctx.author.id, "guild": ctx.guild.id})
+            await self.bot.afk.upsert({"_id": ctx.author.id, "guild": []})
         await ctx.reply(f'Your AFK is now set to: {reason}')
 
 def setup(bot):
