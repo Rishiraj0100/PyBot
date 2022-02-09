@@ -9,7 +9,7 @@ import random
 import re
 import _json
 
-class Utilites(commands.Cog):
+class Utilities(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
@@ -126,4 +126,4 @@ class Utilites(commands.Cog):
     
 
 def setup(bot):
-    bot.add_cog(Utilites(bot))   
+    bot.add_cog(Utilities(bot))   
