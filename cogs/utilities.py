@@ -1,6 +1,7 @@
 from __future__ import annotations
 import discord
 from discord.ext import commands
+import typing
 import platform
 import time
 from time import time
@@ -107,10 +108,21 @@ class Utilities(commands.Cog):
         embed.set_footer(text=f"ID: {role.id}")
         await ctx.reply(embed=embed)
         
-    @commands.command(name='channelstats', aliases=['cs', 'channelinfo'], usage='channelstats [channel]', brief='-channelstats #general')
-    @commands.bot_has_guild_permissions(manage_channels=True)
-    async def channelstats(self, ctx):
-        self, ctx, channel=discord.TextChannel=ctx.channel
+    @commands.command(name="channelstats", aliases=["channelinfo", "cs", "ci"])
+    @commands.bot_has_permissions(embed_links=True)
+    @commands.cooldown(1, 5, commands.BucketType.member)
+    async def channel_info(
+        self,
+        ctx: commands.Context,
+        *,
+        channel: typing.Union[
+            discord.TextChannel,
+            discord.VoiceChannel,
+            discord.CategoryChannel,
+            discord.StageChannel,
+        ] = None,
+    ):
+        channel = channel or ctx.channel
         embed = discord.Embed(title=f"Stats for **{channel.name}**", description=f"{'Category: {}'.format(channel.category.name) if channel.category else 'This channel is not in a category'}", color=random.choice(self.bot.color_list))
         embed.add_field(name="Channel Guild", value=ctx.guild.name, inline=False)
         embed.add_field(name="Channel Id", value=channel.id, inline=False)
