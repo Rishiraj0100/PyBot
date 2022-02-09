@@ -14,6 +14,9 @@ class Moderation(commands.Cog):
     @commands.guild_only()
     @commands.has_guild_permissions(ban_members=True)
     async def kick(self, ctx, member: discord.Member, *, reason=None):
+        """
+        Kick a member
+        """
         await ctx.guild.kick(user=member, reason=reason)
 
         channel = self.bot.get_channel(704301090471936253)
