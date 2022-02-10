@@ -244,6 +244,34 @@ class Utilities(commands.Cog):
             embed.set_image(url=ctx.guild.banner.url)
 
         await ctx.send(embed=embed)
+        
+    @commands.command()
+    @commands.bot_has_permissions(embed_links=True)
+    @commands.cooldown(1, 5, commands.BucketType.member)
+    async def emojiinfo(self, ctx: commands.Context, *, emoji: discord.Emoji):
+        """To get the info regarding the server emoji"""
+        em = discord.Embed(
+            title="Emoji Info",
+            description=f"• [Download the emoji]({emoji.url})\n• Emoji ID: `{emoji.id}`",
+            timestamp=datetime.datetime.utcnow(),
+            color=ctx.author.color,
+        )
+        data = [
+            ("Name", emoji.name, True),
+            ("Is Animated?", emoji.animated, True),
+            ("Created At", f"<t:{int(emoji.created_at.timestamp())}>", True),
+            ("Server Owned", emoji.guild.name, True),
+            ("Server ID", emoji.guild_id, True),
+            ("Created By", emoji.user if emoji.user else "User Not Found", True),
+            ("Available?", emoji.available, True),
+            ("Managed by Twitch?", emoji.managed, True),
+            ("Require Colons?", emoji.require_colons, True),
+        ]
+        em.set_footer(text=f"{ctx.author}")
+        em.set_thumbnail(url=emoji.url)
+        for name, value, inline in data:
+            em.add_field(name=name, value=f"{value}", inline=inline)
+        await ctx.reply(embed=em)
 
 
 def setup(bot):
