@@ -28,7 +28,7 @@ class Utilities(commands.Cog):
         button = Button(label='Invite Me', style=discord.ButtonStyle.link, url='https://discord.com/api/oauth2/authorize?client_id=938699822922346536&permissions=21175985838&scope=bot' )
         view = View()
         view.add_item(button)
-        embed = discord.Embed(description='Wanna Invite me to your Server ?', color=0xff0000)
+        embed = discord.Embed(description='Wanna Invite me to your Server ?', color=0x3498DB)
         embed.set_author(name='Invite Me', icon_url=self.bot.user.display_avatar)
 
         await ctx.send(embed=embed, view=view)
@@ -61,7 +61,7 @@ class Utilities(commands.Cog):
             ("Boosted", bool(target.premium_since), True),
             ("Bot?", target.bot, True),
             ("Nickname", target.display_name, True),
-            (f"Top Role [{len(roles)}]", target.top_role.mention, True),
+            (f"Top Role [{len(roles)-1}]", target.top_role.mention, True),
         ]
         perms = []
         for name, value, inline in fields:
