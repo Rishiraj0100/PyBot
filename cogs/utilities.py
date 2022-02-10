@@ -108,7 +108,7 @@ class Utilities(commands.Cog):
         embed.set_footer(text=f"ID: {role.id}")
         await ctx.reply(embed=embed)
         
-    @commands.command(name="channelstats", aliases=["channelinfo", "cs", "ci"])
+    @commands.command(name="channelstats", aliases=["channelinfo", "cs", "ci"], usage='channelstats [channel]', brief='-channelstats #general')
     @commands.bot_has_permissions(embed_links=True)
     @commands.cooldown(1, 5, commands.BucketType.member)
     async def channel_info(
@@ -134,7 +134,7 @@ class Utilities(commands.Cog):
         embed.add_field(name="Channel Creation Time", value=channel.created_at, inline=False)
         embed.add_field(name="Channel Permissions Synced", value=channel.permissions_synced, inline=False)
         embed.add_field(name="Channel Hash", value=hash(channel), inline=False)
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
     
     
 
