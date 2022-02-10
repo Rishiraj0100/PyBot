@@ -32,7 +32,7 @@ class Moderation(commands.Cog):
             await asyncio.sleep(5)
             await msg.delete()
         
-    @commands.command(name='ban', usage='ban <member> [reason]', brief='$ban @Ankush Get Out!')
+    @commands.command(name='ban', usage='ban <member> [reason]', brief='-ban @Ankush Get Out!')
     @commands.has_guild_permissions(ban_members=True)
     @commands.guild_only()
     async def ban(self, ctx, member: discord.Member, *,reason=None):
@@ -85,7 +85,7 @@ class Moderation(commands.Cog):
             embed = discord.Embed(description='**<a:cross1:941287490986315776> You lack Permissions to Ban Members**', color=0x00ff0000)
             await ctx.send(embed=embed)
 
-    @commands.command(name='kick', usage='kick <member> [reason]', brief='$kick @Ankush Get Out!')
+    @commands.command(name='kick', usage='kick <member> [reason]', brief='-kick @Ankush Get Out!')
     @commands.has_guild_permissions(kick_members=True)
     @commands.bot_has_guild_permissions(kick_members=True)
     @commands.guild_only()
@@ -203,7 +203,7 @@ class Moderation(commands.Cog):
             embed = discord.Embed(description='**<a:cross1:941287490986315776> You lack Permissions to Ban Members**', color=0x00ff0000)
             await ctx.send(embed=embed)
 
-    @commands.command(name='unban', usage='unban <member> [reason]', brief='$unban 881473803899781120 Nice Guy')
+    @commands.command(name='unban', usage='unban <member> [reason]', brief='-unban 881473803899781120 Nice Guy')
     @commands.has_guild_permissions(ban_members=True)
     @commands.guild_only()
     async def unban(self, ctx, member, *, reason=None):
