@@ -4,7 +4,6 @@ from discord.ext import commands
 import typing
 import platform
 import time
-from time import time
 import datetime
 import random
 import re
@@ -264,7 +263,7 @@ class Utilities(commands.Cog):
             ("Created At", f"<t:{int(emoji.created_at.timestamp())}>", True),
             ("Server Owned", emoji.guild.name, True),
             ("Server ID", emoji.guild_id, True),
-            ("Created By", emoji.user if emoji.user else "User Not Found", True),
+            ("Created By", emoji.user if emoji.user else "Emoji Not Found", True),
             ("Available?", emoji.available, True),
             ("Managed by Twitch?", emoji.managed, True),
             ("Require Colons?", emoji.require_colons, True),
