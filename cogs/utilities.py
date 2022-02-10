@@ -245,7 +245,7 @@ class Utilities(commands.Cog):
 
         await ctx.send(embed=embed)
         
-    @commands.command()
+    @commands.command(name="emojiinfo", aliases=["emoji", "ei", "emo"],  usage='emojiinfo <emoji>', brief='-emojiinfo <a:emoji_54:938009504329658388>')
     @commands.bot_has_permissions(embed_links=True)
     @commands.cooldown(1, 5, commands.BucketType.member)
     async def emojiinfo(self, ctx: commands.Context, *, emoji: discord.Emoji):
