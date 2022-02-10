@@ -37,10 +37,10 @@ class Utilities(commands.Cog):
         fields = [
             ("Name", str(target), True),
             ("Created at", f"<t:{int(target.created_at.timestamp())}>", True),
-            ("Status", f"{str(target.status).title()} [Blame Discord]", True),
+            ("Status", f"{str(target.status).title()}", True),
             (
                 "Activity",
-                f"{str(target.activity.type).split('.')[-1].title() if target.activity else 'N/A'} {target.activity.name if target.activity else ''} [Blame Discord]",
+                f"{str(target.activity.type).split('.')[-1].title() if target.activity else 'No Activity'} {target.activity.name if target.activity else ''}",
                 True,
             ),
             ("Joined at", f"<t:{int(target.joined_at.timestamp())}>", True),
