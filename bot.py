@@ -194,4 +194,5 @@ if __name__ == '__main__':
         if file.endswith(".py") and not file.startswith("_"):
             bot.load_extension(f"cogs.{file[:-3]}")
 
+
 bot.run(bot.config_token)
