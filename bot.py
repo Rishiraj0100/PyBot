@@ -100,7 +100,11 @@ async def on_message(message):
         return
 
     data = await bot.afk.get_by_id(message.author.id)
-    if message.content.startswith('#') and data["prefix"] != '#':
+    if data["prefix"]:
+        pre = data["prefix"]
+    else:
+        pre = '='
+    if message.content.startswith('#') and pre != '#':
         message = message.replace('#', '')
         return await bot.process_commands(message)
 
