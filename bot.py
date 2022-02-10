@@ -128,7 +128,7 @@ async def on_message(message):
         obj = time.gmtime(data["time"])
         epoch = time.asctime(obj)
         ab = calendar.timegm(time.strptime(f'{epoch} UTC', '%a %b %d %H:%M:%S %Y UTC'))
-        embed = discord.Embed(color=0x3498DB, description=f'Welcome Back **{message.author}**, I have removed your AFK.\nYou had went afk <t:{ab}:R>\n{pmsg}')
+        embed = discord.Embed(color=0x3498DB, description=f'Welcome Back **{message.author}**, I have removed your AFK.\nYou had gone afk <t:{ab}:R>\n{pmsg}')
         view = discord.ui.View()
         # i = 0
         for link in data["ping"]:
@@ -166,7 +166,7 @@ async def on_message(message):
             obj = time.gmtime(data["time"])
             epoch = time.asctime(obj)
             ab = calendar.timegm(time.strptime(f'{epoch} UTC', '%a %b %d %H:%M:%S %Y UTC'))
-            await message.channel.send(f'**{name}** went afk <t:{ab}:R> : {reason}')
+            await message.reply(f'**{name}** went afk <t:{ab}:R> : {reason}')
             l = afk["ping"]
             if not l:
                 l = []

@@ -275,6 +275,25 @@ class Utilities(commands.Cog):
             em.add_field(name=name, value=f"{value}", inline=inline)
         await ctx.reply(embed=em)
 
+    @commands.command(name='afk', usage='afk [reason]', brief='-afk Going Out')
+    @commands.guild_only()
+    async def afk(self, ctx, *,reason='I am AFK :)'):
+        data = await self.bot.afk.get_by_id(ctx.author.id)
+        if not data or "afk" not in data:
+            if ctx.author.nick:
+                a = ctx.author.nick
+            else:
+                a = ctx.author.name
+            try:
+                await ctx.author.edit(nick=f'[AFK] {a}')
+            except:
+                pass
+            await ctx.reply(f'Your AFK is now set to: {reason}')
+            await self.bot.afk.upsert({"_id": ctx.author.id, "afk": True})
+            await self.bot.afk.upsert({"_id": ctx.author.id, "reason": reason})
+            await self.bot.afk.upsert({"_id": ctx.author.id, "ping": []})
+            await self.bot.afk.upsert({"_id": ctx.author.id, "time": time.time()})
+            await self.bot.afk.upsert({"_id": ctx.author.id, "guild": ctx.guild.id})
 
 def setup(bot):
     bot.add_cog(Utilities(bot))   
