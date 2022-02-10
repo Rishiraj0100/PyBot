@@ -42,7 +42,7 @@ class Help(commands.Cog):
             # view = View()
             # view.add_item(button)
 
-            emb = discord.Embed(color=0x3498DB,
+            emb = discord.Embed(color=0x2097d8,
                                 description=f'⇛ Prefix for {ctx.guild.name} is `{PREFIX}`\n\n')
                                             # f'⇛ `{PREFIX} <command> for more information on a particular Command.`\n\n')
             emb.set_footer(text='Made with 🤍 by Jash_2312 and Anshuman..!!', icon_url='https://images-ext-2.discordapp.net/external/9uZU0K1ngMtQgIElGm3XSqPOSxuty4T7ADJQ_kIbcpA/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/749559849460826112/cac1f6ee316353004c9e8bdce8a54b75.png')
@@ -92,7 +92,7 @@ class Help(commands.Cog):
                     if command.name.lower() == params[0].lower():
                         # print('Milgya')
                         
-                        emb = discord.Embed(title=f'{command.name.capitalize()}',description=f'> {command.help}',color=0x3498DB)
+                        emb = discord.Embed(title=f'{command.name.capitalize()}',description=f'> {command.help}',color=0x2097d8)
                         # emb.add_field(name='**Command**', value=f'```{command.name}```', inline=False)
                         # emb.add_field(name='**Description**', value=f'`{command.help}`', inline=False)
                         if command.aliases:
@@ -118,7 +118,7 @@ class Help(commands.Cog):
                         for command in self.bot.commands:
                             for aliases in command.aliases:
                                 if aliases.lower() == params[0].lower():
-                                    emb = discord.Embed(title=f'{command.name.capitalize()}',description=f'> {command.help}',color=0x3498DB)
+                                    emb = discord.Embed(title=f'{command.name.capitalize()}',description=f'> {command.help}',color=0x2097d8)
 
                                     if command.aliases:
                                         emb.add_field(name='**Aliases**', value=f"`{', '.join(command.aliases)}`", inline=False)
