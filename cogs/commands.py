@@ -31,8 +31,8 @@ class Commands(commands.Cog):
         embed.add_field(name='Discord.Py Version', value=dpyVersion)
         embed.add_field(name='Total Guilds:', value=serverCount)
         embed.add_field(name='Total Users:', value=memberCount)
-        jash = self.bot.fetch_user(749559849460826112)
-        anshuman = self.bot.fetch_user(939887303403405402)
+        jash = await self.bot.fetch_user(749559849460826112)
+        anshuman = await self.bot.fetch_user(939887303403405402)
         if jash in ctx.guild.members == True:
             j = f'{jash.mention}'
         else:
