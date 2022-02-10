@@ -58,7 +58,6 @@ class Help(commands.Cog):
                         if not command.hidden:
                             com.append(f'`{command.name}`')
                     try:
-                        print(cog, com)
                         emb.add_field(name=f"{cog}", value=f"{', '.join(com)}", inline=False)
                     except:
                         pass
