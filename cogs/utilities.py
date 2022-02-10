@@ -172,7 +172,7 @@ class Utilities(commands.Cog):
         else:
             ach = 'No Acknowledgements'
 
-        emb.add_field(name='__**General Information**__', value=f'**Name :** {member.name}\n**ID** : {member.id}\n**Username :** {member}\n**Mention :** {member.mention}\n**Nickname :** {nick}\n**Status :** {str(member.status).title()}\n**Join Position :** {sum(m.joined_at < member.joined_at for m in ctx.guild.members if m.joined_at is not None)}/{len(ctx.guild.members)}\n**Account Created :** <t:{ti}:R>\n**Server Joined :** <t:{sj}:R>\n**Is Bot ? :** {mem}\n\n')
+        emb.add_field(name='__**General Information**__', value=f'**Name :** {member.name}\n**ID** : {member.id}\n**Username :** {member}\n**Mention :** {member.mention}\n**Nickname :** {nick}\n**Status :** {str(member.status).title()}\n**Join Position :** {sum(m.joined_at < member.joined_at for m in ctx.guild.members if m.joined_at is not None)}/{len(ctx.guild.members)}\n**Account Created :** <t:{ti}>\n**Server Joined :** <t:{sj}:R>\n**Is Bot ? :** {mem}\n\n')
         if len([role for role in member.roles])-1 != 0 and len([role for role in member.roles])-1 <= 25:
             emb.add_field(name='**__Role Information__**', value=f'**Highest Role :** {hrole}\n**Roles ({len([role for role in member.roles])-1}) :** {memrole}', inline=False)
         elif len([role for role in member.roles])-1 != 0 and len([role for role in member.roles])-1 > 25:
