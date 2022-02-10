@@ -19,10 +19,11 @@ class Utilities(commands.Cog):
     async def on_ready(self):
         print("Utilities Cog has been loaded\n-----")
         
-    @commands.command(name="userinfo", aliases=["memberinfo", "ui", "mi"])
+    @commands.command(name="userinfo", aliases=["memberinfo", "ui", "mi"], usage='userinfo <user>', brief='-userinfo @anshuman..!!')
     @commands.bot_has_permissions(embed_links=True)
     @commands.cooldown(1, 5, commands.BucketType.member)
     async def user_info(self, ctx: commands.Context, *, member: discord.Member = None):
+        """To get the info regarding the mentioned user"""
         target = member or ctx.author
         roles = list(target.roles)
         embed = discord.Embed(
@@ -68,10 +69,11 @@ class Utilities(commands.Cog):
             embed.set_image(url=target.banner.url)
         await ctx.reply(embed=embed)
     
-    @commands.command()
+    @commands.command(name="roleinfo", aliases=["ri"], usage='roleinfo <role>', brief='-roleinfo @owner')
     @commands.bot_has_permissions(embed_links=True)
     @commands.cooldown(1, 5, commands.BucketType.member)
     async def roleinfo(self, ctx: commands.Context, *, role: discord.Role):
+        """To get the info regarding the mentioned role"""
         embed = discord.Embed(
             title=f"Role Information: {role.name}",
             description=f"ID: `{role.id}`",
@@ -136,7 +138,7 @@ class Utilities(commands.Cog):
         embed.add_field(name="Channel Hash", value=hash(channel), inline=False)
         await ctx.send(embed=embed)
     
-    @commands.command(name="serverinfo", aliases=["guildinfo", "si", "gi"])
+    @commands.command(name="serverinfo", aliases=["guildinfo", "si", "gi"], usage='serverinfo', brief='-serverinfo')
     @commands.bot_has_permissions(embed_links=True)
     @commands.cooldown(1, 5, commands.BucketType.member)
     async def server_info(self, ctx: commands.Context):
