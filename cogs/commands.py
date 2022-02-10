@@ -57,7 +57,7 @@ class Commands(commands.Cog):
         if(prefix == None):
             data = await self.bot.prefix.get_by_id(ctx.guild.id)
             if not data or "prefix" not in data:
-                prefix = "$"
+                prefix = "-"
             else:
                 prefix = data["prefix"]
             await ctx.send(f'My prefix for this server is `{prefix}`\nYou can start with `{prefix}help`')
