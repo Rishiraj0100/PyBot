@@ -227,24 +227,7 @@ class Utilities(commands.Cog):
         else:
             embed.add_field(name="Boosts", value="Level 0", inline=True)
 
-        emoji_stats = commands.Counter()
-        for emoji in guild.emojis:
-            if emoji.animated:
-                emoji_stats["animated"] += 1
-                emoji_stats["animated_disabled"] += not emoji.available
-            else:
-                emoji_stats["regular"] += 1
-                emoji_stats["disabled"] += not emoji.available
-
-        fmt = (
-            f'Regular: {emoji_stats["regular"]}/{guild.emoji_limit}\n'
-            f'Animated: {emoji_stats["animated"]}/{guild.emoji_limit}\n'
-        )
-        if emoji_stats["disabled"] or emoji_stats["animated_disabled"]:
-            fmt = f'{fmt}Disabled: {emoji_stats["disabled"]} regular, {emoji_stats["animated_disabled"]} animated\n'
-
-        fmt = f"{fmt}Total Emoji: {len(guild.emojis)}/{guild.emoji_limit*2}"
-        embed.add_field(name="Emoji", value=fmt, inline=True)
+        
 
         if ctx.guild.me.guild_permissions.ban_members:
             embed.add_field(
