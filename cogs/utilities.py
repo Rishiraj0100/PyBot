@@ -20,7 +20,7 @@ class Utilities(commands.Cog):
     async def on_ready(self):
         print("Utilities Cog has been loaded\n-----")
     
-    @commands.command(name='invite', aliases=['inv'], brief='$invite')
+    @commands.command(name='invite', aliases=['inv'], brief='-invite')
     async def invite(self, ctx):
         """
         Invite ME : )
