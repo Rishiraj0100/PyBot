@@ -45,7 +45,7 @@ class Help(commands.Cog):
             emb = discord.Embed(color=0x3498DB,
                                 description=f'⇛ Prefix for {ctx.guild.name} is `{PREFIX}`\n\n')
                                             # f'⇛ `{PREFIX} <command> for more information on a particular Command.`\n\n')
-            emb.set_footer(text='Made with 🤍 by Jash_2312', icon_url='https://images-ext-2.discordapp.net/external/9uZU0K1ngMtQgIElGm3XSqPOSxuty4T7ADJQ_kIbcpA/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/749559849460826112/cac1f6ee316353004c9e8bdce8a54b75.png')
+            emb.set_footer(text='Made with 🤍 by Jash_2312 and Anshuman..!!', icon_url='https://images-ext-2.discordapp.net/external/9uZU0K1ngMtQgIElGm3XSqPOSxuty4T7ADJQ_kIbcpA/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/749559849460826112/cac1f6ee316353004c9e8bdce8a54b75.png')
             emb.set_author(name=ctx.author, icon_url=ctx.author.display_avatar.url)
             for cog in self.bot.cogs:
                 # check if cog is the matching one
