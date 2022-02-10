@@ -84,7 +84,7 @@ class Utilities(commands.Cog):
         #     embed.set_image(url=target.banner.url)
         # await ctx.reply(embed=embed)
     
-    @commands.command(name='whois', usage='whois [member]', brief='$whois @user', aliases=['si', 'serverinfo'])
+    @commands.command(name='whois', usage='whois [member]', brief='-whois @user', aliases=['ui', 'userinfo'])
     async def whois(self, ctx, member: discord.Member=None):
         member = member or ctx.author
         perms = []
@@ -123,13 +123,13 @@ class Utilities(commands.Cog):
         if member.color.value != 0:
             col = member.color
         else:
-            col = 0xff0000
+            col = 0x3498DB
 
         emb = discord.Embed(color=col)
         if member.bot:
-            mem = '<a:tick:940166589863583786> Yes'
+            mem = '<a:tick:940816615237357608> Yes'
         else:
-            mem = '❌ No'
+            mem = '<a:cross1:941287490986315776> No'
         
         ti = calendar.timegm(time.strptime(member.created_at.strftime("%b %d, %Y @ %H:%M:%S UTC"), '%b %d, %Y @ %H:%M:%S UTC'))
         sj = calendar.timegm(time.strptime(member.joined_at.strftime("%b %d, %Y @ %H:%M:%S UTC"), '%b %d, %Y @ %H:%M:%S UTC'))
