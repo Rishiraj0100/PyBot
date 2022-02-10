@@ -81,7 +81,6 @@ async def on_ready():
     print(f"-----\nLogged in as: {bot.user.name} : {bot.user.id}\n-----\nMy current prefix is: -\n-----")
     await bot.change_presence(activity=discord.Game(name=f"Hi, my name is {bot.user.name}.\nUse - to interact with me!"))
 
-
     bot.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(bot.connection_url))
     bot.db = bot.mongo["dot"]
     bot.afk = Document(bot.db, "afk")
