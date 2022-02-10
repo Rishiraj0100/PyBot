@@ -121,7 +121,7 @@ async def on_message(message):
         except:
             pass
         if len(data["ping"]) == 0:
-            pmsg  = '\n**You were not pinged during your AFK.**'
+            pmsg  = '\n**You were not pinged while you were AFK.**'
         elif len(data["ping"]) == 1:
             pmsg = f'**You were pinged {len(data["ping"])} time.\n\nClick Below to View them.**'
         else:
@@ -183,7 +183,7 @@ async def on_message(message):
             prefix = "-"
         else:
             prefix = data["prefix"]
-        prefixMsg = await message.channel.send(f"My prefix here is `{prefix}` \nI was developed by `Jash_2312`", delete_after=10)
+        prefixMsg = await message.channel.send(f"My prefix here is `{prefix}` \nI was developed by `Jash_2312` & `Anshuman..!!#5404`", delete_after=10)
 
     await bot.process_commands(message)
 
