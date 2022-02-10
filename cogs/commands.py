@@ -33,11 +33,11 @@ class Commands(commands.Cog):
         embed.add_field(name='Total Users:', value=memberCount)
         jash = await self.bot.fetch_user(749559849460826112)
         anshuman = await self.bot.fetch_user(939887303403405402)
-        if jash in ctx.guild.members == True:
+        if jash in ctx.guild.members:
             j = f'{jash.mention}'
         else:
             j = f'**{jash}**'
-        if anshuman in ctx.guild.members == True:
+        if anshuman in ctx.guild.members:
             a = f'{anshuman.mention}'
         else:
             a = f'**{anshuman}**'
