@@ -17,8 +17,9 @@ class Commands(commands.Cog):
     async def on_ready(self):
         print("Commands Cog has been loaded\n-----")
 
-    @commands.command(name="statistics", aliases=["stat", "stats", "details"])
+    @commands.command(name="stats", aliases=["statistics", "st", "info"], usage='stats', brief='-stats')
     async def stats(self, ctx):
+        """Shows some usefull information about PyBot"""
         pythonVersion = platform.python_version()
         dpyVersion = discord.__version__
         serverCount = len(self.bot.guilds)
@@ -47,22 +48,25 @@ class Commands(commands.Cog):
 
         await ctx.send(embed=embed)
        
-    @commands.command(aliases=['disconnect', 'close', 'stopbot'])
+    @commands.command(name="logout", aliases=["disconnect", "shutdown"], usage='logout', brief='-logout')
     @commands.is_owner()
     async def logout(self, ctx):
+        """Logout the bot (owner only)"""
         await ctx.send(f"Hey {ctx.author.mention}, I am now logging out :wave:")
         await self.bot.logout()
 
     @commands.command()
     async def echo(self, ctx, *, message=None):
+        """repeats your message"""
         message = message or "Please provide the message to be repeated."
         await ctx.message.delete()
         await ctx.send(message)
 
-    @commands.command()
+    @commands.command(name="prefix", aliases=["pre"], usage='prefix [newprefix]', brief='-prefix !')
     @commands.has_permissions(administrator=True)
     @commands.cooldown(1, 5, commands.BucketType.guild)
     async def prefix(self, ctx, *, prefix='-'):
+        """To check the current prefix or change it to a new one"""
         if(prefix == None):
             data = await self.bot.prefix.get_by_id(ctx.guild.id)
             if not data or "prefix" not in data:
@@ -81,9 +85,10 @@ class Commands(commands.Cog):
             await ctx.send(embed=embed)
 
 
-    @commands.command(name="Ping", aliases=["latency", "speed", "p"])
+    @commands.command(name="ping", aliases=["latency", "speed", "p"], usage='ping', brief='-ping')
     @commands.cooldown(1, 5, commands.BucketType.member)
     async def ping(self, ctx: commands.Context):
+        """Shows the Latency of the bot"""
         start = time()
         message = await ctx.reply("Pinging...")
         end = time()
