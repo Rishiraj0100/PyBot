@@ -243,7 +243,7 @@ class Utilities(commands.Cog):
         if ctx.guild.banner:
             embed.set_image(url=ctx.guild.banner.url)
 
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
 
 def setup(bot):
