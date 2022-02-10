@@ -99,7 +99,7 @@ async def on_message(message):
     if message.author.id in bot.blacklisted_users:
         return
 
-    data = await bot.prefix.get_by_id(message.author.id)
+    data = await bot.prefix.get_by_id(message.guild.id)
     if data["prefix"]:
         pre = data["prefix"]
     else:
