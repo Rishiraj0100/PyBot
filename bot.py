@@ -166,6 +166,7 @@ async def on_message(message):
                 reason = afk["reason"]
             if message.guild.id != afk["guild"]:
                 return
+
             obj = time.gmtime(afk["time"])
             epoch = time.asctime(obj)
             ab = calendar.timegm(time.strptime(f'{epoch} UTC', '%a %b %d %H:%M:%S %Y UTC'))
