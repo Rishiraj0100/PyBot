@@ -98,9 +98,9 @@ async def on_message(message):
 
     if message.author.id in bot.blacklisted_users:
         return
-        
+
     if message.content.startswith('#'):
-            return
+        return
 
     data = await bot.afk.get_by_id(message.author.id)
     if not data or "afk" not in data:
@@ -140,6 +140,8 @@ async def on_message(message):
             view = None
         await message.channel.send(embed=embed, view=view)
     a = None
+    if message.content.startswith('#'):
+            return
     res = message.content.split()
     for word in res:
         if word.startswith('<@!'):
