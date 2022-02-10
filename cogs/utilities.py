@@ -9,6 +9,7 @@ import datetime
 import random
 import re
 import _json
+from discord.ui import Button, View
 
 class Utilities(commands.Cog):
 
@@ -18,6 +19,19 @@ class Utilities(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print("Utilities Cog has been loaded\n-----")
+    
+    @commands.command(name='invite', aliases=['inv'], brief='$invite')
+    async def invite(self, ctx):
+        """
+        Invite ME : )
+        """
+        button = Button(label='Invite Me', style=discord.ButtonStyle.link, url='https://discord.com/api/oauth2/authorize?client_id=938699822922346536&permissions=21175985838&scope=bot' )
+        view = View()
+        view.add_item(button)
+        embed = discord.Embed(description='Wanna Invite me to your Server ?', color=0xff0000)
+        embed.set_author(name='Invite Me', icon_url=self.bot.user.display_avatar)
+
+        await ctx.send(embed=embed, view=view)
         
     @commands.command(name="userinfo", aliases=["memberinfo", "ui", "mi"], usage='userinfo <user>', brief='-userinfo @anshuman..!!')
     @commands.bot_has_permissions(embed_links=True)
