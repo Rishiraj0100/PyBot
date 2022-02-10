@@ -110,7 +110,7 @@ async def on_message(message):
             pass
         else:
             if message.guild.id != data["guild"]:
-                return
+                return await bot.process_commands(message)
         await bot.afk.delete(message.author.id)
         
         try:
@@ -193,6 +193,5 @@ if __name__ == '__main__':
     for file in os.listdir(cwd+"/cogs"):
         if file.endswith(".py") and not file.startswith("_"):
             bot.load_extension(f"cogs.{file[:-3]}")
-
 
 bot.run(bot.config_token)
