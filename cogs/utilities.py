@@ -4,7 +4,6 @@ from discord.ext import commands
 import typing
 import platform
 import time
-from time import time
 import datetime
 import random
 import re
