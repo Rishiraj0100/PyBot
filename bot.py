@@ -161,9 +161,9 @@ async def on_message(message):
                 reason = 'I am AFK :)'
             else:
                 reason = afk["reason"]
-            if message.guild.id != afk["guild"]:
-                return
-            obj = time.gmtime(data["time"])
+            # if message.guild.id != afk["guild"]:
+            #     return
+            obj = time.gmtime(afk["time"])
             epoch = time.asctime(obj)
             ab = calendar.timegm(time.strptime(f'{epoch} UTC', '%a %b %d %H:%M:%S %Y UTC'))
             await message.reply(f'**{name}** went afk <t:{ab}:R> : {reason}')
