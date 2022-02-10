@@ -99,7 +99,8 @@ async def on_message(message):
     if message.author.id in bot.blacklisted_users:
         return
 
-    if message.content.startswith('#'):
+    data = await bot.afk.get_by_id(message.author.id)
+    if message.content.startswith('#') and data["prefix"] != '#':
         message = message.replace('#', '')
         return await bot.process_commands(message)
 
