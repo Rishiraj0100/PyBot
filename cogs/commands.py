@@ -31,8 +31,17 @@ class Commands(commands.Cog):
         embed.add_field(name='Discord.Py Version', value=dpyVersion)
         embed.add_field(name='Total Guilds:', value=serverCount)
         embed.add_field(name='Total Users:', value=memberCount)
-        embed.add_field(name='Bot Developers:', value="**Jash_2312**\n**Anshuman..!!#5404**")
-
+        jash = self.bot.fetch_user(749559849460826112)
+        anshuman = self.bot.fetch_user(939887303403405402)
+        if jash in ctx.guild.members == True:
+            j = f'{jash.mention}'
+        else:
+            j = f'**{jash}**'
+        if anshuman in ctx.guild.members == True:
+            a = f'{anshuman.mention}'
+        else:
+            a = f'**{anshuman}**'
+        embed.add_field(name='Bot Developers:', value=f"**{j}**\n**{a}**")
         embed.set_footer(text=f"Stats | {self.bot.user.name}")
         embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.display_avatar.url)
 
