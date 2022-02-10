@@ -10,6 +10,7 @@ import random
 import re
 import _json
 from discord.ui import Button, View
+import calendar
 
 class Utilities(commands.Cog):
 
@@ -33,55 +34,161 @@ class Utilities(commands.Cog):
 
         await ctx.send(embed=embed, view=view)
         
-    @commands.command(name="userinfo", aliases=["memberinfo", "ui", "mi"], usage='userinfo <user>', brief='-userinfo @anshuman..!!')
-    @commands.bot_has_permissions(embed_links=True)
-    @commands.cooldown(1, 5, commands.BucketType.member)
-    async def user_info(self, ctx: commands.Context, *, member: discord.Member = None):
-        """To get the info regarding the mentioned user"""
-        target = member or ctx.author
-        roles = list(target.roles)
-        embed = discord.Embed(
-            title="User information",
-            colour=target.colour,
-            timestamp=datetime.datetime.utcnow(),
-        )
+    # @commands.command(name="userinfo", aliases=["memberinfo", "ui", "mi"], usage='userinfo <user>', brief='-userinfo @anshuman..!!')
+    # @commands.bot_has_permissions(embed_links=True)
+    # @commands.cooldown(1, 5, commands.BucketType.member)
+    # async def user_info(self, ctx: commands.Context, *, member: discord.Member = None):
+    #     """To get the info regarding the mentioned user"""
+    #     target = member or ctx.author
+    #     roles = list(target.roles)
+    #     embed = discord.Embed(
+    #         title="User information",
+    #         colour=target.colour,
+    #         timestamp=datetime.datetime.utcnow(),
+    #     )
 
-        embed.set_thumbnail(url=target.display_avatar.url)
-        embed.set_footer(text=f"ID: {target.id}")
-        fields = [
-            ("Name", str(target), True),
-            ("Created at", f"<t:{int(target.created_at.timestamp())}>", True),
-            ("Status", f"{str(target.status).title()}", True),
-            (
-                "Activity",
-                f"{str(target.activity.type).split('.')[-1].title() if target.activity else 'No Activity'} {target.activity.name if target.activity else ''}",
-                True,
-            ),
-            ("Joined at", f"<t:{int(target.joined_at.timestamp())}>", True),
-            ("Boosted", bool(target.premium_since), True),
-            ("Bot?", target.bot, True),
-            ("Nickname", target.display_name, True),
-            (f"Top Role", target.top_role.mention, True),
-        ]
+    #     embed.set_thumbnail(url=target.display_avatar.url)
+    #     embed.set_footer(text=f"ID: {target.id}")
+        # fields = [
+        #     ("Name", str(target), True),
+        #     ("Created at", f"<t:{int(target.created_at.timestamp())}>", True),
+        #     ("Status", f"{str(target.status).title()}", True),
+        #     (
+        #         "Activity",
+        #         f"{str(target.activity.type).split('.')[-1].title() if target.activity else 'No Activity'} {target.activity.name if target.activity else ''}",
+        #         True,
+        #     ),
+        #     ("Joined at", f"<t:{int(target.joined_at.timestamp())}>", True),
+        #     ("Boosted", bool(target.premium_since), True),
+        #     ("Bot?", target.bot, True),
+        #     ("Nickname", target.display_name, True),
+        #     (f"Top Role", target.top_role.mention, True),
+        # ]
+        # perms = []
+        # for name, value, inline in fields:
+        #     embed.add_field(name=name, value=value, inline=inline)
+        # if target.guild_permissions.administrator:
+        #     perms.append("Administrator")
+        # if (
+        #     target.guild_permissions.kick_members
+        #     and target.guild_permissions.ban_members
+        #     and target.guild_permissions.manage_messages
+        # ):
+        #     perms.append("Server Moderator")
+        # if target.guild_permissions.manage_guild:
+        #     perms.append("Server Manager")
+        # if target.guild_permissions.manage_roles:
+        #     perms.append("Role Manager")
+        # embed.description = f"Key perms: {', '.join(perms if perms else ['NA'])}"
+        # if target.banner:
+        #     embed.set_image(url=target.banner.url)
+        # await ctx.reply(embed=embed)
+    
+    @commands.command(name='whois', usage='whois [member]', brief='$whois @user', aliases=['si', 'serverinfo'])
+    async def whois(self, ctx, member: discord.Member=None):
+        member = member or ctx.author
         perms = []
-        for name, value, inline in fields:
-            embed.add_field(name=name, value=value, inline=inline)
-        if target.guild_permissions.administrator:
-            perms.append("Administrator")
-        if (
-            target.guild_permissions.kick_members
-            and target.guild_permissions.ban_members
-            and target.guild_permissions.manage_messages
-        ):
-            perms.append("Server Moderator")
-        if target.guild_permissions.manage_guild:
-            perms.append("Server Manager")
-        if target.guild_permissions.manage_roles:
-            perms.append("Role Manager")
-        embed.description = f"Key perms: {', '.join(perms if perms else ['NA'])}"
-        if target.banner:
-            embed.set_image(url=target.banner.url)
-        await ctx.reply(embed=embed)
+        if member.guild_permissions.administrator:
+            perms.append('Administrator')
+        if member.guild_permissions.ban_members:
+            perms.append('Ban Members')
+        if member.guild_permissions.kick_members:
+            perms.append('Kick Members')
+        if member.guild_permissions.manage_channels:
+            perms.append('Manage Channels')
+        if member.guild_permissions.manage_emojis:
+            perms.append('Manage Emojis')
+        if member.guild_permissions.manage_events:
+            perms.append('Manage Events')
+        if member.guild_permissions.manage_messages:
+            perms.append('Manage Messages')
+        if member.guild_permissions.manage_nicknames:
+            perms.append('Manage Nicknames')
+        if member.guild_permissions.manage_permissions:
+            perms.append('Manage Permissions')
+        if member.guild_permissions.manage_roles:
+            perms.append('Manage Roles')
+        if member.guild_permissions.manage_threads:
+            perms.append('Manage Threads')
+        if member.guild_permissions.manage_webhooks:
+            perms.append('Manage Webhooks')
+        if member.guild_permissions.mention_everyone:
+            perms.append('Mention Everyone')
+
+        if len(perms):
+            perms = sorted(perms)
+        else:
+            perms.append('No Permissions')
+
+        if member.color.value != 0:
+            col = member.color
+        else:
+            col = 0xff0000
+
+        emb = discord.Embed(color=col)
+        if member.bot:
+            mem = '<a:tick:940166589863583786> Yes'
+        else:
+            mem = '❌ No'
+        
+        ti = calendar.timegm(time.strptime(member.created_at.strftime("%b %d, %Y @ %H:%M:%S UTC"), '%b %d, %Y @ %H:%M:%S UTC'))
+        sj = calendar.timegm(time.strptime(member.joined_at.strftime("%b %d, %Y @ %H:%M:%S UTC"), '%b %d, %Y @ %H:%M:%S UTC'))
+
+        if member.nick:
+            nick = member.nick
+        else:
+            nick = 'No Nickname'
+        
+        roles = []
+        for role in member.roles:
+            roles.append(role.mention)
+        
+        roles = sorted(roles)
+        
+        if len([role for role in member.roles])-1 == 0:
+            memrole = 'No Roles'
+        else:
+            memrole = ", ".join(roles[1:])
+
+        if member.top_role.name == '@everyone':
+            hrole = 'No Role'
+        else:
+            hrole = member.top_role.mention
+        
+        emb.set_thumbnail(url=member.display_avatar.url)
+        emb.set_author(name=f'{member}\'s Information', icon_url=member.display_avatar.url)
+
+        try:
+            banner_user = await self.bot.fetch_user(member.id)
+            banner_url = banner_user.banner.url
+            emb.set_image(url=banner_url)
+        except:
+            pass
+        emb.set_footer(text=f'Requested By {ctx.author}', icon_url=ctx.author.display_avatar.url)
+        
+        if member.id == ctx.guild.owner_id:
+            ach = 'Server Owner'
+        elif member.guild_permissions.administrator:
+            ach = 'Server Admin'
+        else:
+            ach = 'No Acknowledgements'
+
+        emb.add_field(name='__**General Information**__', value=f'**Name :** {member.name}\n**ID** : {member.id}\n**Username :** {member}\n**Mention :** {member.mention}\n**Nickname :** {nick}\n**Join Position :** {sum(m.joined_at < member.joined_at for m in ctx.guild.members if m.joined_at is not None)}/{len(ctx.guild.members)}\n**Status :** {str(member.status).title()}\n**Account Created :** <t:{ti}:R>\n**Server Joined :** <t:{sj}:R>\n**Is Bot ? :** {mem}\n\n')
+        if len([role for role in member.roles])-1 != 0 and len([role for role in member.roles])-1 <= 25:
+            emb.add_field(name='**__Role Information__**', value=f'**Highest Role :** {hrole}\n**Roles ({len([role for role in member.roles])-1}) :** {memrole}', inline=False)
+        elif len([role for role in member.roles])-1 != 0 and len([role for role in member.roles])-1 > 25:
+            emb.add_field(name='**__Role Information__**', value=f'**Highest Role :** {hrole}\n**Roles ({len([role for role in member.roles])-1}) :** Too Many Roles to Display.', inline=False)
+        emb.add_field(name='**__Permissions__**', value=f'{", ".join(perms)}', inline=False)
+        emb.add_field(name='**__Acknowledgements__**', value=ach, inline=False)
+        await ctx.send(embed=emb)
+
+    @commands.command(name='membercount', aliases=['mc'], usage='$membercount')
+    async def mc(self, ctx):
+        """
+        Get the MemberCount of the Server
+        """
+        embed = discord.Embed(title='Member Count', description=f'**{len(ctx.guild.members)}**', color=0x3498DB)
+        await ctx.send(embed=embed)
     
     @commands.command(name="roleinfo", aliases=["ri"], usage='roleinfo <role>', brief='-roleinfo @owner')
     @commands.bot_has_permissions(embed_links=True)
