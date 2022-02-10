@@ -61,7 +61,7 @@ class Utilities(commands.Cog):
             ("Boosted", bool(target.premium_since), True),
             ("Bot?", target.bot, True),
             ("Nickname", target.display_name, True),
-            (f"Top Role [{len(roles)-1}]", target.top_role.mention, True),
+            (f"Top Role", target.top_role.mention, True),
         ]
         perms = []
         for name, value, inline in fields:
