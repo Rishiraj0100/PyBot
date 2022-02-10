@@ -277,4 +277,4 @@ class Utilities(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(Utilities(bot))   
+    bot.add_cog(Utilities(bot))

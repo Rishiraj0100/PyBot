@@ -100,7 +100,8 @@ async def on_message(message):
         return
 
     if message.content.startswith('#'):
-        return
+        message = message.replace('#', '')
+        return await bot.process_commands(message)
 
     data = await bot.afk.get_by_id(message.author.id)
     if not data or "afk" not in data:
