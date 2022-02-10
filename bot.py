@@ -106,11 +106,9 @@ async def on_message(message):
         if "guild" not in data:
             pass
         else:
-            if message.guild.id not in data["guild"]:
+            if message.guild.id != data["guild"]:
                 return
-        li = data["guild"]
-        li.remove(message.guild.id)
-        await bot.afk.upsert({"_id": message.author.id, "guild": li})
+        await bot.afk.delete(message.author.id)
         if message.content.startswith('#'):
             return
         
@@ -129,7 +127,6 @@ async def on_message(message):
             pmsg = f'**You were pinged {len(data["ping"])} times.\n\nClick Below to View them.**'
         obj = time.gmtime(data["time"])
         epoch = time.asctime(obj)
-        global ab
         ab = calendar.timegm(time.strptime(f'{epoch} UTC', '%a %b %d %H:%M:%S %Y UTC'))
         embed = discord.Embed(color=0x3498DB, description=f'Welcome Back **{message.author}**, I have removed your AFK.\nYou had went afk <t:{ab}:R>\n{pmsg}')
         view = discord.ui.View()
@@ -164,8 +161,11 @@ async def on_message(message):
                 reason = 'I am AFK :)'
             else:
                 reason = afk["reason"]
-            if message.guild.id not in afk["guild"]:
+            if message.guild.id != afk["guild"]:
                 return
+            obj = time.gmtime(data["time"])
+            epoch = time.asctime(obj)
+            ab = calendar.timegm(time.strptime(f'{epoch} UTC', '%a %b %d %H:%M:%S %Y UTC'))
             await message.channel.send(f'**{name}** went afk <t:{ab}:R> : {reason}')
             l = afk["ping"]
             if not l:
