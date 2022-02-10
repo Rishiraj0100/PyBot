@@ -31,7 +31,7 @@ class Commands(commands.Cog):
         embed.add_field(name='Discord.Py Version', value=dpyVersion)
         embed.add_field(name='Total Guilds:', value=serverCount)
         embed.add_field(name='Total Users:', value=memberCount)
-        embed.add_field(name='Bot Developers:', value="<@749559849460826112>")
+        embed.add_field(name='Bot Developers:', value="**Jash_2312**\n**Anshuman..!!#5404**")
 
         embed.set_footer(text=f"Stats | {self.bot.user.name}")
         embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.display_avatar.url)
@@ -68,7 +68,7 @@ class Commands(commands.Cog):
     @prefix.error
     async def prefix_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):
-            embed = discord.Embed(description='**❌ You lack Administrator Permissions to use this command.**', color=0x00ff0000)
+            embed = discord.Embed(description='**<a:cross1:941287490986315776> You lack Administrator Permissions to use this command.**', color=0x00ff0000)
             await ctx.send(embed=embed)
 
 
