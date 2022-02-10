@@ -98,6 +98,9 @@ async def on_message(message):
 
     if message.author.id in bot.blacklisted_users:
         return
+        
+    if message.content.startswith('#'):
+            return
 
     data = await bot.afk.get_by_id(message.author.id)
     if not data or "afk" not in data:
@@ -109,8 +112,6 @@ async def on_message(message):
             if message.guild.id != data["guild"]:
                 return
         await bot.afk.delete(message.author.id)
-        if message.content.startswith('#'):
-            return
         
         try:
             a = message.author.nick
@@ -161,8 +162,8 @@ async def on_message(message):
                 reason = 'I am AFK :)'
             else:
                 reason = afk["reason"]
-            # if message.guild.id != afk["guild"]:
-            #     return
+            if message.guild.id != afk["guild"]:
+                return
             obj = time.gmtime(afk["time"])
             epoch = time.asctime(obj)
             ab = calendar.timegm(time.strptime(f'{epoch} UTC', '%a %b %d %H:%M:%S %Y UTC'))
