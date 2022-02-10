@@ -115,12 +115,13 @@ class Moderation(commands.Cog):
                 await ctx.author.edit(nick=f'[AFK] {a}')
             except:
                 pass
+            await ctx.reply(f'Your AFK is now set to: {reason}')
             await self.bot.afk.upsert({"_id": ctx.author.id, "afk": True})
             await self.bot.afk.upsert({"_id": ctx.author.id, "reason": reason})
             await self.bot.afk.upsert({"_id": ctx.author.id, "ping": []})
             await self.bot.afk.upsert({"_id": ctx.author.id, "time": time.time()})
             await self.bot.afk.upsert({"_id": ctx.author.id, "guild": ctx.guild.id})
-            await ctx.reply(f'Your AFK is now set to: {reason}')
+            
 
 def setup(bot):
     bot.add_cog(Moderation(bot))
