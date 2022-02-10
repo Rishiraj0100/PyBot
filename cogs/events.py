@@ -41,8 +41,11 @@ class Events(commands.Cog):
             ignored = (commands.CommandNotFound, commands.UserInputError)
             if isinstance(error, ignored):
                 return
+            
+            elif isinstance(error, commands.NotOwner):
+                return await ctx.send("*Hmmm* 😷")
 
-            if isinstance(error, commands.CommandOnCooldown):
+            elif isinstance(error, commands.CommandOnCooldown):
                 m, s = divmod(error.retry_after, 60)
                 h, m = divmod(m, 60)
                 if int(h) == 0 and int(m) == 0:
