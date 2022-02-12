@@ -23,7 +23,6 @@ cwd = str(cwd)
 print(f"{cwd}\n-----")
 
 async def get_prefix(bot, message):
-    # If dm's
     if not message.guild:
         return commands.when_mentioned_or("-")(bot, message)
     try:
@@ -45,7 +44,6 @@ bot = commands.Bot(command_prefix=get_prefix, case_insensitive=True, owner_ids =
 
 logging.basicConfig(level=logging.INFO)
 
-bot.blacklisted_users = []
 bot.cwd = cwd
 
 bot.config_token = secret_file['token']
