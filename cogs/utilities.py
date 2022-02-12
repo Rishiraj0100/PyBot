@@ -206,7 +206,7 @@ class Utilities(commands.Cog):
         message = await ctx.reply("Pinging...")
         end = time.time()
         await message.edit(
-            content=f"Pong! latency: {self.bot.latency*1000:,.0f} ms. Response time: {(end-start)*1000:,.0f} ms."
+            content=f"Pong! latency: {self.bot.latency*1000:,.0f} ms."
         )   
     @commands.command(name="prefix", aliases=["pre"], usage='prefix [newprefix]', brief='-prefix !')
     @commands.has_permissions(administrator=False)
