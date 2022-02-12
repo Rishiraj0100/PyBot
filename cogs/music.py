@@ -1,11 +1,10 @@
 import re
-
+from discord.ui import Button, View
 import discord
 import lavalink
 from discord.ext import commands
 
 url_rx = re.compile(r'https?://(?:www\.)?.+')
-
 
 class LavalinkVoiceClient(discord.VoiceClient):
     """
@@ -80,6 +79,25 @@ class LavalinkVoiceClient(discord.VoiceClient):
         player.channel_id = None
         self.cleanup()
 
+class MyView(View):
+    @discord.ui.button(label="Skip", style=discord.ButtonStyle.secondary)
+    async def button_callback(self, button, interaction):
+        player = self.bot.lavalink.player_manager.get(interaction.guild.id)
+
+        if not player.is_connected:
+            # We can't disconnect, if we're not connected.
+            return await interaction.response.send_message('I\'m not connected to any VC.')
+
+        if not interaction.user.voice or (player.is_connected and interaction.user.voice.channel.id != int(player.channel_id)):
+            # Abuse prevention. Users not in voice channels, or not in the same voice channel as the bot
+            # may not disconnect the bot.
+            return await interaction.response.send_message('You\'re not in my voicechannel!')
+        
+        # await interaction.message.add_reaction('<a:tick:940816615237357608>')
+
+        await player.skip()
+        
+        await interaction.reponse.send_message('*⃣ | Skipped !')
 
 class Music(commands.Cog):
 
@@ -172,6 +190,9 @@ class Music(commands.Cog):
     async def play(self, ctx, *, query: str):
         """ Searches and plays a song from a given query. """
         # Get the player for this guild from cache.
+        button = Button(style=discord.ButtonStyle.blurple, label='Skip')
+        MyView = View()
+        MyView.add_item(button)
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
         # Remove leading and trailing <>. <> may be used to suppress embedding links in Discord.
         query = query.strip('<>')
@@ -232,7 +253,7 @@ class Music(commands.Cog):
 
             embed.title = 'Track Enqueued'
             embed.description = f'[{track["info"]["title"]}]({track["info"]["uri"]})'
-
+            # embed.add_field(name="Requested By", value=f'{track["info"]["requester"]}')
             # You can attach additional information to audiotracks through kwargs, however this involves
             # constructing the AudioTrack class yourself.
             track = lavalink.models.AudioTrack(track, ctx.author.id, recommended=True)
@@ -252,7 +273,7 @@ class Music(commands.Cog):
 
         if not player.is_connected:
             # We can't disconnect, if we're not connected.
-            return await ctx.send('Not connected.')
+            return await ctx.send('I\'m not connected to any VC.')
 
         if not ctx.author.voice or (player.is_connected and ctx.author.voice.channel.id != int(player.channel_id)):
             # Abuse prevention. Users not in voice channels, or not in the same voice channel as the bot
