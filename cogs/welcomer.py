@@ -1,9 +1,7 @@
-from turtle import title
 import discord
 from discord.ext import commands
 import asyncio
 from discord.ui import Button, View
-from discord.utils import get
 
 
 class Welcomer(commands.Cog):
