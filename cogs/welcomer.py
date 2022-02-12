@@ -556,7 +556,7 @@ class Welcomer(commands.Cog):
                 elif data["type"] == "embed":
 
                     title = data["title"]
-                    title = title.replace('{user}', f'{ctx.author.mention}')
+                    title = title.replace('{user}', f'{ctx.author.name}')
                     title = title.replace('{username}', f'{ctx.author.name}')
                     title = title.replace('{server}', f'{ctx.guild.name}')
 
@@ -569,7 +569,7 @@ class Welcomer(commands.Cog):
                         '{server}', f'{ctx.guild.name}')
 
                     footer = data["footer"]
-                    footer = footer.replace('{user}', f'{ctx.author.mention}')
+                    footer = footer.replace('{user}', f'{ctx.author.name}')
                     footer = footer.replace('{username}', f'{ctx.author.name}')
                     footer = footer.replace('{server}', f'{ctx.guild.name}')
 
