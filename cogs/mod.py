@@ -10,7 +10,7 @@ class Moderation(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print(f"{self.__class__.__name__} Cog has been loaded\n-----")
+        print(f"{self.__class__.__name__} Cog has been loaded\n-------------------------")
     
     @commands.command(name='clear', aliases=['purge', 'clean'], usage='clear <amount>', brief='$clear 100')
     @commands.has_guild_permissions(manage_messages=True)

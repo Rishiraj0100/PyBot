@@ -1,4 +1,5 @@
 from __future__ import annotations
+from tracemalloc import start
 import discord
 from discord.ext import commands
 import typing
@@ -6,10 +7,10 @@ import platform
 import time
 import datetime
 import random
-import re
-import _json
 from discord.ui import Button, View
 import calendar
+import psutil
+from collections import Counter
 
 class Utilities(commands.Cog):
 
@@ -18,7 +19,9 @@ class Utilities(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print("Utilities Cog has been loaded\n-----")
+        print("Utilities Cog has been loaded\n-------------------------")
+    global start_time
+    start_time = int(time.time())
     
     @commands.command(name='invite', aliases=['inv'], brief='-invite')
     async def invite(self, ctx):
@@ -188,6 +191,91 @@ class Utilities(commands.Cog):
         """
         embed = discord.Embed(title='Member Count', description=f'**{len(ctx.guild.members)}**', color=0x3498DB)
         await ctx.send(embed=embed)
+    
+    @commands.command(name="uptime")
+    async def uptime(self, ctx):
+        embed = discord.Embed(color=discord.Color.blue(), description=f'I am Online from : **<t:{start_time}:R>**')
+
+        await ctx.send(embed=embed)
+    
+    @commands.command(name="ping", aliases=["latency", "speed", "p"], usage='ping', brief='-ping')
+    @commands.cooldown(1, 5, commands.BucketType.member)
+    async def ping(self, ctx: commands.Context):
+        """Shows the Latency of the bot"""
+        start = time()
+        message = await ctx.reply("Pinging...")
+        end = time()
+        await message.edit(
+            content=f"Pong! latency: {self.bot.latency*1000:,.0f} ms. Response time: {(end-start)*1000:,.0f} ms."
+        )   
+    @commands.command(name="prefix", aliases=["pre"], usage='prefix [newprefix]', brief='-prefix !')
+    @commands.has_permissions(administrator=False)
+    @commands.cooldown(1, 5, commands.BucketType.guild)
+    async def prefix(self, ctx, *, prefix='-'):
+        """To check the current prefix or change it to a new one"""
+        if(prefix == None):
+            data = await self.bot.prefix.get_by_id(ctx.guild.id)
+            if not data or "prefix" not in data:
+                prefix = "-"
+            else:
+                prefix = data["prefix"]
+            await ctx.send(f'My prefix for this server is `{prefix}`\nYou can start with `{prefix}help`')
+        else:
+            await self.bot.prefix.upsert({"_id": ctx.guild.id, "prefix": prefix})
+            await ctx.send(f"The guild prefix has been set to `{prefix}`. Use `{prefix}prefix [prefix]` to change it again!")
+    
+    @prefix.error
+    async def prefix_error(self, ctx, error):
+        if isinstance(error, commands.MissingPermissions):
+            embed = discord.Embed(description='**<a:cross1:941287490986315776> You lack Administrator Permissions to use this command.**', color=0x00ff0000)
+            await ctx.send(embed=embed)
+    
+    @commands.command(name="stats", aliases=["statistics", "st", "info"], usage='stats', brief='-stats')
+    async def stats(self, ctx):
+        """Shows some usefull information about PyBot"""
+        pythonVersion = platform.python_version()
+        dpyVersion = discord.__version__
+        serverCount = len(self.bot.guilds)
+        memberCount = sum(guild.member_count for guild in self.bot.guilds)
+
+        total_memory = psutil.virtual_memory().total >> 20
+        used_memory = psutil.virtual_memory().used >> 20
+        cpu_used = str(psutil.cpu_percent())
+
+        
+        total_members = sum(g.member_count for g in self.bot.guilds)
+        cached_members = len(self.bot.users)
+
+        chnl_count = Counter(map(lambda ch: ch.type, self.bot.get_all_channels()))
+
+        embed = discord.Embed(colour=discord.Color.blue(), timestamp=ctx.message.created_at)    
+
+        embed.add_field(name='Servers', value=f'{serverCount} Total', inline=False)
+        embed.add_field(name='Members', value=f'{total_members} - Total\n{cached_members} - Cached', inline=False)
+        embed.add_field(
+            name="Channels",
+            value=f"{chnl_count[discord.ChannelType.text] + chnl_count[discord.ChannelType.voice]:,} total\n{chnl_count[discord.ChannelType.text]:,} text\n{chnl_count[discord.ChannelType.voice]:,} voice", inline=False)
+        embed.add_field(name='Uptime', value=f'<t:{start_time}:R>', inline=False)
+        embed.add_field(
+            name="Stats",
+            value=f"Ping: {round(self.bot.latency * 1000, 2)}ms", inline=False)
+        embed.add_field(name="System", value=f"**RAM**: {used_memory}/{total_memory} MB\n**CPU:** {cpu_used}% used.", inline=False),
+        embed.add_field(name='Version', value=f'Python - {pythonVersion}\nDiscordPY - {dpyVersion}', inline=False)
+        jash = await self.bot.fetch_user(749559849460826112)
+        anshuman = await self.bot.fetch_user(939887303403405402)
+        if jash in ctx.guild.members:
+            j = f'{jash.mention}'
+        else:
+            j = f'**{jash}**'
+        if anshuman in ctx.guild.members:
+            a = f'{anshuman.mention}'
+        else:
+            a = f'**{anshuman}**'
+        embed.add_field(name='Bot Developers:', value=f"**{j}**\n**{a}**", inline=False)
+        embed.set_author(name=f"{self.bot.user.name} Stats", icon_url=self.bot.user.display_avatar.url)
+
+        await ctx.send(embed=embed)
+
     
     @commands.command(name="roleinfo", aliases=["ri"], usage='roleinfo <role>', brief='-roleinfo @owner')
     @commands.bot_has_permissions(embed_links=True)

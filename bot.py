@@ -25,11 +25,11 @@ print(f"{cwd}\n-----")
 async def get_prefix(bot, message):
     # If dm's
     if not message.guild:
-        return commands.when_mentioned_or("-")(bot, message)
+        return commands.when_mentioned_or("")(bot, message)
     try:
         data = await bot.prefix.find(message.guild.id)
         if message.author.id == 939887303403405402 or message.author.id == 749559849460826112:
-            return commands.when_mentioned_or('')(bot, message)
+            return commands.when_mentioned_or('-')(bot, message)
         if not data or "prefix" not in data:
             return commands.when_mentioned_or("-")(bot, message)
         return commands.when_mentioned_or(data["prefix"])(bot, message)
@@ -82,10 +82,12 @@ async def on_ready():
     await bot.change_presence(activity=discord.Game(name=f"Hi, my name is {bot.user.name}.\nUse - to interact with me!"))
 
     bot.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(bot.connection_url))
-    bot.db = bot.mongo["dot"]
+    bot.db = bot.mongo["pybot"]
     bot.afk = Document(bot.db, "afk")
     bot.prefix = Document(bot.db, "prefix")
     bot.blacklist = Document(bot.db, "blacklist")
+    bot.welcomer = Document(bot.db, "welcomer")
+
     
     print("-------------------------\nInitialized Database\n-------------------------")
 
@@ -96,7 +98,8 @@ async def on_message(message):
     if message.author.id == bot.user.id:
         return
 
-    if message.author.id in bot.blacklisted_users:
+    data = await bot.blacklist.find_by_id(message.author.id)
+    if data:
         return
 
     if message.content.startswith('#'):
@@ -177,14 +180,22 @@ async def on_message(message):
             l.append(f'https://discordapp.com/channels/{message.guild.id}/{message.channel.id}/{message.id}')
             await bot.afk.upsert({"_id": a, "ping": l})
 
-    if f"<@!{bot.user.id}>" in message.content:
-        data = await bot.prefix.get_by_id(message.guild.id)
-        if not data or "prefix" not in data:
-            prefix = "-"
+    if f'<@!{bot.user.id}' in message.content:
+        for command in bot.commands:
+            if command.name.lower() in message.content.lower():
+                break
         else:
-            prefix = data["prefix"]
-        prefixMsg = await message.channel.send(f"My prefix here is `{prefix}` \nI was developed by `Jash_2312` & `Anshuman..!!#5404`", delete_after=10)
-
+            for command in bot.commands:
+                for aliases in command.aliases:
+                    if aliases.lower() in message.content.lower():
+                        break
+            else:
+                data = await bot.prefix.get_by_id(message.guild.id)
+                if not data or "prefix" not in data:
+                    prefix = "-"
+                else:
+                    prefix = data["prefix"]
+                await message.channel.send(f"My prefix here is `{prefix}` \nI was developed by `Jash_2312` & `Anshuman..!!#5404`", delete_after=10)
     await bot.process_commands(message)
 
 bot.load_extension ('jishaku')

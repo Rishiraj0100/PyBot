@@ -1,15 +1,14 @@
 import discord
 from discord.ext import commands
-import random
 
-class Channels(commands.Cog):
+class _Channels(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print(f"{self.__class__.__name__} Cog has been loaded\n-----")
+        print(f"{self.__class__.__name__} Cog has been loaded\n-------------------------")
 
     @commands.group(invoke_without_command=True)
     @commands.guild_only()
@@ -93,4 +92,4 @@ class Channels(commands.Cog):
             await ctx.send(f"I have removed `{channel.name}` from lockdown.")
 
 def setup(bot):
-    bot.add_cog(Channels(bot))
+    bot.add_cog(_Channels(bot))

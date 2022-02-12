@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-import utils.json
+
 
 class OwnerOnly(commands.Cog):
 
@@ -62,7 +62,6 @@ class OwnerOnly(commands.Cog):
         else:
             await self.bot.change_presence(activity=discord.Game(name=message))
             await ctx.message.add_reaction('<a:tick:940816615237357608>')
-
 
 def setup(bot):
     bot.add_cog(OwnerOnly(bot))
