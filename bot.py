@@ -36,6 +36,7 @@ async def get_prefix(bot, message):
         return commands.when_mentioned_or("-")(bot, message)
 
 intents = discord.Intents.all()
+
 secret_file = json.load(open(cwd+'/config/config.json'))
 
 owners = [749559849460826112, 939887303403405402]
