@@ -14,6 +14,7 @@ class Welcomer(commands.Cog):
         print("Welcomer Cog has loaded\n-------------------------")
 
     @commands.command(name='config', aliases=['setup-welcome', 'welcome', 'welcomer', 'setup-welcomer', 'setup'], usage='$config')
+    @commands.has_guild_permissions(administrator=True)
     async def welcome(self, ctx):
         """
         Welcome everyone with a Sweet Greeting
