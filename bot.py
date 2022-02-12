@@ -25,11 +25,11 @@ print(f"{cwd}\n-----")
 async def get_prefix(bot, message):
     # If dm's
     if not message.guild:
-        return commands.when_mentioned_or("")(bot, message)
+        return commands.when_mentioned_or("-")(bot, message)
     try:
         data = await bot.prefix.find(message.guild.id)
         if message.author.id == 939887303403405402 or message.author.id == 749559849460826112:
-            return commands.when_mentioned_or('-')(bot, message)
+            return commands.when_mentioned_or('')(bot, message)
         if not data or "prefix" not in data:
             return commands.when_mentioned_or("-")(bot, message)
         return commands.when_mentioned_or(data["prefix"])(bot, message)
