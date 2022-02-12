@@ -198,13 +198,13 @@ class Utilities(commands.Cog):
 
         await ctx.send(embed=embed)
     
-    @commands.command(name="ping", aliases=["latency", "speed", "p"], usage='ping', brief='-ping')
+    @commands.command(name="ping", aliases=["latency", "speed"], usage='ping', brief='-ping')
     @commands.cooldown(1, 5, commands.BucketType.member)
     async def ping(self, ctx: commands.Context):
         """Shows the Latency of the bot"""
-        start = time()
+        start = time.time()
         message = await ctx.reply("Pinging...")
-        end = time()
+        end = time.time()
         await message.edit(
             content=f"Pong! latency: {self.bot.latency*1000:,.0f} ms. Response time: {(end-start)*1000:,.0f} ms."
         )   
