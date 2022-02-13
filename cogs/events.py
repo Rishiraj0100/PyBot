@@ -1,5 +1,8 @@
 import discord
 from discord.ext import commands
+import time, calendar
+from utils.mongo import Document
+import motor.motor_asyncio
 
 class Events(commands.Cog):
 
@@ -9,6 +12,19 @@ class Events(commands.Cog):
         @commands.Cog.listener()
         async def on_ready(self):
             print("Events Cog has been loaded\n-------------------------")
+
+            print(f"-----\nLogged in as: {self.bot.user.name} : {self.bot.user.id}\n-----\nMy current prefix is: -\n-----")
+            await self.bot.change_presence(activity=discord.Game(name=f"Hi, my name is {self.bot.user.name}.\nUse - to interact with me!"))
+
+            self.bot.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(self.bot.connection_url))
+            self.bot.db = self.bot.mongo["pybot"]
+            self.bot.afk = Document(self.bot.db, "afk")
+            self.bot.prefix = Document(self.bot.db, "prefix")
+            self.bot.blacklist = Document(self.bot.db, "blacklist")
+            self.bot.welcomer = Document(self.bot.db, "welcomer")
+
+            
+            print("-------------------------\nInitialized Database\n-------------------------")
 
         @commands.Cog.listener()
         async def on_member_join(self, member):
@@ -64,7 +80,9 @@ class Events(commands.Cog):
                     except:
                         pass
                     try:
-                        if data["thumbnail"].lower() != 'none':
+                        if data["thumbnail"].lower() == '{avatar}':
+                            embed.set_thumbnail(url=member.display_avatar.url)
+                        elif data["thumbnail"].lower() != 'none':
                             embed.set_thumbnail(url=data["thumbnail"])
                     except:
                         pass
@@ -86,7 +104,9 @@ class Events(commands.Cog):
                     except:
                         pass
                     try:
-                        if data["thumbnail"].lower() != 'none':
+                        if data["thumbnail"].lower() == '{avatar}':
+                            embed.set_thumbnail(url=member.display_avatar.url)
+                        elif data["thumbnail"].lower() != 'none':
                             embed.set_thumbnail(url=data["thumbnail"])
                     except:
                         pass
@@ -108,7 +128,9 @@ class Events(commands.Cog):
                     except:
                         pass
                     try:
-                        if data["thumbnail"].lower() != 'none':
+                        if data["thumbnail"].lower() == '{avatar}':
+                            embed.set_thumbnail(url=member.display_avatar.url)
+                        elif data["thumbnail"].lower() != 'none':
                             embed.set_thumbnail(url=data["thumbnail"])
                     except:
                         pass
@@ -130,7 +152,9 @@ class Events(commands.Cog):
                     except:
                         pass
                     try:
-                        if data["thumbnail"].lower() != 'none':
+                        if data["thumbnail"].lower() == '{avatar}':
+                            embed.set_thumbnail(url=member.display_avatar.url)
+                        elif data["thumbnail"].lower() != 'none':
                             embed.set_thumbnail(url=data["thumbnail"])
                     except:
                         pass
@@ -172,6 +196,111 @@ class Events(commands.Cog):
             if not wdata or "footer" not in wdata:
                 await self.bot.welcomer.upsert({"_id": guild.id, "footer": "{server}"})
             
+        @commands.Cog.listener()
+        async def on_message(self, message):
+
+            if message.author.id == self.bot.user.id:
+                return
+
+            data = await self.bot.blacklist.find_by_id(message.author.id)
+            if data:
+                return
+
+            if message.content.startswith('#'):
+                return
+
+            data = await self.bot.afk.get_by_id(message.author.id)
+            if not data or "afk" not in data:
+                pass
+            else:
+                if "guild" not in data:
+                    pass
+                else:
+                    if message.guild.id != data["guild"]:
+                        return await self.bot.process_commands(message)
+                await self.bot.afk.delete(message.author.id)
+                
+                try:
+                    a = message.author.nick
+                    a = a.replace('[AFK]', '')
+                    a = a.replace('AFK', '')
+                    await message.author.edit(nick=f'{a}')
+                except:
+                    pass
+                if len(data["ping"]) == 0:
+                    pmsg  = '\n**You were not pinged while you were AFK.**'
+                elif len(data["ping"]) == 1:
+                    pmsg = f'**You were pinged {len(data["ping"])} time.\n\nClick Below to View them.**'
+                else:
+                    pmsg = f'**You were pinged {len(data["ping"])} times.\n\nClick Below to View them.**'
+                obj = time.gmtime(data["time"])
+                epoch = time.asctime(obj)
+                ab = calendar.timegm(time.strptime(f'{epoch} UTC', '%a %b %d %H:%M:%S %Y UTC'))
+                embed = discord.Embed(color=0x3498DB, description=f'Welcome Back **{message.author}**, I have removed your AFK.\nYou had gone afk <t:{ab}:R>\n{pmsg}')
+                view = discord.ui.View()
+                # i = 0
+                for link in data["ping"]:
+                    but = discord.ui.Button(url=link, label='Go to Message')
+                    view.add_item(but)
+                    # i+=1
+                if not view:
+                    view = None
+                await message.channel.send(embed=embed, view=view)
+            a = None
+            if message.content.startswith('#'):
+                    return
+            res = message.content.split()
+            for word in res:
+                if word.startswith('<@!'):
+                    a = word
+            if a:
+                a = a.replace('<@!','')
+                a = a.replace('>', '')
+                a = int(a)
+                try:
+                    aa = await self.bot.fetch_user(a)
+                    name = aa
+                except:
+                    name = 'User'
+                afk = await self.bot.afk.get_by_id(a)
+
+                if not afk or "afk" not in afk:
+                    pass
+                else:
+                    if "reason" not in afk:
+                        reason = 'I am AFK :)'
+                    else:
+                        reason = afk["reason"]
+                    if message.guild.id != afk["guild"]:
+                        return
+
+                    obj = time.gmtime(afk["time"])
+                    epoch = time.asctime(obj)
+                    ab = calendar.timegm(time.strptime(f'{epoch} UTC', '%a %b %d %H:%M:%S %Y UTC'))
+                    await message.reply(f'**{name}** went afk <t:{ab}:R> : {reason}')
+                    l = afk["ping"]
+                    if not l:
+                        l = []
+                    l.append(f'https://discordapp.com/channels/{message.guild.id}/{message.channel.id}/{message.id}')
+                    await self.bot.afk.upsert({"_id": a, "ping": l})
+
+            if f'<@!{self.bot.user.id}' in message.content:
+                for command in self.bot.commands:
+                    if command.name.lower() in message.content.lower():
+                        break
+                else:
+                    for command in self.bot.commands:
+                        for aliases in command.aliases:
+                            if aliases.lower() in message.content.lower():
+                                break
+                    else:
+                        data = await self.bot.prefix.get_by_id(message.guild.id)
+                        if not data or "prefix" not in data:
+                            prefix = "-"
+                        else:
+                            prefix = data["prefix"]
+                        await message.channel.send(f"My prefix here is `{prefix}` \nI was developed by `Jash_2312` & `Anshuman..!!#5404`", delete_after=10)
+            await self.bot.process_commands(message)
 
         @commands.Cog.listener()
         async def on_command_error(self, ctx, error):
