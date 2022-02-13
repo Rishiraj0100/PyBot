@@ -1375,17 +1375,17 @@ class Welcomer(commands.Cog):
                         timeout=None,
                     )
                         data = await self.bot.welcomer.get_by_id(interaction.guild.id)
-                        await ctx.channel.purge(limit=2)
+                        try:
+                            await ctx.channel.purge(limit=2)
+                        except:
+                            pass
                         if thumb.content.lower() != 'none':
                             image_formats = ("image/png", "image/jpeg", "image/gif")
                             url = f'{thumb.content}'
                             site = urlopen(url)
                             meta = site.info()
                             if meta["content-type"] in image_formats:
-                                await self.bot.welcomer.upsert({"_id": interaction.guild.id, "image": thumb.content})
-                            else:
-                                error_emb = discord.Embed(color=0x00ff0000, description='**Invalid URL**')
-                                await ctx.send(embed=error_emb)
+                                await self.bot.welcomer.upsert({"_id": interaction.guild.id, "thumb": thumb.content})
                         
                         data = await self.bot.welcomer.get_by_id(interaction.guild.id)
                         if thumb.content.lower() == 'none':
