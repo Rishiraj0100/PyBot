@@ -13,9 +13,6 @@ os.environ["SHELL"]="/bin/bash"
 import os;os.environ["JISHAKU_NO_UNDERSCORE"]="t"
 os.environ["JISHAKU_FORCE_PAGINATOR"]="t"
 
-def __init__(self, bot):
-        self.bot = bot
-        
 cwd = Path(__file__).parents[0]
 cwd = str(cwd)
 print(f"{cwd}\n-----")

@@ -213,7 +213,7 @@ class Utilities(commands.Cog):
             content=f"Pong! latency: {self.bot.latency*1000:,.0f} ms. Response time: {(end-start)*1000:,.0f} ms."
         )   
     @commands.command(name="prefix", aliases=["pre"], usage='prefix [newprefix]', brief='-prefix !')
-    @commands.has_permissions(administrator=False)
+    @commands.has_permissions(administrator=True)
     @commands.cooldown(1, 5, commands.BucketType.guild)
     async def prefix(self, ctx, *, prefix='-'):
         """To check the current prefix or change it to a new one"""
