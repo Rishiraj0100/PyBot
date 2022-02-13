@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-from urllib.request import urlopen
 import time, calendar
 
 class Events(commands.Cog):
@@ -169,22 +168,12 @@ class Events(commands.Cog):
                     embed = discord.Embed(color=discord.Color.blue())
                     try:
                         if data["image"].lower() != 'none':
-                            image_formats = ("image/png", "image/jpeg", "image/gif")
-                            url = f'{data["image"]}'
-                            site = urlopen(url)
-                            meta = site.info()
-                            if meta["content-type"] in image_formats:
-                                embed.set_image(url=data["image"])
+                            embed.set_image(url=data["image"])
                     except:
                         pass
                     try:
                         if data["thumbnail"].lower() != 'none':
-                            image_formats = ("image/png", "image/jpeg", "image/gif")
-                            url = f'{data["thumbnail"]}'
-                            site = urlopen(url)
-                            meta = site.info()
-                            if meta["content-type"] in image_formats:
-                                embed.set_thumbnail(url=data["thumbnail"])
+                            embed.set_thumbnail(url=data["thumbnail"])
                     except:
                         pass
                     try:
@@ -201,21 +190,11 @@ class Events(commands.Cog):
                         color=discord.Color.blue(), title=title, description=description)
                     try:
                         if data["image"].lower() != 'none':
-                            image_formats = ("image/png", "image/jpeg", "image/gif")
-                            url = f'{data["image"]}'
-                            site = urlopen(url)
-                            meta = site.info()
-                            if meta["content-type"] in image_formats:
-                                embed.set_image(url=data["image"])
+                            embed.set_image(url=data["image"])
                     except:
                         pass
                     try:
                         if data["thumbnail"].lower() != 'none':
-                            image_formats = ("image/png", "image/jpeg", "image/gif")
-                            url = f'{data["thumbnail"]}'
-                            site = urlopen(url)
-                            meta = site.info()
-                            if meta["content-type"] in image_formats:
                                 embed.set_thumbnail(url=data["thumbnail"])
                     except:
                         pass
@@ -233,21 +212,11 @@ class Events(commands.Cog):
                         color=discord.Color.blue(), title=title)
                     try:
                         if data["image"].lower() != 'none':
-                            image_formats = ("image/png", "image/jpeg", "image/gif")
-                            url = f'{data["image"]}'
-                            site = urlopen(url)
-                            meta = site.info()
-                            if meta["content-type"] in image_formats:
                                 embed.set_image(url=data["image"])
                     except:
                         pass
                     try:
                         if data["thumbnail"].lower() != 'none':
-                            image_formats = ("image/png", "image/jpeg", "image/gif")
-                            url = f'{data["thumbnail"]}'
-                            site = urlopen(url)
-                            meta = site.info()
-                            if meta["content-type"] in image_formats:
                                 embed.set_thumbnail(url=data["thumbnail"])
                     except:
                         pass
@@ -265,21 +234,11 @@ class Events(commands.Cog):
                         color=discord.Color.blue(), description=description)
                     try:
                         if data["image"].lower() != 'none':
-                            image_formats = ("image/png", "image/jpeg", "image/gif")
-                            url = f'{data["image"]}'
-                            site = urlopen(url)
-                            meta = site.info()
-                            if meta["content-type"] in image_formats:
                                 embed.set_image(url=data["image"])
                     except:
                         pass
                     try:
                         if data["thumbnail"].lower() != 'none':
-                            image_formats = ("image/png", "image/jpeg", "image/gif")
-                            url = f'{data["thumbnail"]}'
-                            site = urlopen(url)
-                            meta = site.info()
-                            if meta["content-type"] in image_formats:
                                 embed.set_thumbnail(url=data["thumbnail"])
                     except:
                         pass
