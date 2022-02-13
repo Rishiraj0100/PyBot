@@ -1492,7 +1492,7 @@ class Welcomer(commands.Cog):
                                 await ctx.send(embed=errembed)
                             try:
                                 if thumb.content.lower() != 'none':
-                                    thumb_embed.set_thumbnail(url=thumb.contnetn)
+                                    thumb_embed.set_thumbnail(url=thumb.content)
                             except:
                                 pass
                             try:
