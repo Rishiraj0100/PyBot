@@ -3,7 +3,7 @@ import discord
 from discord.ext import commands
 import asyncio
 from discord.ui import Button, View
-from urllib import urlopen
+from urllib.request import urlopen
 
 class Welcomer(commands.Cog):
 
