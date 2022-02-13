@@ -3,7 +3,7 @@ import discord
 from discord.ext import commands
 import asyncio
 from discord.ui import Button, View
-
+from urllib import urlopen
 
 class Welcomer(commands.Cog):
 
@@ -1170,7 +1170,13 @@ class Welcomer(commands.Cog):
                         and ctx.author.id == x.author.id,
                         timeout=None,
                     )
-                        await self.bot.welcomer.upsert({"_id": interaction.guild.id, "image": image.content})
+                        if data["thumbnail"].lower() != 'none':
+                            image_formats = ("image/png", "image/jpeg", "image/gif")
+                            url = f'{image.content}'
+                            site = urlopen(url)
+                            meta = site.info()
+                            if meta["content-type"] in image_formats:
+                                await self.bot.welcomer.upsert({"_id": interaction.guild.id, "image": image.content})
                         await ctx.channel.purge(limit=2)
                         
                         data = await self.bot.welcomer.get_by_id(interaction.guild.id)
@@ -1364,7 +1370,13 @@ class Welcomer(commands.Cog):
                         and ctx.author.id == x.author.id,
                         timeout=None,
                     )
-                        await self.bot.welcomer.upsert({"_id": interaction.guild.id, "thumbnail": thumb.content})
+                        if data["thumbnail"].lower() != 'none':
+                            image_formats = ("image/png", "image/jpeg", "image/gif")
+                            url = f'{thumb.content}'
+                            site = urlopen(url)
+                            meta = site.info()
+                            if meta["content-type"] in image_formats:
+                                await self.bot.welcomer.upsert({"_id": interaction.guild.id, "thumbnail": thumb.content})
                         await ctx.channel.purge(limit=2)
                         
                         data = await self.bot.welcomer.get_by_id(interaction.guild.id)
