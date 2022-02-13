@@ -23,7 +23,7 @@ async def get_prefix(bot, message):
     try:
         data = await bot.prefix.find(message.guild.id)
         if message.author.id == 939887303403405402 or message.author.id == 749559849460826112:
-            return commands.when_mentioned_or('')(bot, message)
+            return commands.when_mentioned_or('-')(bot, message)
         if not data or "prefix" not in data:
             return commands.when_mentioned_or("-")(bot, message)
         return commands.when_mentioned_or(data["prefix"])(bot, message)
@@ -36,7 +36,7 @@ secret_file = json.load(open(cwd+'/config/config.json'))
 
 owners = [749559849460826112, 939887303403405402]
 
-bot = commands.AutoShardedBot(command_prefix=get_prefix, case_insensitive=True, owner_ids = set(owners), intents=intents)
+bot = commands.AutoShardedBot(command_prefix=get_prefix, case_insensitive=True, owner_ids = set(owners), intents=intents, strip_after_prefix=True,)
 
 logging.basicConfig(level=logging.INFO)
 
@@ -86,112 +86,10 @@ async def on_ready():
     print("-------------------------\nInitialized Database\n-------------------------")
 
 bot.remove_command('help')
+
 @bot.event
 async def on_message(message):
-    bot.seen_messages += 1
-
-    if message.author.id == bot.user.id:
-        return
-
-    data = await bot.blacklist.find_by_id(message.author.id)
-    if data:
-        return
-
-    if message.content.startswith('#'):
-        return
-
-    data = await bot.afk.get_by_id(message.author.id)
-    if not data or "afk" not in data:
-        pass
-    else:
-        if "guild" not in data:
-            pass
-        else:
-            if message.guild.id != data["guild"]:
-                return await bot.process_commands(message)
-        await bot.afk.delete(message.author.id)
-        
-        try:
-            a = message.author.nick
-            a = a.replace('[AFK]', '')
-            a = a.replace('AFK', '')
-            await message.author.edit(nick=f'{a}')
-        except:
-            pass
-        if len(data["ping"]) == 0:
-            pmsg  = '\n**You were not pinged while you were AFK.**'
-        elif len(data["ping"]) == 1:
-            pmsg = f'**You were pinged {len(data["ping"])} time.\n\nClick Below to View them.**'
-        else:
-            pmsg = f'**You were pinged {len(data["ping"])} times.\n\nClick Below to View them.**'
-        obj = time.gmtime(data["time"])
-        epoch = time.asctime(obj)
-        ab = calendar.timegm(time.strptime(f'{epoch} UTC', '%a %b %d %H:%M:%S %Y UTC'))
-        embed = discord.Embed(color=0x3498DB, description=f'Welcome Back **{message.author}**, I have removed your AFK.\nYou had gone afk <t:{ab}:R>\n{pmsg}')
-        view = discord.ui.View()
-        # i = 0
-        for link in data["ping"]:
-            but = discord.ui.Button(url=link, label='Go to Message')
-            view.add_item(but)
-            # i+=1
-        if not view:
-            view = None
-        await message.channel.send(embed=embed, view=view)
-    a = None
-    if message.content.startswith('#'):
-            return
-    res = message.content.split()
-    for word in res:
-        if word.startswith('<@!'):
-            a = word
-    if a:
-        a = a.replace('<@!','')
-        a = a.replace('>', '')
-        a = int(a)
-        try:
-            aa = await bot.fetch_user(a)
-            name = aa
-        except:
-            name = 'User'
-        afk = await bot.afk.get_by_id(a)
-
-        if not afk or "afk" not in afk:
-            pass
-        else:
-            if "reason" not in afk:
-                reason = 'I am AFK :)'
-            else:
-                reason = afk["reason"]
-            if message.guild.id != afk["guild"]:
-                return
-
-            obj = time.gmtime(afk["time"])
-            epoch = time.asctime(obj)
-            ab = calendar.timegm(time.strptime(f'{epoch} UTC', '%a %b %d %H:%M:%S %Y UTC'))
-            await message.reply(f'**{name}** went afk <t:{ab}:R> : {reason}')
-            l = afk["ping"]
-            if not l:
-                l = []
-            l.append(f'https://discordapp.com/channels/{message.guild.id}/{message.channel.id}/{message.id}')
-            await bot.afk.upsert({"_id": a, "ping": l})
-
-    if f'<@!{bot.user.id}' in message.content:
-        for command in bot.commands:
-            if command.name.lower() in message.content.lower():
-                break
-        else:
-            for command in bot.commands:
-                for aliases in command.aliases:
-                    if aliases.lower() in message.content.lower():
-                        break
-            else:
-                data = await bot.prefix.get_by_id(message.guild.id)
-                if not data or "prefix" not in data:
-                    prefix = "-"
-                else:
-                    prefix = data["prefix"]
-                await message.channel.send(f"My prefix here is `{prefix}` \nI was developed by `Jash_2312` & `Anshuman..!!#5404`", delete_after=10)
-    await bot.process_commands(message)
+    bot.seen_messages +=1
 
 bot.load_extension ('jishaku')
 
