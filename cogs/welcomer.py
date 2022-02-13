@@ -1,3 +1,4 @@
+from os import EX_CANTCREAT
 import discord
 from discord.ext import commands
 import asyncio
@@ -132,7 +133,10 @@ class Welcomer(commands.Cog):
                 embeda = discord.Embed(
                     description=f"Sorry, but this interaction can only be used by **{ctx.author.name}**.", color=0x3498DB)
                 return await interaction.response.send_message(embed=embeda, ephemeral=True)
-            await msg.delete()
+            try:
+                await msg.delete()
+            except:
+                pass
 
         stop_button.callback = stop_button_callback
 
@@ -229,7 +233,10 @@ class Welcomer(commands.Cog):
                     description='Channel Not Found!', color=0xff0000)
                 mes = await ctx.send(embed=mesc)
                 await asyncio.sleep(5)
-                await mes.delete()
+                try:
+                    await mes.delete()
+                except:
+                    pass
             # await ctx.channel.purge(limit=2)
 
             # await self.bot.welcomer.upsert({"_id": interaction.guild.id, "channel": channel.id})
@@ -302,7 +309,10 @@ class Welcomer(commands.Cog):
                             description=f'<a:cross1:941287490986315776> **{hr.mention} is above My Highest Role ({ctx.guild.me.top_role.mention}).**', color=0x00ff0000)
                         hm = await ctx.send(embed=emh)
                         await asyncio.sleep(5)
-                        await hm.delete()
+                        try:
+                            await hm.delete()
+                        except:
+                            pass
                         return
                 except:
                     pass
@@ -319,7 +329,10 @@ class Welcomer(commands.Cog):
                                 description='**<a:cross1:941287490986315776> Cannot use a Bot Role!**', color=0xff0000)
                             bot = await ctx.send(embed=both)
                             await asyncio.sleep(5)
-                            await bot.delete()
+                            try:
+                                await bot.delete()
+                            except:
+                                pass
                             return
 
                 for role in ctx.guild.roles:
@@ -336,7 +349,10 @@ class Welcomer(commands.Cog):
                         description='Role Not Found!', color=0xff0000)
                     mes = await ctx.send(embed=mesc)
                     await asyncio.sleep(5)
-                    await mes.delete()
+                    try:
+                        await mes.delete()
+                    except:
+                        pass
 
         autoh_button.callback = autoh_button_callback
 
@@ -379,7 +395,10 @@ class Welcomer(commands.Cog):
                             description=f'<a:cross1:941287490986315776> **{hr.mention} is above My Highest Role ({ctx.guild.me.top_role.mention}).**', color=0x00ff0000)
                         hm = await ctx.send(embed=emh)
                         await asyncio.sleep(5)
-                        await hm.delete()
+                        try:
+                            await hm.delete()
+                        except:
+                            pass
                         return
                 except:
                     pass
@@ -396,7 +415,10 @@ class Welcomer(commands.Cog):
                                 description='**<a:cross1:941287490986315776> Cannot use a Bot Role!**', color=0xff0000)
                             bot = await ctx.send(embed=both)
                             await asyncio.sleep(5)
-                            await bot.delete()
+                            try:
+                                await bot.delete()
+                            except:
+                                pass
                             return
 
                 for role in ctx.guild.roles:
@@ -413,7 +435,10 @@ class Welcomer(commands.Cog):
                         description='Role Not Found!', color=0xff0000)
                     mes = await ctx.send(embed=mesc)
                     await asyncio.sleep(5)
-                    await mes.delete()
+                    try:
+                        await mes.delete()
+                    except:
+                        pass
 
         autob_button.callback = autob_button_callback
 
@@ -1307,7 +1332,10 @@ class Welcomer(commands.Cog):
                                 errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
                                 d = await ctx.send(embed=errembed)
                                 await asyncio.sleep(5)
-                                await d.delete()
+                                try:
+                                    await d.delete()
+                                except:
+                                    pass
                             try:
                                 if data["thumbnail"].lower() != 'none':
                                     image_embed.set_thumbnail(url=data["thumbnail"])
@@ -1498,7 +1526,10 @@ class Welcomer(commands.Cog):
                                 errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
                                 d = await ctx.send(embed=errembed)
                                 await asyncio.sleep(5)
-                                await d.delete()
+                                try:
+                                    await d.delete()
+                                except:
+                                    pass
                             try:
                                 if thumb.content.lower() != 'none':
                                     thumb_embed.set_thumbnail(url=thumb.content)
@@ -1689,7 +1720,10 @@ class Welcomer(commands.Cog):
                                 errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
                                 d = await ctx.send(embed=errembed)
                                 await asyncio.sleep(5)
-                                await d.delete()
+                                try:
+                                    await d.delete()
+                                except:
+                                    pass
                             try:
                                 if data["thumbnail"].lower() != 'none':
                                     footer_embed.set_thumbnail(url=data["thumbnail"])
@@ -1705,7 +1739,10 @@ class Welcomer(commands.Cog):
                     footer_button.callback = footer_button_callback
 
                     async def done_button_callback(interaction):
-                        await interaction.message.delete()
+                        try:
+                            await interaction.message.delete()
+                        except:
+                            pass
                     done_button.callback = done_button_callback
 
             edit_button.callback = edit_button_callback
