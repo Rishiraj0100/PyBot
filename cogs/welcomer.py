@@ -1173,23 +1173,15 @@ class Welcomer(commands.Cog):
                         data = await self.bot.welcomer.get_by_id(interaction.guild.id)
                         await ctx.channel.purge(limit=2)
                         if image.content.lower() != 'none':
-                            try:
-                                image_formats = ("image/png", "image/jpeg", "image/gif")
-                                url = f'{image.content}'
-                                site = urlopen(url)
-                                meta = site.info()
-                                if meta["content-type"] in image_formats:
-                                    await self.bot.welcomer.upsert({"_id": interaction.guild.id, "image": image.content})
-                                else:
-                                    error_emb = discord.Embed(color=0x00ff0000, description='**Invalid URL**')
-                                    wr = await ctx.send(embed=error_emb)
-                                    await asyncio.sleep(5)
-                                    await wr.delete()
-                            except:
+                            image_formats = ("image/png", "image/jpeg", "image/gif")
+                            url = f'{image.content}'
+                            site = urlopen(url)
+                            meta = site.info()
+                            if meta["content-type"] in image_formats:
+                                await self.bot.welcomer.upsert({"_id": interaction.guild.id, "image": image.content})
+                            else:
                                 error_emb = discord.Embed(color=0x00ff0000, description='**Invalid URL**')
-                                wr = await ctx.send(embed=error_emb)
-                                await asyncio.sleep(5)
-                                await wr.delete()
+                                await ctx.send(embed=error_emb)
                         
                         data = await self.bot.welcomer.get_by_id(interaction.guild.id)
                         if image.content.lower() == 'none':
@@ -1385,23 +1377,15 @@ class Welcomer(commands.Cog):
                         data = await self.bot.welcomer.get_by_id(interaction.guild.id)
                         await ctx.channel.purge(limit=2)
                         if thumb.content.lower() != 'none':
-                            try:
-                                image_formats = ("image/png", "image/jpeg", "image/gif")
-                                url = f'{thumb.content}'
-                                site = urlopen(url)
-                                meta = site.info()
-                                if meta["content-type"] in image_formats:
-                                    await self.bot.welcomer.upsert({"_id": interaction.guild.id, "image": thumb.content})
-                                else:
-                                    error_emb = discord.Embed(color=0x00ff0000, description='**Invalid URL**')
-                                    wr = await ctx.send(embed=error_emb)
-                                    await asyncio.sleep(5)
-                                    await wr.delete()
-                            except:
+                            image_formats = ("image/png", "image/jpeg", "image/gif")
+                            url = f'{thumb.content}'
+                            site = urlopen(url)
+                            meta = site.info()
+                            if meta["content-type"] in image_formats:
+                                await self.bot.welcomer.upsert({"_id": interaction.guild.id, "image": thumb.content})
+                            else:
                                 error_emb = discord.Embed(color=0x00ff0000, description='**Invalid URL**')
-                                wr = await ctx.send(embed=error_emb)
-                                await asyncio.sleep(5)
-                                await wr.delete()
+                                await ctx.send(embed=error_emb)
                         
                         data = await self.bot.welcomer.get_by_id(interaction.guild.id)
                         if thumb.content.lower() == 'none':
