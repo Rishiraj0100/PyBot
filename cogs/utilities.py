@@ -11,6 +11,10 @@ from discord.ui import Button, View
 import calendar
 import psutil
 from collections import Counter
+from datetime import datetime, timedelta, timezone
+from utils.git import format_relative, truncate_string, format_relative
+import pygit2
+import itertools
 
 class Utilities(commands.Cog):
 
@@ -229,6 +233,22 @@ class Utilities(commands.Cog):
         if isinstance(error, commands.MissingPermissions):
             embed = discord.Embed(description='**<a:cross1:941287490986315776> You lack Administrator Permissions to use this command.**', color=0x00ff0000)
             await ctx.send(embed=embed)
+
+
+    def format_commit(self, commit):  # source: R danny
+        short, _, _ = commit.message.partition("\n")
+        short_sha2 = commit.hex[0:6]
+        commit_tz = timezone(timedelta(minutes=commit.commit_time_offset))
+        commit_time = datetime.fromtimestamp(commit.commit_time).astimezone(commit_tz)
+
+        # [`hash`](url) message (offset)
+        offset = format_relative(commit_time.astimezone(timezone.utc))
+        return f"[`{short_sha2}`](https://github.com/Vader-Op/PyBot/commit/{commit.hex}) {truncate_string(short,40)} ({offset})"
+
+    def get_last_commits(self, count=3):
+        repo = pygit2.Repository(".git")
+        commits = list(itertools.islice(repo.walk(repo.head.target, pygit2.GIT_SORT_TOPOLOGICAL), count))
+        return "\n".join(self.format_commit(c) for c in commits)
     
     @commands.command(name="stats", aliases=["statistics", "st", "info"], usage='stats', brief='-stats')
     async def stats(self, ctx):
@@ -237,11 +257,14 @@ class Utilities(commands.Cog):
         dpyVersion = discord.__version__
         serverCount = len(self.bot.guilds)
         memberCount = sum(guild.member_count for guild in self.bot.guilds)
+        revision = self.get_last_commits()
+
 
         total_memory = psutil.virtual_memory().total >> 20
         used_memory = psutil.virtual_memory().used >> 20
         cpu_used = str(psutil.cpu_percent())
 
+        msgs_seen = self.bot.seen_messages
         
         total_members = sum(g.member_count for g in self.bot.guilds)
         cached_members = len(self.bot.users)
@@ -250,29 +273,34 @@ class Utilities(commands.Cog):
 
         embed = discord.Embed(colour=discord.Color.blue(), timestamp=ctx.message.created_at)    
 
-        embed.add_field(name='Servers', value=f'{serverCount} Total', inline=False)
-        embed.add_field(name='Members', value=f'{total_members} - Total\n{cached_members} - Cached', inline=False)
+        # start_time = calendar.timegm(time.strptime(start_time.strftime("%Y-%m-%d %H:%M:%S+00:00"), '%Y-%m-%d %H:%M:%S+00:00'))
+
+        embed.add_field(name='Servers', value=f'{serverCount} Total\n{len(self.bot.shards)} Shards')
+        embed.add_field(name='Uptime', value=f'<t:{start_time}:R>\n{self.bot.seen_messages} Messages Seen')
+        embed.add_field(name='Members', value=f'{total_members} - Total\n{cached_members} - Cached')
         embed.add_field(
             name="Channels",
-            value=f"{chnl_count[discord.ChannelType.text] + chnl_count[discord.ChannelType.voice]:,} total\n{chnl_count[discord.ChannelType.text]:,} text\n{chnl_count[discord.ChannelType.voice]:,} voice", inline=False)
-        embed.add_field(name='Uptime', value=f'<t:{start_time}:R>', inline=False)
+            value=f"{chnl_count[discord.ChannelType.text]:,} text\n{chnl_count[discord.ChannelType.voice]:,} voice")
+        embed.add_field(name="System", value=f"**RAM**: {used_memory}/{total_memory} MB\n**CPU:** {cpu_used}% used."),
+        embed.add_field(name='Version', value=f'Python - {pythonVersion}\nDiscordpy - {dpyVersion}')
         embed.add_field(
             name="Stats",
-            value=f"Ping: {round(self.bot.latency * 1000, 2)}ms", inline=False)
-        embed.add_field(name="System", value=f"**RAM**: {used_memory}/{total_memory} MB\n**CPU:** {cpu_used}% used.", inline=False),
-        embed.add_field(name='Version', value=f'Python - {pythonVersion}\nDiscordPY - {dpyVersion}', inline=False)
+            value=f"Ping: {round(self.bot.latency * 1000, 2)}ms")
+        # embed.add_field(name="System", value=f"**RAM**: {used_memory}/{total_memory} MB\n**CPU:** {cpu_used}% used.", inline=False),
+        # embed.add_field(name='Version', value=f'Python - {pythonVersion}\nDiscordPY - {dpyVersion}', inline=False)
         jash = await self.bot.fetch_user(749559849460826112)
         anshuman = await self.bot.fetch_user(939887303403405402)
         if jash in ctx.guild.members:
             j = f'{jash.mention}'
         else:
-            j = f'**{jash}**'
+            j = f'{jash}'
         if anshuman in ctx.guild.members:
             a = f'{anshuman.mention}'
         else:
-            a = f'**{anshuman}**'
-        embed.add_field(name='Bot Developers:', value=f"**{j}**\n**{a}**", inline=False)
+            a = f'{anshuman}'
+        embed.add_field(name='Bot Developers:', value=f"{j}\n{a}", inline=False)
         embed.set_author(name=f"{self.bot.user.name} Stats", icon_url=self.bot.user.display_avatar.url)
+        embed.add_field(name='Latest Changes', value=revision, inline=False)
 
         await ctx.send(embed=embed)
 
