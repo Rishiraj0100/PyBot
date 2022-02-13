@@ -1170,6 +1170,7 @@ class Welcomer(commands.Cog):
                         and ctx.author.id == x.author.id,
                         timeout=None,
                     )
+                        data = await self.bot.welcomer.get_by_id(interaction.guild.id)
                         if data["thumbnail"].lower() != 'none':
                             image_formats = ("image/png", "image/jpeg", "image/gif")
                             url = f'{image.content}'
@@ -1370,6 +1371,7 @@ class Welcomer(commands.Cog):
                         and ctx.author.id == x.author.id,
                         timeout=None,
                     )
+                        data = await self.bot.welcomer.get_by_id(interaction.guild.id)
                         if data["thumbnail"].lower() != 'none':
                             image_formats = ("image/png", "image/jpeg", "image/gif")
                             url = f'{thumb.content}'
