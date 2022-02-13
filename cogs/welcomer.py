@@ -1,9 +1,8 @@
-from os import EX_CANTCREAT
 import discord
 from discord.ext import commands
 import asyncio
 from discord.ui import Button, View
-from urllib.request import urlopen
+from urllib.request import urlopen, Request
 
 class Welcomer(commands.Cog):
 
@@ -1174,7 +1173,7 @@ class Welcomer(commands.Cog):
                         await ctx.channel.purge(limit=2)
                         if image.content.lower() != 'none':
                             image_formats = ("image/png", "image/jpeg", "image/gif")
-                            url = f'{image.content}'
+                            url = Request(f'{image.content}', headers={'User-Agent': 'Mozilla/5.0'})
                             site = urlopen(url)
                             meta = site.info()
                             if meta["content-type"] in image_formats:
@@ -1381,7 +1380,7 @@ class Welcomer(commands.Cog):
                             pass
                         if thumb.content.lower() != 'none':
                             image_formats = ("image/png", "image/jpeg", "image/gif")
-                            url = f'{thumb.content}'
+                            url = Request(f'{thumb.content}', headers={'User-Agent': 'Mozilla/5.0'})
                             site = urlopen(url)
                             meta = site.info()
                             if meta["content-type"] in image_formats:
