@@ -1384,7 +1384,7 @@ class Welcomer(commands.Cog):
                             site = urlopen(url)
                             meta = site.info()
                             if meta["content-type"] in image_formats:
-                                await self.bot.welcomer.upsert({"_id": interaction.guild.id, "thumb": thumb.content})
+                                await self.bot.welcomer.upsert({"_id": interaction.guild.id, "thumbnail": thumb.content})
                         
                         data = await self.bot.welcomer.get_by_id(interaction.guild.id)
                         if thumb.content.lower() == 'none':
