@@ -22,6 +22,8 @@ class Events(commands.Cog):
             self.bot.prefix = Document(self.bot.db, "prefix")
             self.bot.blacklist = Document(self.bot.db, "blacklist")
             self.bot.welcomer = Document(self.bot.db, "welcomer")
+            self.bot.remove_command('help')
+            self.bot.load_extension ('jishaku')
 
             
             print("-------------------------\nInitialized Database\n-------------------------")

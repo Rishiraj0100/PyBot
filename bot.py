@@ -69,11 +69,6 @@ bot.colors = {
 }
 bot.color_list = [c for c in bot.colors.values()]
 
-
-bot.remove_command('help')
-
-bot.load_extension ('jishaku')
-
 if __name__ == '__main__':
 
     for file in os.listdir(cwd+"/cogs"):
