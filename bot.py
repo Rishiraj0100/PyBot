@@ -3,11 +3,9 @@ from discord.ext import commands
 import json
 from pathlib import Path
 import logging
-import datetime
 import os
 from utils.mongo import Document
 import motor.motor_asyncio
-import utils.json
 import time
 import calendar
 
@@ -41,7 +39,7 @@ secret_file = json.load(open(cwd+'/config/config.json'))
 
 owners = [749559849460826112, 939887303403405402]
 
-bot = commands.Bot(command_prefix=get_prefix, case_insensitive=True, owner_ids = set(owners), intents=intents)
+bot = commands.AutoShardedBot(command_prefix=get_prefix, case_insensitive=True, owner_ids = set(owners), intents=intents)
 
 logging.basicConfig(level=logging.INFO)
 
@@ -49,7 +47,7 @@ bot.cwd = cwd
 
 bot.config_token = secret_file['token']
 bot.connection_url = secret_file["mongo"]
-
+bot.seen_messages = 0
 bot.version = '0.1 beta'
 
 bot.colors = {
@@ -93,6 +91,7 @@ async def on_ready():
 bot.remove_command('help')
 @bot.event
 async def on_message(message):
+    bot.seen_messages += 1
 
     if message.author.id == bot.user.id:
         return
