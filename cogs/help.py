@@ -49,7 +49,7 @@ class Help(commands.Cog):
             emb.set_author(name=ctx.author, icon_url=ctx.author.display_avatar.url)
             for cog in self.bot.cogs:
                 # check if cog is the matching one
-                if cog == 'Moderation' or cog == 'Channels' or cog == 'Welcomer' or cog == 'Utilities' or cog == 'Music':
+                if cog == 'Moderation' or cog == 'Channels' or cog == 'Welcomer' or cog == 'Utilities' or 'Music':
                     # making title - getting description from doc-string below class
                     com = []
                     # getting commands from cog

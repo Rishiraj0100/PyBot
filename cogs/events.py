@@ -64,9 +64,7 @@ class Events(commands.Cog):
                     except:
                         pass
                     try:
-                        if data["thumbnail"].lower() == '{avatar}':
-                            embed.set_thumbnail(url=member.display_avatar.url)
-                        elif data["thumbnail"].lower() != 'none':
+                        if data["thumbnail"].lower() != 'none':
                             embed.set_thumbnail(url=data["thumbnail"])
                     except:
                         pass
@@ -88,9 +86,7 @@ class Events(commands.Cog):
                     except:
                         pass
                     try:
-                        if data["thumbnail"].lower() == '{avatar}':
-                            embed.set_thumbnail(url=member.display_avatar.url)
-                        elif data["thumbnail"].lower() != 'none':
+                        if data["thumbnail"].lower() != 'none':
                             embed.set_thumbnail(url=data["thumbnail"])
                     except:
                         pass
@@ -112,9 +108,7 @@ class Events(commands.Cog):
                     except:
                         pass
                     try:
-                        if data["thumbnail"].lower() == '{avatar}':
-                            embed.set_thumbnail(url=member.display_avatar.url)
-                        elif data["thumbnail"].lower() != 'none':
+                        if data["thumbnail"].lower() != 'none':
                             embed.set_thumbnail(url=data["thumbnail"])
                     except:
                         pass
@@ -136,9 +130,7 @@ class Events(commands.Cog):
                     except:
                         pass
                     try:
-                        if data["thumbnail"].lower() == '{avatar}':
-                            embed.set_thumbnail(url=member.display_avatar.url)
-                        elif data["thumbnail"].lower() != 'none':
+                        if data["thumbnail"].lower() != 'none':
                             embed.set_thumbnail(url=data["thumbnail"])
                     except:
                         pass

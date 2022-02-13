@@ -490,9 +490,7 @@ class Welcomer(commands.Cog):
                         except:
                             pass
                         try:
-                            if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                            elif data["thumbnail"].lower() != 'none':
+                            if data["thumbnail"].lower() != 'none':
                                 embed.set_thumbnail(url=data["thumbnail"])
                         except:
                             pass
@@ -514,9 +512,7 @@ class Welcomer(commands.Cog):
                         except:
                             pass
                         try:
-                            if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                            elif data["thumbnail"].lower() != 'none':
+                            if data["thumbnail"].lower() != 'none':
                                 embed.set_thumbnail(url=data["thumbnail"])
                         except:
                             pass
@@ -535,9 +531,7 @@ class Welcomer(commands.Cog):
                         except:
                             pass
                         try:
-                            if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                            elif data["thumbnail"].lower() != 'none':
+                            if data["thumbnail"].lower() != 'none':
                                 embed.set_thumbnail(url=data["thumbnail"])
                         except:
                             pass
@@ -556,9 +550,7 @@ class Welcomer(commands.Cog):
                         except:
                             pass
                         try:
-                            if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                            elif data["thumbnail"].lower() != 'none':
+                            if data["thumbnail"].lower() != 'none':
                                 embed.set_thumbnail(url=data["thumbnail"])
                         except:
                             pass
@@ -614,9 +606,7 @@ class Welcomer(commands.Cog):
                         except:
                             pass
                         try:
-                            if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                            elif data["thumbnail"].lower() != 'none':
+                            if data["thumbnail"].lower() != 'none':
                                 embed.set_thumbnail(url=data["thumbnail"])
                         except:
                             pass
@@ -638,9 +628,7 @@ class Welcomer(commands.Cog):
                         except:
                             pass
                         try:
-                            if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                            elif data["thumbnail"].lower() != 'none':
+                            if data["thumbnail"].lower() != 'none':
                                 embed.set_thumbnail(url=data["thumbnail"])
                         except:
                             pass
@@ -659,9 +647,7 @@ class Welcomer(commands.Cog):
                         except:
                             pass
                         try:
-                            if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                            elif data["thumbnail"].lower() != 'none':
+                            if data["thumbnail"].lower() != 'none':
                                 embed.set_thumbnail(url=data["thumbnail"])
                         except:
                             pass
@@ -680,9 +666,7 @@ class Welcomer(commands.Cog):
                         except:
                             pass
                         try:
-                            if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                            elif data["thumbnail"].lower() != 'none':
+                            if data["thumbnail"].lower() != 'none':
                                 embed.set_thumbnail(url=data["thumbnail"])
                         except:
                             pass
@@ -752,9 +736,7 @@ class Welcomer(commands.Cog):
                         except:
                             pass
                         try:
-                            if data["thumbnail"].lower() == '{avatar}':
-                                embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                            elif data["thumbnail"].lower() != 'none':
+                            if data["thumbnail"].lower() != 'none':
                                 embed.set_thumbnail(url=data["thumbnail"])
                         except:
                             pass
@@ -765,24 +747,20 @@ class Welcomer(commands.Cog):
                             pass
                         try:
                             editm = discord.Embed(
-                                description='**Variables**\n```yaml\n{user} - The mention of the user calling the command.\n{username} - The username of the user.\n{server} - The server name.\n```\n__**Note - Emojis should be in this Server or else they would not be displayed while Greeting Someone**__', color=0x3498DB)
+                            description='**Variables**\n```yaml\n{user} - The mention of the user calling the command.\n{username} - The username of the user.\n{server} - The server name.\n```\n__**Note - Emojis should be in this Server or else they would not be displayed while Greeting Someone**__', color=0x3498DB)
                             await interaction.response.send_message(embed=editm, ephemeral=True)
 
                             emb_embed = await ctx.send(embed=embed, view=edit_view)
                         except:
-                            e_embed = discord.Embed(
-                                description='Use Buttons to Customize this Embed', color=discord.Color.blue())
+                            e_embed = discord.Embed(description='Use Buttons to Customize this Embed',color=discord.Color.blue())
                             try:
                                 if data["image"].lower() != 'none':
                                     e_embed.set_image(url=data["image"])
                             except:
                                 pass
                             try:
-                                if data["thumbnail"].lower() == '{avatar}':
-                                    embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                elif data["thumbnail"].lower() != 'none':
-                                    e_embed.set_thumbnail(
-                                        url=data["thumbnail"])
+                                if data["thumbnail"].lower() != 'none':
+                                    e_embed.set_thumbnail(url=data["thumbnail"])
                             except:
                                 pass
                             try:
@@ -801,9 +779,7 @@ class Welcomer(commands.Cog):
                         except:
                             pass
                         try:
-                            if data["thumbnail"].lower() == '{avatar}':
-                                embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                            elif data["thumbnail"].lower() != 'none':
+                            if data["thumbnail"].lower() != 'none':
                                 embed.set_thumbnail(url=data["thumbnail"])
                         except:
                             pass
@@ -814,24 +790,20 @@ class Welcomer(commands.Cog):
                             pass
                         try:
                             editm = discord.Embed(
-                                description='**Variables**\n```yaml\n{user} - The mention of the user calling the command.\n{username} - The username of the user.\n{server} - The server name.\n```\n__**Note - Emojis should be in this Server or else they would not be displayed while Greeting Someone**__', color=0x3498DB)
+                            description='**Variables**\n```yaml\n{user} - The mention of the user calling the command.\n{username} - The username of the user.\n{server} - The server name.\n```\n__**Note - Emojis should be in this Server or else they would not be displayed while Greeting Someone**__', color=0x3498DB)
                             await interaction.response.send_message(embed=editm, ephemeral=True)
 
                             emb_embed = await ctx.send(embed=embed, view=edit_view)
                         except:
-                            e_embed = discord.Embed(
-                                description='Use Buttons to Customize this Embed', color=discord.Color.blue())
+                            e_embed = discord.Embed(description='Use Buttons to Customize this Embed',color=discord.Color.blue())
                             try:
                                 if data["image"].lower() != 'none':
                                     e_embed.set_image(url=data["image"])
                             except:
                                 pass
                             try:
-                                if data["thumbnail"].lower() == '{avatar}':
-                                    embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                elif data["thumbnail"].lower() != 'none':
-                                    e_embed.set_thumbnail(
-                                        url=data["thumbnail"])
+                                if data["thumbnail"].lower() != 'none':
+                                    e_embed.set_thumbnail(url=data["thumbnail"])
                             except:
                                 pass
                             try:
@@ -851,9 +823,7 @@ class Welcomer(commands.Cog):
                         except:
                             pass
                         try:
-                            if data["thumbnail"].lower() == '{avatar}':
-                                embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                            elif data["thumbnail"].lower() != 'none':
+                            if data["thumbnail"].lower() != 'none':
                                 embed.set_thumbnail(url=data["thumbnail"])
                         except:
                             pass
@@ -864,24 +834,20 @@ class Welcomer(commands.Cog):
                             pass
                         try:
                             editm = discord.Embed(
-                                description='**Variables**\n```yaml\n{user} - The mention of the user calling the command.\n{username} - The username of the user.\n{server} - The server name.\n```\n__**Note - Emojis should be in this Server or else they would not be displayed while Greeting Someone**__', color=0x3498DB)
+                            description='**Variables**\n```yaml\n{user} - The mention of the user calling the command.\n{username} - The username of the user.\n{server} - The server name.\n```\n__**Note - Emojis should be in this Server or else they would not be displayed while Greeting Someone**__', color=0x3498DB)
                             await interaction.response.send_message(embed=editm, ephemeral=True)
 
                             emb_embed = await ctx.send(embed=embed, view=edit_view)
                         except:
-                            e_embed = discord.Embed(
-                                description='Use Buttons to Customize this Embed', color=discord.Color.blue())
+                            e_embed = discord.Embed(description='Use Buttons to Customize this Embed',color=discord.Color.blue())
                             try:
                                 if data["image"].lower() != 'none':
                                     e_embed.set_image(url=data["image"])
                             except:
                                 pass
                             try:
-                                if data["thumbnail"].lower() == '{avatar}':
-                                    embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                elif data["thumbnail"].lower() != 'none':
-                                    e_embed.set_thumbnail(
-                                        url=data["thumbnail"])
+                                if data["thumbnail"].lower() != 'none':
+                                    e_embed.set_thumbnail(url=data["thumbnail"])
                             except:
                                 pass
                             try:
@@ -901,9 +867,7 @@ class Welcomer(commands.Cog):
                         except:
                             pass
                         try:
-                            if data["thumbnail"].lower() == '{avatar}':
-                                embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                            elif data["thumbnail"].lower() != 'none':
+                            if data["thumbnail"].lower() != 'none':
                                 embed.set_thumbnail(url=data["thumbnail"])
                         except:
                             pass
@@ -914,24 +878,20 @@ class Welcomer(commands.Cog):
                             pass
                         try:
                             editm = discord.Embed(
-                                description='**Variables**\n```yaml\n{user} - The mention of the user calling the command.\n{username} - The username of the user.\n{server} - The server name.\n```\n__**Note - Emojis should be in this Server or else they would not be displayed while Greeting Someone**__', color=0x3498DB)
+                            description='**Variables**\n```yaml\n{user} - The mention of the user calling the command.\n{username} - The username of the user.\n{server} - The server name.\n```\n__**Note - Emojis should be in this Server or else they would not be displayed while Greeting Someone**__', color=0x3498DB)
                             await interaction.response.send_message(embed=editm, ephemeral=True)
 
                             emb_embed = await ctx.send(embed=embed, view=edit_view)
                         except:
-                            e_embed = discord.Embed(
-                                description='Use Buttons to Customize this Embed', color=discord.Color.blue())
+                            e_embed = discord.Embed(description='Use Buttons to Customize this Embed',color=discord.Color.blue())
                             try:
                                 if data["image"].lower() != 'none':
                                     e_embed.set_image(url=data["image"])
                             except:
                                 pass
                             try:
-                                if data["thumbnail"].lower() == '{avatar}':
-                                    embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                elif data["thumbnail"].lower() != 'none':
-                                    e_embed.set_thumbnail(
-                                        url=data["thumbnail"])
+                                if data["thumbnail"].lower() != 'none':
+                                    e_embed.set_thumbnail(url=data["thumbnail"])
                             except:
                                 pass
                             try:
@@ -943,137 +903,113 @@ class Welcomer(commands.Cog):
                             emb_embed = await ctx.send(embed=e_embed, view=edit_view)
 
                     else:
-                        e_embed = discord.Embed(
-                            description='Use Buttons to Customize this Embed', color=discord.Color.blue())
-                        try:
-                            if data["image"].lower() != 'none':
-                                e_embed.set_image(url=data["image"])
-                        except:
-                            pass
-                        try:
-                            if data["thumbnail"].lower() == '{avatar}':
-                                embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                            elif data["thumbnail"].lower() != 'none':
-                                e_embed.set_thumbnail(url=data["thumbnail"])
-                        except:
-                            pass
-                        try:
-                            if data["footer"].lower() != 'none':
-                                e_embed.set_footer(text=data["footer"])
-                        except:
-                            pass
+                            e_embed = discord.Embed(description='Use Buttons to Customize this Embed',color=discord.Color.blue())
+                            try:
+                                if data["image"].lower() != 'none':
+                                    e_embed.set_image(url=data["image"])
+                            except:
+                                pass
+                            try:
+                                if data["thumbnail"].lower() != 'none':
+                                    e_embed.set_thumbnail(url=data["thumbnail"])
+                            except:
+                                pass
+                            try:
+                                if data["footer"].lower() != 'none':
+                                    e_embed.set_footer(text=data["footer"])
+                            except:
+                                pass
 
-                        emb_embed = await ctx.send(embed=e_embed, view=edit_view)
+                            emb_embed = await ctx.send(embed=e_embed, view=edit_view)
 
                     async def title_button_callback(interaction):
                         if interaction.user != ctx.author:
                             embeda = discord.Embed(
-                                description=f"Sorry, but this interaction can only be used by **{ctx.author.name}**.", color=0x3498DB)
+                            description=f"Sorry, but this interaction can only be used by **{ctx.author.name}**.", color=0x3498DB)
                             return await interaction.response.send_message(embed=embeda, ephemeral=True)
 
-                        ask = discord.Embed(
-                            description='**Enter the Title** *(Use None to remove)*', color=discord.Color.blue())
+                        ask = discord.Embed(description='**Enter the Title** *(Use None to remove)*', color=discord.Color.blue())
                         await interaction.response.send_message(embed=ask)
                         title = await self.bot.wait_for(
-                            "message",
-                            check=lambda x: x.channel.id == ctx.channel.id
-                            and ctx.author.id == x.author.id,
-                            timeout=None,
-                        )
+                        "message",
+                        check=lambda x: x.channel.id == ctx.channel.id
+                        and ctx.author.id == x.author.id,
+                        timeout=None,
+                    )
                         await self.bot.welcomer.upsert({"_id": interaction.guild.id, "title": title.content})
                         await ctx.channel.purge(limit=2)
-
+                        
                         data = await self.bot.welcomer.get_by_id(interaction.guild.id)
                         if title.content.lower() == 'none':
                             if data["description"].lower() == 'none':
-                                title_embed = discord.Embed(
-                                    color=discord.Color.blue())
+                                title_embed = discord.Embed(color=discord.Color.blue())
                                 try:
                                     if data["image"].lower() != 'none':
-                                        title_embed.set_image(
-                                            url=data["image"])
+                                        title_embed.set_image(url=data["image"])
                                 except:
                                     pass
                                 try:
-                                    if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                    elif data["thumbnail"].lower() != 'none':
-                                        e_embed.set_thumbnail(url=data["thumbnail"])
+                                    if data["thumbnail"].lower() != 'none':
+                                        title_embed.set_thumbnail(url=data["thumbnail"])
                                 except:
                                     pass
                                 try:
                                     if data["footer"].lower() != 'none':
-                                        title_embed.set_footer(
-                                            text=data["footer"])
+                                        title_embed.set_footer(text=data["footer"])
                                 except:
                                     pass
 
                             elif data["description"].lower() != 'none':
-                                title_embed = discord.Embed(
-                                    description=data["description"], color=discord.Color.blue())
+                                title_embed = discord.Embed(description=data["description"], color=discord.Color.blue())
                                 try:
                                     if data["image"].lower() != 'none':
-                                        title_embed.set_image(
-                                            url=data["image"])
+                                        title_embed.set_image(url=data["image"])
                                 except:
                                     pass
                                 try:
-                                    if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                    elif data["thumbnail"].lower() != 'none':
-                                        title_embed.set_thumbnail(
-                                            url=data["thumbnail"])
+                                    if data["thumbnail"].lower() != 'none':
+                                        title_embed.set_thumbnail(url=data["thumbnail"])
                                 except:
                                     pass
                                 try:
                                     if data["footer"].lower() != 'none':
-                                        title_embed.set_footer(
-                                            text=data["footer"])
+                                        title_embed.set_footer(text=data["footer"])
                                 except:
                                     pass
-
+                            
                             try:
                                 await emb_embed.edit(embed=title_embed, view=edit_view)
                             except:
-                                title_embed = discord.Embed(
-                                    description='Use Buttons to Customize this Embed', color=discord.Color.blue())
+                                title_embed = discord.Embed(description='Use Buttons to Customize this Embed',color=discord.Color.blue())
                                 try:
                                     if data["image"].lower() != 'none':
-                                        title_embed.set_image(
-                                            url=data["image"])
+                                        title_embed.set_image(url=data["image"])
                                 except:
                                     pass
                                 try:
-                                    if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                    elif data["thumbnail"].lower() != 'none':
-                                        title_embed.set_thumbnail(
-                                            url=data["thumbnail"])
+                                    if data["thumbnail"].lower() != 'none':
+                                        title_embed.set_thumbnail(url=data["thumbnail"])
                                 except:
                                     pass
                                 try:
                                     if data["footer"].lower() != 'none':
-                                        title_embed.set_footer(
-                                            text=data["footer"])
+                                        title_embed.set_footer(text=data["footer"])
                                 except:
                                     pass
 
                                 await emb_embed.edit(embed=title_embed, view=edit_view)
 
+
                         if data["description"].lower() == 'none':
-                            title_embed = discord.Embed(
-                                title=title.content, color=discord.Color.blue())
+                            title_embed = discord.Embed(title=title.content, color=discord.Color.blue())
                             try:
                                 if data["image"].lower() != 'none':
                                     title_embed.set_image(url=data["image"])
                             except:
                                 pass
                             try:
-                                if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                elif data["thumbnail"].lower() != 'none':
-                                    title_embed.set_thumbnail(
-                                        url=data["thumbnail"])
+                                if data["thumbnail"].lower() != 'none':
+                                    title_embed.set_thumbnail(url=data["thumbnail"])
                             except:
                                 pass
                             try:
@@ -1083,19 +1019,15 @@ class Welcomer(commands.Cog):
                                 pass
 
                         elif data["description"].lower() != 'none':
-                            title_embed = discord.Embed(
-                                title=title.content, description=data["description"], color=discord.Color.blue())
+                            title_embed = discord.Embed(title=title.content, description=data["description"], color=discord.Color.blue())
                             try:
                                 if data["image"].lower() != 'none':
                                     title_embed.set_image(url=data["image"])
                             except:
                                 pass
                             try:
-                                if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                elif data["thumbnail"].lower() != 'none':
-                                    title_embed.set_thumbnail(
-                                        url=data["thumbnail"])
+                                if data["thumbnail"].lower() != 'none':
+                                    title_embed.set_thumbnail(url=data["thumbnail"])
                             except:
                                 pass
                             try:
@@ -1103,316 +1035,250 @@ class Welcomer(commands.Cog):
                                     title_embed.set_footer(text=data["footer"])
                             except:
                                 pass
-
+                            
                         await emb_embed.edit(embed=title_embed, view=edit_view)
                     title_button.callback = title_button_callback
 
                     async def description_button_callback(interaction):
                         if interaction.user != ctx.author:
                             embeda = discord.Embed(
-                                description=f"Sorry, but this interaction can only be used by **{ctx.author.name}**.", color=0x3498DB)
+                            description=f"Sorry, but this interaction can only be used by **{ctx.author.name}**.", color=0x3498DB)
                             return await interaction.response.send_message(embed=embeda, ephemeral=True)
 
-                        ask = discord.Embed(
-                            description='**Enter the Description** *(Use None to remove)*', color=discord.Color.blue())
+                        ask = discord.Embed(description='**Enter the Description** *(Use None to remove)*', color=discord.Color.blue())
                         await interaction.response.send_message(embed=ask)
                         description = await self.bot.wait_for(
-                            "message",
-                            check=lambda x: x.channel.id == ctx.channel.id
-                            and ctx.author.id == x.author.id,
-                            timeout=None,
-                        )
+                        "message",
+                        check=lambda x: x.channel.id == ctx.channel.id
+                        and ctx.author.id == x.author.id,
+                        timeout=None,
+                    )
                         await self.bot.welcomer.upsert({"_id": interaction.guild.id, "description": description.content})
                         await ctx.channel.purge(limit=2)
-
+                        
                         data = await self.bot.welcomer.get_by_id(interaction.guild.id)
                         if description.content.lower() == 'none':
                             if data["title"].lower() == 'none':
-                                description_embed = discord.Embed(
-                                    color=discord.Color.blue())
+                                description_embed = discord.Embed(color=discord.Color.blue())
                                 try:
                                     if data["image"].lower() != 'none':
-                                        description_embed.set_image(
-                                            url=data["image"])
+                                        description_embed.set_image(url=data["image"])
                                 except:
                                     pass
                                 try:
-                                    if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                    elif data["thumbnail"].lower() != 'none':
-                                        description_embed.set_thumbnail(
-                                            url=data["thumbnail"])
+                                    if data["thumbnail"].lower() != 'none':
+                                        description_embed.set_thumbnail(url=data["thumbnail"])
                                 except:
                                     pass
                                 try:
                                     if data["footer"].lower() != 'none':
-                                        description_embed.set_footer(
-                                            text=data["footer"])
+                                        description_embed.set_footer(text=data["footer"])
                                 except:
                                     pass
 
                             elif data["title"].lower() != 'none':
-                                description_embed = discord.Embed(
-                                    title=data["title"], color=discord.Color.blue())
+                                description_embed = discord.Embed(title=data["title"], color=discord.Color.blue())
                                 try:
                                     if data["image"].lower() != 'none':
-                                        description_embed.set_image(
-                                            url=data["image"])
+                                        description_embed.set_image(url=data["image"])
                                 except:
                                     pass
                                 try:
-                                    if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                    elif data["thumbnail"].lower() != 'none':
-                                        description_embed.set_thumbnail(
-                                            url=data["thumbnail"])
+                                    if data["thumbnail"].lower() != 'none':
+                                        description_embed.set_thumbnail(url=data["thumbnail"])
                                 except:
                                     pass
                                 try:
                                     if data["footer"].lower() != 'none':
-                                        description_embed.set_footer(
-                                            text=data["footer"])
+                                        description_embed.set_footer(text=data["footer"])
                                 except:
                                     pass
-
+                            
                             try:
                                 await emb_embed.edit(embed=description_embed, view=edit_view)
                             except:
-                                description_embed = discord.Embed(
-                                    description='Use Buttons to Customize this Embed', color=discord.Color.blue())
+                                description_embed = discord.Embed(description='Use Buttons to Customize this Embed',color=discord.Color.blue())
                                 try:
                                     if data["image"].lower() != 'none':
-                                        description_embed.set_image(
-                                            url=data["image"])
+                                        description_embed.set_image(url=data["image"])
                                 except:
                                     pass
                                 try:
-                                    if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                    elif data["thumbnail"].lower() != 'none':
-                                        description_embed.set_thumbnail(
-                                            url=data["thumbnail"])
+                                    if data["thumbnail"].lower() != 'none':
+                                        description_embed.set_thumbnail(url=data["thumbnail"])
                                 except:
                                     pass
                                 try:
                                     if data["footer"].lower() != 'none':
-                                        description_embed.set_footer(
-                                            text=data["footer"])
+                                        description_embed.set_footer(text=data["footer"])
                                 except:
                                     pass
 
                                 await emb_embed.edit(embed=description_embed, view=edit_view)
 
+
                         if data["title"].lower() == 'none':
-                            description_embed = discord.Embed(
-                                description=description.content, color=discord.Color.blue())
+                            description_embed = discord.Embed(description=description.content, color=discord.Color.blue())
                             try:
                                 if data["image"].lower() != 'none':
-                                    description_embed.set_image(
-                                        url=data["image"])
+                                    description_embed.set_image(url=data["image"])
                             except:
                                 pass
                             try:
-                                if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                elif data["thumbnail"].lower() != 'none':
-                                    description_embed.set_thumbnail(
-                                        url=data["thumbnail"])
+                                if data["thumbnail"].lower() != 'none':
+                                    description_embed.set_thumbnail(url=data["thumbnail"])
                             except:
                                 pass
                             try:
                                 if data["footer"].lower() != 'none':
-                                    description_embed.set_footer(
-                                        text=data["footer"])
+                                    description_embed.set_footer(text=data["footer"])
                             except:
                                 pass
 
                         elif data["title"].lower() != 'none':
-                            description_embed = discord.Embed(
-                                title=data["title"], description=description.content, color=discord.Color.blue())
+                            description_embed = discord.Embed(title=data["title"], description=description.content, color=discord.Color.blue())
                             try:
                                 if data["image"].lower() != 'none':
-                                    description_embed.set_image(
-                                        url=data["image"])
+                                    description_embed.set_image(url=data["image"])
                             except:
                                 pass
                             try:
-                                if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                elif data["thumbnail"].lower() != 'none':
-                                    description_embed.set_thumbnail(
-                                        url=data["thumbnail"])
+                                if data["thumbnail"].lower() != 'none':
+                                    description_embed.set_thumbnail(url=data["thumbnail"])
                             except:
                                 pass
                             try:
                                 if data["footer"].lower() != 'none':
-                                    description_embed.set_footer(
-                                        text=data["footer"])
+                                    description_embed.set_footer(text=data["footer"])
                             except:
                                 pass
-
+                            
                         await emb_embed.edit(embed=description_embed, view=edit_view)
                     description_button.callback = description_button_callback
 
                     async def image_button_callback(interaction):
                         if interaction.user != ctx.author:
                             embeda = discord.Embed(
-                                description=f"Sorry, but this interaction can only be used by **{ctx.author.name}**.", color=0x3498DB)
+                            description=f"Sorry, but this interaction can only be used by **{ctx.author.name}**.", color=0x3498DB)
                             return await interaction.response.send_message(embed=embeda, ephemeral=True)
 
-                        ask = discord.Embed(
-                            description='**Enter the Image URL** *(Use None to remove)*', color=discord.Color.blue())
+                        ask = discord.Embed(description='**Enter the Image URL** *(Use None to remove)*', color=discord.Color.blue())
                         await interaction.response.send_message(embed=ask)
                         image = await self.bot.wait_for(
-                            "message",
-                            check=lambda x: x.channel.id == ctx.channel.id
-                            and ctx.author.id == x.author.id,
-                            timeout=None,
-                        )
+                        "message",
+                        check=lambda x: x.channel.id == ctx.channel.id
+                        and ctx.author.id == x.author.id,
+                        timeout=None,
+                    )
                         await self.bot.welcomer.upsert({"_id": interaction.guild.id, "image": image.content})
                         await ctx.channel.purge(limit=2)
-
+                        
                         data = await self.bot.welcomer.get_by_id(interaction.guild.id)
                         if image.content.lower() == 'none':
                             if data["title"].lower() == 'none' and data["description"].lower() == 'none':
-                                image_embed = discord.Embed(
-                                    color=discord.Color.blue())
+                                image_embed = discord.Embed(color=discord.Color.blue())
                                 try:
                                     if image.content.lower() != 'none':
-                                        image_embed.set_image(
-                                            url=data["image"])
+                                        image_embed.set_image(url=data["image"])
                                 except:
                                     pass
                                 try:
-                                    if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                    elif data["thumbnail"].lower() != 'none':
-                                        image_embed.set_thumbnail(
-                                            url=data["thumbnail"])
+                                    if data["thumbnail"].lower() != 'none':
+                                        image_embed.set_thumbnail(url=data["thumbnail"])
                                 except:
                                     pass
                                 try:
                                     if data["footer"].lower() != 'none':
-                                        image_embed.set_footer(
-                                            text=data["footer"])
+                                        image_embed.set_footer(text=data["footer"])
                                 except:
                                     pass
 
                             elif data["title"].lower() != 'none' and data["description"].lower() != 'none':
-                                image_embed = discord.Embed(
-                                    title=data["title"], description=data["description"], color=discord.Color.blue())
+                                image_embed = discord.Embed(title=data["title"], description=data["description"],color=discord.Color.blue())
                                 try:
                                     if image.content.lower() != 'none':
-                                        image_embed.set_image(
-                                            url=data["image"])
+                                        image_embed.set_image(url=data["image"])
                                 except:
                                     pass
                                 try:
-                                    if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                    elif data["thumbnail"].lower() != 'none':
-                                        image_embed.set_thumbnail(
-                                            url=data["thumbnail"])
+                                    if data["thumbnail"].lower() != 'none':
+                                        image_embed.set_thumbnail(url=data["thumbnail"])
                                 except:
                                     pass
                                 try:
                                     if data["footer"].lower() != 'none':
-                                        image_embed.set_footer(
-                                            text=data["footer"])
+                                        image_embed.set_footer(text=data["footer"])
                                 except:
                                     pass
 
                             elif data["title"].lower() == 'none' and data["description"].lower() != 'none':
-                                image_embed = discord.Embed(
-                                    description=data["description"], color=discord.Color.blue())
+                                image_embed = discord.Embed(description=data["description"],color=discord.Color.blue())
                                 try:
                                     if image.content.lower() != 'none':
-                                        image_embed.set_image(
-                                            url=data["image"])
+                                        image_embed.set_image(url=data["image"])
                                 except:
                                     pass
                                 try:
-                                    if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                    elif data["thumbnail"].lower() != 'none':
-                                        image_embed.set_thumbnail(
-                                            url=data["thumbnail"])
+                                    if data["thumbnail"].lower() != 'none':
+                                        image_embed.set_thumbnail(url=data["thumbnail"])
                                 except:
                                     pass
                                 try:
                                     if data["footer"].lower() != 'none':
-                                        image_embed.set_footer(
-                                            text=data["footer"])
+                                        image_embed.set_footer(text=data["footer"])
                                 except:
                                     pass
                             elif data["title"].lower() != 'none' and data["description"].lower() == 'none':
-                                image_embed = discord.Embed(
-                                    title=data["title"], color=discord.Color.blue())
+                                image_embed = discord.Embed(title=data["title"],color=discord.Color.blue())
                                 try:
                                     if image.content.lower() != 'none':
-                                        image_embed.set_image(
-                                            url=data["image"])
+                                        image_embed.set_image(url=data["image"])
                                 except:
                                     pass
                                 try:
-                                    if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                    elif data["thumbnail"].lower() != 'none':
-                                        image_embed.set_thumbnail(
-                                            url=data["thumbnail"])
+                                    if data["thumbnail"].lower() != 'none':
+                                        image_embed.set_thumbnail(url=data["thumbnail"])
                                 except:
                                     pass
                                 try:
                                     if data["footer"].lower() != 'none':
-                                        image_embed.set_footer(
-                                            text=data["footer"])
+                                        image_embed.set_footer(text=data["footer"])
                                 except:
                                     pass
-
+                            
                             try:
                                 await emb_embed.edit(embed=image_embed, view=edit_view)
                             except:
-                                image_embed = discord.Embed(
-                                    description='Use Buttons to Customize this Embed', color=discord.Color.blue())
+                                image_embed = discord.Embed(description='Use Buttons to Customize this Embed',color=discord.Color.blue())
                                 try:
                                     if image.content.lower() != 'none':
-                                        image_embed.set_image(
-                                            url=data["image"])
+                                        image_embed.set_image(url=data["image"])
                                 except:
                                     pass
                                 try:
-                                    if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                    elif data["thumbnail"].lower() != 'none':
-                                        image_embed.set_thumbnail(
-                                            url=data["thumbnail"])
+                                    if data["thumbnail"].lower() != 'none':
+                                        image_embed.set_thumbnail(url=data["thumbnail"])
                                 except:
                                     pass
                                 try:
                                     if data["footer"].lower() != 'none':
-                                        image_embed.set_footer(
-                                            text=data["footer"])
+                                        image_embed.set_footer(text=data["footer"])
                                 except:
                                     pass
 
                                 await emb_embed.edit(embed=image_embed, view=edit_view)
 
                         if data["title"].lower() == 'none' and data["description"].lower() == 'none':
-                            image_embed = discord.Embed(
-                                color=discord.Color.blue())
+                            image_embed = discord.Embed(color=discord.Color.blue())
                             try:
                                 if image.content.lower() != 'none':
                                     image_embed.set_image(url=image.content)
                             except:
-                                errembed = discord.Embed(
-                                    description='**Invalid URL !**', color=0x00ff0000)
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
                                 await ctx.send(embed=errembed)
                             try:
-                                if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                elif data["thumbnail"].lower() != 'none':
-                                    image_embed.set_thumbnail(
-                                        url=data["thumbnail"])
+                                if data["thumbnail"].lower() != 'none':
+                                    image_embed.set_thumbnail(url=data["thumbnail"])
                             except:
                                 pass
                             try:
@@ -1422,21 +1288,16 @@ class Welcomer(commands.Cog):
                                 pass
 
                         elif data["title"].lower() != 'none' and data["description"].lower() != 'none':
-                            image_embed = discord.Embed(
-                                title=data["title"], description=data["description"], color=discord.Color.blue())
+                            image_embed = discord.Embed(title=data["title"], description=data["description"], color=discord.Color.blue())
                             try:
                                 if image.content.lower() != 'none':
                                     image_embed.set_image(url=image.content)
                             except:
-                                errembed = discord.Embed(
-                                    description='**Invalid URL !**', color=0x00ff0000)
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
                                 await ctx.send(embed=errembed)
                             try:
-                                if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                elif data["thumbnail"].lower() != 'none':
-                                    image_embed.set_thumbnail(
-                                        url=data["thumbnail"])
+                                if data["thumbnail"].lower() != 'none':
+                                    image_embed.set_thumbnail(url=data["thumbnail"])
                             except:
                                 pass
                             try:
@@ -1445,21 +1306,16 @@ class Welcomer(commands.Cog):
                             except:
                                 pass
                         elif data["title"].lower() == 'none' and data["description"].lower() != 'none':
-                            image_embed = discord.Embed(
-                                description=data["description"], color=discord.Color.blue())
+                            image_embed = discord.Embed(description=data["description"], color=discord.Color.blue())
                             try:
                                 if image.content.lower() != 'none':
                                     image_embed.set_image(url=image.content)
                             except:
-                                errembed = discord.Embed(
-                                    description='**Invalid URL !**', color=0x00ff0000)
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
                                 await ctx.send(embed=errembed)
                             try:
-                                if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                elif data["thumbnail"].lower() != 'none':
-                                    image_embed.set_thumbnail(
-                                        url=data["thumbnail"])
+                                if data["thumbnail"].lower() != 'none':
+                                    image_embed.set_thumbnail(url=data["thumbnail"])
                             except:
                                 pass
                             try:
@@ -1468,14 +1324,12 @@ class Welcomer(commands.Cog):
                             except:
                                 pass
                         elif data["title"].lower() != 'none' and data["description"].lower() == 'none':
-                            image_embed = discord.Embed(
-                                title=data["title"], description=data["description"], color=discord.Color.blue())
+                            image_embed = discord.Embed(title=data["title"], description=data["description"], color=discord.Color.blue())
                             try:
                                 if image.content.lower() != 'none':
                                     image_embed.set_image(url=image.content)
                             except:
-                                errembed = discord.Embed(
-                                    description='**Invalid URL !**', color=0x00ff0000)
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
                                 d = await ctx.send(embed=errembed)
                                 await asyncio.sleep(5)
                                 try:
@@ -1483,11 +1337,8 @@ class Welcomer(commands.Cog):
                                 except:
                                     pass
                             try:
-                                if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                elif data["thumbnail"].lower() != 'none':
-                                    image_embed.set_thumbnail(
-                                        url=data["thumbnail"])
+                                if data["thumbnail"].lower() != 'none':
+                                    image_embed.set_thumbnail(url=data["thumbnail"])
                             except:
                                 pass
                             try:
@@ -1495,167 +1346,133 @@ class Welcomer(commands.Cog):
                                     image_embed.set_footer(text=data["footer"])
                             except:
                                 pass
-
+                            
                         await emb_embed.edit(embed=image_embed, view=edit_view)
                     image_button.callback = image_button_callback
 
                     async def thumbnail_button_callback(interaction):
                         if interaction.user != ctx.author:
                             embeda = discord.Embed(
-                                description=f"Sorry, but this interaction can only be used by **{ctx.author.name}**.", color=0x3498DB)
+                            description=f"Sorry, but this interaction can only be used by **{ctx.author.name}**.", color=0x3498DB)
                             return await interaction.response.send_message(embed=embeda, ephemeral=True)
 
-                        ask = discord.Embed(
-                            description='**Enter the Thumbnail URL** *(Use None to remove)*', color=discord.Color.blue())
+                        ask = discord.Embed(description='**Enter the Thumbnail URL** *(Use None to remove)*', color=discord.Color.blue())
                         await interaction.response.send_message(embed=ask)
                         thumb = await self.bot.wait_for(
-                            "message",
-                            check=lambda x: x.channel.id == ctx.channel.id
-                            and ctx.author.id == x.author.id,
-                            timeout=None,
-                        )
+                        "message",
+                        check=lambda x: x.channel.id == ctx.channel.id
+                        and ctx.author.id == x.author.id,
+                        timeout=None,
+                    )
                         await self.bot.welcomer.upsert({"_id": interaction.guild.id, "thumbnail": thumb.content})
                         await ctx.channel.purge(limit=2)
-
+                        
                         data = await self.bot.welcomer.get_by_id(interaction.guild.id)
                         if thumb.content.lower() == 'none':
                             if data["title"].lower() == 'none' and data["description"].lower() == 'none':
-                                thumb_embed = discord.Embed(
-                                    color=discord.Color.blue())
+                                thumb_embed = discord.Embed(color=discord.Color.blue())
                                 try:
                                     if data["image"].lower() != 'none':
-                                        thumb_embed.set_image(
-                                            url=data["image"])
+                                        thumb_embed.set_image(url=data["image"])
                                 except:
                                     pass
                                 try:
                                     if thumb.content.lower() != 'none':
-                                        thumb_embed.set_thumbnail(
-                                            url=thumb.content)
+                                        thumb_embed.set_thumbnail(url=thumb.content)
                                 except:
                                     pass
                                 try:
                                     if data["footer"].lower() != 'none':
-                                        thumb_embed.set_footer(
-                                            text=data["footer"])
+                                        thumb_embed.set_footer(text=data["footer"])
                                 except:
                                     pass
 
                             elif data["title"].lower() != 'none' and data["description"].lower() != 'none':
-                                thumb_embed = discord.Embed(
-                                    title=data["title"], description=data["description"], color=discord.Color.blue())
+                                thumb_embed = discord.Embed(title=data["title"], description=data["description"],color=discord.Color.blue())
                                 try:
                                     if data["image"].lower() != 'none':
-                                        thumb_embed.set_image(
-                                            url=data["image"])
+                                        thumb_embed.set_image(url=data["image"])
                                 except:
                                     pass
                                 try:
-                                    if thumb.content.lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                    elif thumb.content.lower() != 'none':
-                                        thumb_embed.set_thumbnail(
-                                            url=thumb.content)
+                                    if thumb.content.lower() != 'none':
+                                        thumb_embed.set_thumbnail(url=thumb.content)
                                 except:
                                     pass
                                 try:
                                     if data["footer"].lower() != 'none':
-                                        thumb_embed.set_footer(
-                                            text=data["footer"])
+                                        thumb_embed.set_footer(text=data["footer"])
                                 except:
                                     pass
 
                             elif data["title"].lower() == 'none' and data["description"].lower() != 'none':
-                                thumb_embed = discord.Embed(
-                                    description=data["description"], color=discord.Color.blue())
+                                thumb_embed = discord.Embed(description=data["description"],color=discord.Color.blue())
                                 try:
                                     if data["image"].lower() != 'none':
-                                        thumb_embed.set_image(
-                                            url=data["image"])
+                                        thumb_embed.set_image(url=data["image"])
                                 except:
                                     pass
                                 try:
-                                    if thumb.content.lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                    elif thumb.content.lower() != 'none':
-                                        thumb_embed.set_thumbnail(
-                                            url=thumb.content)
+                                    if thumb.content.lower() != 'none':
+                                        thumb_embed.set_thumbnail(url=thumb.content)
                                 except:
                                     pass
                                 try:
                                     if data["footer"].lower() != 'none':
-                                        thumb_embed.set_footer(
-                                            text=data["footer"])
+                                        thumb_embed.set_footer(text=data["footer"])
                                 except:
                                     pass
                             elif data["title"].lower() != 'none' and data["description"].lower() == 'none':
-                                thumb_embed = discord.Embed(
-                                    title=data["title"], color=discord.Color.blue())
+                                thumb_embed = discord.Embed(title=data["title"],color=discord.Color.blue())
                                 try:
                                     if data["image"].lower() != 'none':
-                                        thumb_embed.set_image(
-                                            url=data["image"])
+                                        thumb_embed.set_image(url=data["image"])
                                 except:
                                     pass
                                 try:
-                                    if thumb.content.lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                    elif thumb.content.lower() != 'none':
-                                        thumb_embed.set_thumbnail(
-                                            url=thumb.content)
+                                    if thumb.content.lower() != 'none':
+                                        thumb_embed.set_thumbnail(url=thumb.content)
                                 except:
                                     pass
                                 try:
                                     if data["footer"].lower() != 'none':
-                                        thumb_embed.set_footer(
-                                            text=data["footer"])
+                                        thumb_embed.set_footer(text=data["footer"])
                                 except:
                                     pass
-
+                            
                             try:
                                 await emb_embed.edit(embed=thumb_embed, view=edit_view)
                             except:
-                                thumb_embed = discord.Embed(
-                                    description='Use Buttons to Customize this Embed', color=discord.Color.blue())
+                                thumb_embed = discord.Embed(description='Use Buttons to Customize this Embed',color=discord.Color.blue())
                                 try:
                                     if data["image"].lower() != 'none':
-                                        thumb_embed.set_image(
-                                            url=data["image"])
+                                        thumb_embed.set_image(url=data["image"])
                                 except:
                                     pass
                                 try:
-                                    if thumb.content.lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                    elif thumb.content.lower() != 'none':
-                                        thumb_embed.set_thumbnail(
-                                            url=thumb.content)
+                                    if thumb.content.lower() != 'none':
+                                        thumb_embed.set_thumbnail(url=thumb.content)
                                 except:
                                     pass
                                 try:
                                     if data["footer"].lower() != 'none':
-                                        thumb_embed.set_footer(
-                                            text=data["footer"])
+                                        thumb_embed.set_footer(text=data["footer"])
                                 except:
                                     pass
 
                                 await emb_embed.edit(embed=thumb_embed, view=edit_view)
 
                         if data["title"].lower() == 'none' and data["description"].lower() == 'none':
-                            thumb_embed = discord.Embed(
-                                color=discord.Color.blue())
+                            thumb_embed = discord.Embed(color=discord.Color.blue())
                             try:
                                 if data["image"].lower() != 'none':
                                     thumb_embed.set_image(url=data["image"])
                             except:
-                                errembed = discord.Embed(
-                                    description='**Invalid URL !**', color=0x00ff0000)
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
                                 await ctx.send(embed=errembed)
                             try:
-                                if thumb.content.lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                elif thumb.content.lower() != 'none':
-                                    thumb_embed.set_thumbnail(
-                                        url=thumb.contnetn)
+                                if thumb.content.lower() != 'none':
+                                    thumb_embed.set_thumbnail(url=thumb.contnetn)
                             except:
                                 pass
                             try:
@@ -1665,21 +1482,16 @@ class Welcomer(commands.Cog):
                                 pass
 
                         elif data["title"].lower() != 'none' and data["description"].lower() != 'none':
-                            thumb_embed = discord.Embed(
-                                title=data["title"], description=data["description"], color=discord.Color.blue())
+                            thumb_embed = discord.Embed(title=data["title"], description=data["description"], color=discord.Color.blue())
                             try:
                                 if data["image"].lower() != 'none':
                                     thumb_embed.set_image(url=data["image"])
                             except:
-                                errembed = discord.Embed(
-                                    description='**Invalid URL !**', color=0x00ff0000)
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
                                 await ctx.send(embed=errembed)
                             try:
-                                if thumb.content.lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                elif thumb.content.lower() != 'none':
-                                    thumb_embed.set_thumbnail(
-                                        url=thumb.content)
+                                if thumb.content.lower() != 'none':
+                                    thumb_embed.set_thumbnail(url=thumb.content)
                             except:
                                 pass
                             try:
@@ -1688,21 +1500,16 @@ class Welcomer(commands.Cog):
                             except:
                                 pass
                         elif data["title"].lower() == 'none' and data["description"].lower() != 'none':
-                            thumb_embed = discord.Embed(
-                                description=data["description"], color=discord.Color.blue())
+                            thumb_embed = discord.Embed(description=data["description"], color=discord.Color.blue())
                             try:
                                 if data["image"].lower() != 'none':
                                     thumb_embed.set_image(url=data["image"])
                             except:
-                                errembed = discord.Embed(
-                                    description='**Invalid URL !**', color=0x00ff0000)
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
                                 await ctx.send(embed=errembed)
                             try:
-                                if thumb.content.lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                elif thumb.content.lower() != 'none':
-                                    thumb_embed.set_thumbnail(
-                                        url=thumb.content)
+                                if thumb.content.lower() != 'none':
+                                    thumb_embed.set_thumbnail(url=thumb.content)
                             except:
                                 pass
                             try:
@@ -1711,14 +1518,12 @@ class Welcomer(commands.Cog):
                             except:
                                 pass
                         elif data["title"].lower() != 'none' and data["description"].lower() == 'none':
-                            thumb_embed = discord.Embed(
-                                title=data["title"], description=data["description"], color=discord.Color.blue())
+                            thumb_embed = discord.Embed(title=data["title"], description=data["description"], color=discord.Color.blue())
                             try:
                                 if data["image"].lower() != 'none':
                                     thumb_embed.set_image(url=data["image"])
                             except:
-                                errembed = discord.Embed(
-                                    description='**Invalid URL !**', color=0x00ff0000)
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
                                 d = await ctx.send(embed=errembed)
                                 await asyncio.sleep(5)
                                 try:
@@ -1726,11 +1531,8 @@ class Welcomer(commands.Cog):
                                 except:
                                     pass
                             try:
-                                if thumb.content.lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                elif thumb.content.lower() != 'none':
-                                    thumb_embed.set_thumbnail(
-                                        url=thumb.content)
+                                if thumb.content.lower() != 'none':
+                                    thumb_embed.set_thumbnail(url=thumb.content)
                             except:
                                 pass
                             try:
@@ -1738,235 +1540,184 @@ class Welcomer(commands.Cog):
                                     thumb_embed.set_footer(text=data["footer"])
                             except:
                                 pass
-
+                            
                         await emb_embed.edit(embed=thumb_embed, view=edit_view)
                     thumbnail_button.callback = thumbnail_button_callback
 
                     async def footer_button_callback(interaction):
                         if interaction.user != ctx.author:
                             embeda = discord.Embed(
-                                description=f"Sorry, but this interaction can only be used by **{ctx.author.name}**.", color=0x3498DB)
+                            description=f"Sorry, but this interaction can only be used by **{ctx.author.name}**.", color=0x3498DB)
                             return await interaction.response.send_message(embed=embeda, ephemeral=True)
 
-                        ask = discord.Embed(
-                            description='**Enter the Footer Text** *(Use None to remove)*', color=discord.Color.blue())
+                        ask = discord.Embed(description='**Enter the Footer Text** *(Use None to remove)*', color=discord.Color.blue())
                         await interaction.response.send_message(embed=ask)
                         footer = await self.bot.wait_for(
-                            "message",
-                            check=lambda x: x.channel.id == ctx.channel.id
-                            and ctx.author.id == x.author.id,
-                            timeout=None,
-                        )
+                        "message",
+                        check=lambda x: x.channel.id == ctx.channel.id
+                        and ctx.author.id == x.author.id,
+                        timeout=None,
+                    )
                         await self.bot.welcomer.upsert({"_id": interaction.guild.id, "footer": footer.content})
                         await ctx.channel.purge(limit=2)
-
+                        
                         data = await self.bot.welcomer.get_by_id(interaction.guild.id)
                         if footer.content.lower() == 'none':
                             if data["title"].lower() == 'none' and data["description"].lower() == 'none':
-                                footer_embed = discord.Embed(
-                                    color=discord.Color.blue())
+                                footer_embed = discord.Embed(color=discord.Color.blue())
                                 try:
                                     if data["image"].lower() != 'none':
-                                        footer_embed.set_image(
-                                            url=data["image"])
+                                        footer_embed.set_image(url=data["image"])
                                 except:
                                     pass
                                 try:
-                                    if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                    elif data["thumbnail"].lower() != 'none':
-                                        footer_embed.set_thumbnail(
-                                            url=data["thumbnail"])
+                                    if data["thumbnail"].lower() != 'none':
+                                        footer_embed.set_thumbnail(url=data["thumbnail"])
                                 except:
                                     pass
                                 try:
                                     if footer.content.lower() != 'none':
-                                        footer_embed.set_footer(
-                                            text=footer.content)
+                                        footer_embed.set_footer(text=footer.content)
                                 except:
                                     pass
 
                             elif data["title"].lower() != 'none' and data["description"].lower() != 'none':
-                                footer_embed = discord.Embed(
-                                    title=data["title"], description=data["description"], color=discord.Color.blue())
+                                footer_embed = discord.Embed(title=data["title"], description=data["description"],color=discord.Color.blue())
                                 try:
                                     if data["image"].lower() != 'none':
-                                        footer_embed.set_image(
-                                            url=data["image"])
+                                        footer_embed.set_image(url=data["image"])
                                 except:
                                     pass
                                 try:
-                                    if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                    elif data["thumbnail"].lower() != 'none':
-                                        footer_embed.set_thumbnail(
-                                            url=data["thumbnail"])
+                                    if data["thumbnail"].lower() != 'none':
+                                        footer_embed.set_thumbnail(url=data["thumbnail"])
                                 except:
                                     pass
                                 try:
                                     if data["footer"].lower() != 'none':
-                                        footer_embed.set_footer(
-                                            text=data["footer"])
+                                        footer_embed.set_footer(text=data["footer"])
                                 except:
                                     pass
 
                             elif data["title"].lower() == 'none' and data["description"].lower() != 'none':
-                                footer_embed = discord.Embed(
-                                    description=data["description"], color=discord.Color.blue())
+                                footer_embed = discord.Embed(description=data["description"],color=discord.Color.blue())
                                 try:
                                     if data["image"].lower() != 'none':
-                                        footer_embed.set_image(
-                                            url=data["image"])
+                                        footer_embed.set_image(url=data["image"])
                                 except:
                                     pass
                                 try:
-                                    if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                    elif data["thumbnail"].lower() != 'none':
-                                        footer_embed.set_thumbnail(
-                                            url=data["thumbnail"])
+                                    if data["thumbnail"].lower() != 'none':
+                                        footer_embed.set_thumbnail(url=data["thumbnail"])
                                 except:
                                     pass
                                 try:
                                     if footer.content.lower() != 'none':
-                                        footer_embed.set_footer(
-                                            text=footer.content)
+                                        footer_embed.set_footer(text=footer.content)
                                 except:
                                     pass
                             elif data["title"].lower() != 'none' and data["description"].lower() == 'none':
-                                footer_embed = discord.Embed(
-                                    title=data["title"], color=discord.Color.blue())
+                                footer_embed = discord.Embed(title=data["title"],color=discord.Color.blue())
                                 try:
                                     if data["image"].lower() != 'none':
-                                        footer_embed.set_image(
-                                            url=data["image"])
+                                        footer_embed.set_image(url=data["image"])
                                 except:
                                     pass
                                 try:
-                                    if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                    elif data["thumbnail"].lower() != 'none':
-                                        footer_embed.set_thumbnail(
-                                            url=data["thumbnail"])
+                                    if data["thumbnail"].lower() != 'none':
+                                        footer_embed.set_thumbnail(url=data["thumbnail"])
                                 except:
                                     pass
                                 try:
                                     if footer.content.lower() != 'none':
-                                        footer_embed.set_footer(
-                                            text=footer.content)
+                                        footer_embed.set_footer(text=footer.content)
                                 except:
                                     pass
-
+                            
                             try:
                                 await emb_embed.edit(embed=footer_embed, view=edit_view)
                             except:
-                                footer_embed = discord.Embed(
-                                    description='Use Buttons to Customize this Embed', color=discord.Color.blue())
+                                footer_embed = discord.Embed(description='Use Buttons to Customize this Embed',color=discord.Color.blue())
                                 try:
                                     if data["image"].lower() != 'none':
-                                        footer_embed.set_image(
-                                            url=data["image"])
+                                        footer_embed.set_image(url=data["image"])
                                 except:
                                     pass
                                 try:
-                                    if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                    elif data["thumbnail"].lower() != 'none':
-                                        footer_embed.set_thumbnail(
-                                            url=data["thumbnail"])
+                                    if data["thumbnail"].lower() != 'none':
+                                        footer_embed.set_thumbnail(url=data["thumbnail"])
                                 except:
                                     pass
                                 try:
                                     if footer.content.lower() != 'none':
-                                        footer_embed.set_footer(
-                                            text=footer.content)
+                                        footer_embed.set_footer(text=footer.content)
                                 except:
                                     pass
 
                                 await emb_embed.edit(embed=footer_embed, view=edit_view)
 
                         if data["title"].lower() == 'none' and data["description"].lower() == 'none':
-                            footer_embed = discord.Embed(
-                                color=discord.Color.blue())
+                            footer_embed = discord.Embed(color=discord.Color.blue())
                             try:
                                 if data["image"].lower() != 'none':
                                     footer_embed.set_image(url=data["image"])
                             except:
-                                errembed = discord.Embed(
-                                    description='**Invalid URL !**', color=0x00ff0000)
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
                                 await ctx.send(embed=errembed)
                             try:
-                                if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                elif data["thumbnail"].lower() != 'none':
-                                    footer_embed.set_thumbnail(
-                                        url=data["thumbnail"])
+                                if data["thumbnail"].lower() != 'none':
+                                    footer_embed.set_thumbnail(url=data["thumbnail"])
                             except:
                                 pass
                             try:
                                 if footer.content.lower() != 'none':
-                                    footer_embed.set_footer(
-                                        text=footer.content)
+                                    footer_embed.set_footer(text=footer.content)
                             except:
                                 pass
 
                         elif data["title"].lower() != 'none' and data["description"].lower() != 'none':
-                            footer_embed = discord.Embed(
-                                title=data["title"], description=data["description"], color=discord.Color.blue())
+                            footer_embed = discord.Embed(title=data["title"], description=data["description"], color=discord.Color.blue())
                             try:
                                 if data["image"].lower() != 'none':
                                     footer_embed.set_image(url=data["image"])
                             except:
-                                errembed = discord.Embed(
-                                    description='**Invalid URL !**', color=0x00ff0000)
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
                                 await ctx.send(embed=errembed)
                             try:
-                                if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                elif data["thumbnail"].lower() != 'none':
-                                    footer_embed.set_thumbnail(
-                                        url=data["thumbnail"])
+                                if data["thumbnail"].lower() != 'none':
+                                    footer_embed.set_thumbnail(url=data["thumbnail"])
                             except:
                                 pass
                             try:
                                 if footer.content.lower() != 'none':
-                                    footer_embed.set_footer(
-                                        text=footer.content)
+                                    footer_embed.set_footer(text=footer.content)
                             except:
                                 pass
                         elif data["title"].lower() == 'none' and data["description"].lower() != 'none':
-                            footer_embed = discord.Embed(
-                                description=data["description"], color=discord.Color.blue())
+                            footer_embed = discord.Embed(description=data["description"], color=discord.Color.blue())
                             try:
                                 if data["image"].lower() != 'none':
                                     footer_embed.set_image(url=data["image"])
                             except:
-                                errembed = discord.Embed(
-                                    description='**Invalid URL !**', color=0x00ff0000)
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
                                 await ctx.send(embed=errembed)
                             try:
-                                if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                elif data["thumbnail"].lower() != 'none':
-                                    footer_embed.set_thumbnail(
-                                        url=data["thumbnail"])
+                                if data["thumbnail"].lower() != 'none':
+                                    footer_embed.set_thumbnail(url=data["thumbnail"])
                             except:
                                 pass
                             try:
                                 if footer.content.lower() != 'none':
-                                    footer_embed.set_footer(
-                                        text=footer.content)
+                                    footer_embed.set_footer(text=footer.content)
                             except:
                                 pass
                         elif data["title"].lower() != 'none' and data["description"].lower() == 'none':
-                            footer_embed = discord.Embed(
-                                title=data["title"], description=data["description"], color=discord.Color.blue())
+                            footer_embed = discord.Embed(title=data["title"], description=data["description"], color=discord.Color.blue())
                             try:
                                 if data["image"].lower() != 'none':
                                     footer_embed.set_image(url=data["image"])
                             except:
-                                errembed = discord.Embed(
-                                    description='**Invalid URL !**', color=0x00ff0000)
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
                                 d = await ctx.send(embed=errembed)
                                 await asyncio.sleep(5)
                                 try:
@@ -1974,20 +1725,16 @@ class Welcomer(commands.Cog):
                                 except:
                                     pass
                             try:
-                                if data["thumbnail"].lower() == '{avatar}':
-                                        embed.set_thumbnail(url=ctx.author.display_avatar.url)
-                                elif data["thumbnail"].lower() != 'none':
-                                    footer_embed.set_thumbnail(
-                                        url=data["thumbnail"])
+                                if data["thumbnail"].lower() != 'none':
+                                    footer_embed.set_thumbnail(url=data["thumbnail"])
                             except:
                                 pass
                             try:
                                 if footer.content.lower() != 'none':
-                                    footer_embed.set_footer(
-                                        text=footer.content)
+                                    footer_embed.set_footer(text=footer.content)
                             except:
                                 pass
-
+                            
                         await emb_embed.edit(embed=footer_embed, view=edit_view)
                     footer_button.callback = footer_button_callback
 
@@ -1999,14 +1746,13 @@ class Welcomer(commands.Cog):
                     done_button.callback = done_button_callback
 
             edit_button.callback = edit_button_callback
-
+            
         m_button.callback = m_button_callback
 
     @welcome.error
     async def welcome_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):
-            embed = discord.Embed(
-                description='**<a:cross1:941287490986315776> You lack Administrator Permissions to use this Command**', color=0x00ff0000)
+            embed = discord.Embed(description='**<a:cross1:941287490986315776> You lack Administrator Permissions to use this Command**', color=0x00ff0000)
             await ctx.send(embed=embed)
 
 
