@@ -54,7 +54,8 @@ class Events(commands.Cog):
                 else:
                     pmsg = f'**You were pinged {len(data["ping"])} times.\n\nClick Below to View them.**'
 
-                embed = discord.Embed(color=0x3498DB, description=f'Welcome Back **{message.author}**, I have removed your AFK.\nYou had gone afk <t:{data["time"]}:R>\n{pmsg}')
+                t = int(data["time"])
+                embed = discord.Embed(color=0x3498DB, description=f'Welcome Back **{message.author}**, I have removed your AFK.\nYou had gone afk <t:{t}:R>\n{pmsg}')
                 view = discord.ui.View()
                 # i = 0
                 for link in data["ping"]:
@@ -87,8 +88,8 @@ class Events(commands.Cog):
                         reason = 'I am AFK :)'
                     else:
                         reason = afk["reason"]
-
-                    await message.reply(f'**{name}** went afk <t:{afk["time"]}:R> : {reason}')
+                    t = int(afk["time"])
+                    await message.reply(f'**{name}** went afk <t:{t}:R> : {reason}')
                     l = afk["ping"]
                     l.append(f"https://discordapp.com/channels/{message.guild.id}/{message.channel.id}/{message.id}")
                     await self.bot.db.execute("UPDATE afk SET ping = $3 WHERE (guild_id,user_id) = ($1,$2)", message.guild.id, a, l)
