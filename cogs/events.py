@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
-import time, calendar
+import time, calendar, datetime
+from utils.git import lst2pgarr
 
 class Events(commands.Cog):
 
@@ -12,29 +13,32 @@ class Events(commands.Cog):
             print("Events Cog has been loaded\n-------------------------")
         
         @commands.Cog.listener()
+        async def on_message_delete(self, message):
+            record = await self.bot.db.fetchrow("SELECT * FROM snipe WHERE channel_id = $1", message.channel.id)
+            channel = message.channel.id
+            author = message.author.name+'#'+message.author.discriminator
+            content = message.content if message.content else "*[Content Unavailable]*"
+            if not record:
+                return await self.bot.db.execute("INSERT INTO snipe (channel_id, content, author, time) VALUES ($1,$2,$3,$4)", channel, content, author, int(time.time()))
+            await self.bot.db.execute("UPDATE snipe SET (content,author,time) = ($2,$3,$4) WHERE channel_id = $1", message.channel.id, content, author, int(time.time()))
+            # await ctx.send(f"The guild prefix has been set to `{prefix}`. Use `{prefix}prefix [prefix]` to change it again!")
+        
+        @commands.Cog.listener()
         async def on_message(self, message):
-            self.bot.seen_messages += 1
 
             if message.author.id == self.bot.user.id:
                 return
 
-            data = await self.bot.blacklist.find_by_id(message.author.id)
+            data = await self.bot.db.fetchrow('SELECT * FROM blacklist WHERE (user_id) = ($1)', message.author.id)
             if data:
                 return
 
-            if message.content.startswith('#'):
+            data = await self.bot.db.fetchrow('SELECT * FROM afk WHERE (guild_id,user_id) = ($1,$2)', message.guild.id, message.author.id)
+            if data and message.content.startswith('#'):
                 return
 
-            data = await self.bot.afk.get_by_id(message.author.id)
-            if not data or "afk" not in data:
-                pass
-            else:
-                if "guild" not in data:
-                    pass
-                else:
-                    if message.guild.id != data["guild"]:
-                        return await self.bot.process_commands(message)
-                await self.bot.afk.delete(message.author.id)
+            if data:
+                await self.bot.db.execute('DELETE FROM afk WHERE (guild_id,user_id) = ($1,$2)', message.guild.id, message.author.id)
                 
                 try:
                     a = message.author.nick
@@ -43,16 +47,15 @@ class Events(commands.Cog):
                     await message.author.edit(nick=f'{a}')
                 except:
                     pass
+
                 if len(data["ping"]) == 0:
                     pmsg  = '\n**You were not pinged while you were AFK.**'
                 elif len(data["ping"]) == 1:
                     pmsg = f'**You were pinged {len(data["ping"])} time.\n\nClick Below to View them.**'
                 else:
                     pmsg = f'**You were pinged {len(data["ping"])} times.\n\nClick Below to View them.**'
-                obj = time.gmtime(data["time"])
-                epoch = time.asctime(obj)
-                ab = calendar.timegm(time.strptime(f'{epoch} UTC', '%a %b %d %H:%M:%S %Y UTC'))
-                embed = discord.Embed(color=0x3498DB, description=f'Welcome Back **{message.author}**, I have removed your AFK.\nYou had gone afk <t:{ab}:R>\n{pmsg}')
+
+                embed = discord.Embed(color=0x3498DB, description=f'Welcome Back **{message.author}**, I have removed your AFK.\nYou had gone afk <t:{data["time"]}:R>\n{pmsg}')
                 view = discord.ui.View()
                 # i = 0
                 for link in data["ping"]:
@@ -62,9 +65,8 @@ class Events(commands.Cog):
                 if not view:
                     view = None
                 await message.channel.send(embed=embed, view=view)
+
             a = None
-            if message.content.startswith('#'):
-                    return
             res = message.content.split()
             for word in res:
                 if word.startswith('<@!'):
@@ -78,27 +80,19 @@ class Events(commands.Cog):
                     name = aa
                 except:
                     name = 'User'
-                afk = await self.bot.afk.get_by_id(a)
+                
+                afk = await self.bot.db.fetchrow('SELECT * FROM afk WHERE (guild_id,user_id) = ($1,$2)', message.guild.id, a)
 
-                if not afk or "afk" not in afk:
-                    pass
-                else:
+                if afk:
                     if "reason" not in afk:
                         reason = 'I am AFK :)'
                     else:
                         reason = afk["reason"]
-                    if message.guild.id != afk["guild"]:
-                        return
 
-                    obj = time.gmtime(afk["time"])
-                    epoch = time.asctime(obj)
-                    ab = calendar.timegm(time.strptime(f'{epoch} UTC', '%a %b %d %H:%M:%S %Y UTC'))
-                    await message.reply(f'**{name}** went afk <t:{ab}:R> : {reason}')
+                    await message.reply(f'**{name}** went afk <t:{afk["time"]}:R> : {reason}')
                     l = afk["ping"]
-                    if not l:
-                        l = []
-                    l.append(f'https://discordapp.com/channels/{message.guild.id}/{message.channel.id}/{message.id}')
-                    await self.bot.afk.upsert({"_id": a, "ping": l})
+                    l.append(f"https://discordapp.com/channels/{message.guild.id}/{message.channel.id}/{message.id}")
+                    await self.bot.db.execute("UPDATE afk SET ping = $3 WHERE (guild_id,user_id) = ($1,$2)", message.guild.id, a, l)
 
             if f'<@!{self.bot.user.id}' in message.content:
                 for command in self.bot.commands:
@@ -110,8 +104,8 @@ class Events(commands.Cog):
                             if aliases.lower() in message.content.lower():
                                 break
                     else:
-                        data = await self.bot.prefix.get_by_id(message.guild.id)
-                        if not data or "prefix" not in data:
+                        data = await self.bot.db.fetchrow('SELECT * FROM prefix WHERE guild_id = $1', message.guild.id)
+                        if not data:
                             prefix = "-"
                         else:
                             prefix = data["prefix"]
@@ -251,9 +245,10 @@ class Events(commands.Cog):
 
         @commands.Cog.listener()
         async def on_guild_join(self, guild):
-            pdata = await self.bot.prefix.get_by_id(guild.id)
-            if not pdata or "prefix" not in pdata:
-                await self.bot.prefix.upsert({"_id": guild.id, "prefix": '-'})
+            pdata = await self.bot.db.fetchrow('SELECT * FROM prefix WHERE guild_id = $1', guild.id)
+            if not pdata:
+                return await self.bot.db.execute("INSERT INTO prefix (guild_id, prefix) VALUES ($1,$2)", guild.id, '-')
+
             wdata = await self.bot.welcomer.get_by_id(guild.id)
             if not wdata or "welcomer" not in wdata:
                 await self.bot.welcomer.upsert({"_id": guild.id, "welcomer": False})
