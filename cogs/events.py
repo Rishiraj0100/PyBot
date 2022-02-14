@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
 import time, calendar, datetime
-from utils.git import lst2pgarr
 
 class Events(commands.Cog):
 
