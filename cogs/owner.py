@@ -18,24 +18,21 @@ class OwnerOnly(commands.Cog):
         # if ctx.message.author.id == user.id:
         #     await ctx.send("Hey!, you cannot blacklist yourself!")
         #     return
-        try:
-             await self.bot.blacklist.upsert({"_id": user.id, "blacklist": 'blacklisted'})
-        except:
-            await ctx.send(f"{user} Already Blacklisted")
-        else:
-
-            await ctx.send(f"{user} Blacklisted !")
+        record = await self.bot.db.fetchrow('SELECT * FROM blacklist WHERE (user_id) = ($1)', user.id)
+        if record:
+            return await ctx.send(f'**{user.name}** is already Blacklisted!')
+        await self.bot.db.execute("INSERT INTO blacklist (user_id) VALUES ($1)", user.id)
+        await ctx.send(f'Blacklisted **{user.name}**')
 
 
     @commands.command(name='whitelist', aliases=['wl'], hidden=True)
     @commands.is_owner()
     async def whitelist(self, ctx, user: discord.Member):
-        try:
-            await self.bot.blacklist.delete(user.id)
-        except:
-            await ctx.send(f"{user} Already Whitelisted")
-        else:
-            await ctx.send(f"{user} Whitelisted")
+        record = await self.bot.db.fetchrow('SELECT * FROM blacklist WHERE (user_id) = ($1)', user.id)
+        if not record:
+            return await ctx.send(f'**{user.name}** is not Blacklisted!')
+        await self.bot.db.execute('DELETE FROM blacklist WHERE (user_id) = ($1)', user.id)
+        return await ctx.send(f'Whitelisted **{user.name}**')
 
 
     @commands.command(name='changeStatus', aliases=['status'], hidden=True)
