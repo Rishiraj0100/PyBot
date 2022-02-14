@@ -27,8 +27,8 @@ class Help(commands.Cog):
         @param ctx Context of the message.
         @param params further arguments
         """
-        data = await self.bot.prefix.get_by_id(ctx.guild.id)
-        if not data or "prefix" not in data:
+        data = await self.bot.db.fetchrow('SELECT * FROM prefix WHERE guild_id = $1', ctx.guild.id)
+        if not data:
             PREFIX = "-"
         else:
             PREFIX = data["prefix"]
