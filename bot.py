@@ -1,3 +1,4 @@
+from async_property import async_property
 import discord
 from discord.ext import commands
 import json
@@ -8,6 +9,7 @@ from utils.mongo import Document
 import motor.motor_asyncio
 import time
 import calendar
+import asyncpg
 
 os.environ["SHELL"]="/bin/bash"
 import os;os.environ["JISHAKU_NO_UNDERSCORE"]="t"
@@ -18,12 +20,12 @@ cwd = str(cwd)
 print(f"{cwd}\n-----")
 
 async def get_prefix(bot, message):
+    if message.author.id == 939887303403405402 or message.author.id == 749559849460826112:
+            return commands.when_mentioned_or('')(bot, message)
     if not message.guild:
         return commands.when_mentioned_or("-")(bot, message)
     try:
-        data = await bot.prefix.find(message.guild.id)
-        if message.author.id == 939887303403405402 or message.author.id == 749559849460826112:
-            return commands.when_mentioned_or('')(bot, message)
+        data = await bot.db.fetchrow("SELECT * FROM prefix WHERE guild_id = $1", message.guild.id)
         if not data or "prefix" not in data:
             return commands.when_mentioned_or("-")(bot, message)
         return commands.when_mentioned_or(data["prefix"])(bot, message)
@@ -76,11 +78,9 @@ async def on_ready():
     await bot.change_presence(activity=discord.Game(name=f"Hi, my name is {bot.user.name}.\nUse - to interact with me!"))
 
     bot.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(bot.connection_url))
-    bot.db = bot.mongo["pybot"]
-    bot.afk = Document(bot.db, "afk")
-    bot.prefix = Document(bot.db, "prefix")
-    bot.blacklist = Document(bot.db, "blacklist")
-    bot.welcomer = Document(bot.db, "welcomer")
+    bot.mongodb = bot.mongo["pybot"]
+    bot.blacklist = Document(bot.mongodb, "blacklist")
+    bot.welcomer = Document(bot.mongodb, "welcomer")
 
     
     print("-------------------------\nInitialized Database\n-------------------------")
@@ -98,5 +98,11 @@ if __name__ == '__main__':
     for file in os.listdir(cwd+"/cogs"):
         if file.endswith(".py") and not file.startswith("_"):
             bot.load_extension(f"cogs.{file[:-3]}")
+
+async def create_db_pool():
+    bot.db = await asyncpg.create_pool(database='railway', user='postgres', password='iKfF0EalhC1Oa1AFXira', host='containers-us-west-27.railway.app', port='7301')
+    print('-------------------------\nConnected to DataBase\n-------------------------')
+
+bot.loop.create_task(create_db_pool())
 
 bot.run(bot.config_token)
