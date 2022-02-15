@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import time
 import asyncio
+from discord.ui import Button, View
 
 class Moderation(commands.Cog):
 
@@ -258,22 +259,48 @@ class Moderation(commands.Cog):
         elif isinstance(error, commands.MissingPermissions):
             embed = discord.Embed(description='**<a:cross1:941287490986315776> You lack Permissions to Unban Members**', color=0xfe4d49)
             await ctx.send(embed=embed)
-    
-    @commands.command(name='afk', usage='afk [reason]', brief='-afk Going Out')
+
+
+    @commands.command(name='afk', usage='afk [reason]', brief='-afk Good Bye')
     @commands.guild_only()
     async def afk(self, ctx, *,reason='I am AFK :)'):
-        data = await self.bot.db.fetchrow('SELECT * FROM afk WHERE (guild_id,user_id) = ($1,$2)', ctx.guild.id, ctx.author.id)
-        if not data:
-            if ctx.author.nick:
-                a = ctx.author.nick
-            else:
-                a = ctx.author.name
-            try:
-                await ctx.author.edit(nick=f'[AFK] {a}')
-            except:
-                pass
-            await self.bot.db.execute("INSERT INTO afk (guild_id,user_id,reason,ping,time) VALUES ($1,$2,$3,$4,$5)", ctx.guild.id, ctx.author.id, reason, [], time.time())
-            await ctx.reply(f'Your AFK is now set to: {reason}')
+        embed = discord.Embed(description='Select your preferred AFK Style', color=discord.Color.blue())
+        all = Button(style=discord.ButtonStyle.blurple, label='AFK in all Mutual Servers')
+        one = Button(style=discord.ButtonStyle.blurple, label='AFK Only in this Server')
+        view = View()
+        view.add_item(all)
+        view.add_item(one)
+
+        await ctx.send(embed=embed, view=view)
+
+        async def all_callback(interaction):
+            data = await self.bot.db.fetchrow('SELECT * FROM afk WHERE (guild_id,user_id) = ($1,$2)', 0, ctx.author.id)
+            if not data:
+                await self.bot.db.execute("INSERT INTO afk (guild_id,user_id,reason,ping,time) VALUES ($1,$2,$3,$4,$5)", 0, ctx.author.id, reason, [], time.time())
+                
+                await interaction.message.delete()
+                await ctx.reply(f'Your AFK is now set to: {reason}')
+        
+        all.callback = all_callback
+
+        async def one_callback(interaction):
+            data = await self.bot.db.fetchrow('SELECT * FROM afk WHERE (guild_id,user_id) = ($1,$2)', ctx.guild.id, ctx.author.id)
+            if not data:
+                await self.bot.db.execute("INSERT INTO afk (guild_id,user_id,reason,ping,time) VALUES ($1,$2,$3,$4,$5)", ctx.guild.id, ctx.author.id, reason, [], time.time())
+                
+                if ctx.author.nick:
+                    a = ctx.author.nick
+                else:
+                    a = ctx.author.name
+                try:
+                    await ctx.author.edit(nick=f'[AFK] {a}')
+                except:
+                    pass
+                
+                await interaction.message.delete()
+                await ctx.reply(f'Your AFK is now set to: {reason}')
+        
+        one.callback = one_callback
             
 
 def setup(bot):

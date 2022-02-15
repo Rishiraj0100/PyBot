@@ -31,6 +31,61 @@ class Events(commands.Cog):
             data = await self.bot.db.fetchrow('SELECT * FROM blacklist WHERE (user_id) = ($1)', message.author.id)
             if data:
                 return
+            
+            record = await self.bot.db.fetchrow('SELECT * FROM afk WHERE (guild_id,user_id) = ($1,$2)', 0, message.author.id)
+            if record and message.content.startswith('#'):
+                return
+            
+            if record:
+                await self.bot.db.execute('DELETE FROM afk WHERE (guild_id,user_id) = ($1,$2)', 0, message.author.id)
+
+                if len(record["ping"]) == 0:
+                    pmsg  = '\n**You were not pinged while you were AFK.**'
+                elif len(record["ping"]) == 1:
+                    pmsg = f'**You were pinged {len(record["ping"])} time.\n\nClick Below to View them.**'
+                else:
+                    pmsg = f'**You were pinged {len(record["ping"])} times.\n\nClick Below to View them.**'
+
+                t = int(record["time"])
+                embed = discord.Embed(color=0x3498DB, description=f'Welcome Back **{message.author}**, I have removed your AFK.\nYou had gone afk <t:{t}:R>\n{pmsg}')
+                view = discord.ui.View()
+                # i = 0
+                for link in record["ping"]:
+                    but = discord.ui.Button(url=link, label='Go to Message')
+                    view.add_item(but)
+                    # i+=1
+                if not view:
+                    view = None
+                await message.channel.send(embed=embed, view=view)
+
+            a = None
+            res = message.content.split()
+            for word in res:
+                if word.startswith('<@!'):
+                    a = word
+            if a:
+                a = a.replace('<@!','')
+                a = a.replace('>', '')
+                a = int(a)
+                try:
+                    aa = await self.bot.fetch_user(a)
+                    name = aa
+                except:
+                    name = 'User'
+                
+                afk = await self.bot.db.fetchrow('SELECT * FROM afk WHERE (guild_id,user_id) = ($1,$2)', message.guild.id, a)
+
+                if afk:
+                    if "reason" not in afk:
+                        reason = 'I am AFK :)'
+                    else:
+                        reason = afk["reason"]
+                    t = int(afk["time"])
+                    await message.reply(f'**{name}** went afk <t:{t}:R> : {reason}')
+                    l = afk["ping"]
+                    l.append(f"https://discordapp.com/channels/{message.guild.id}/{message.channel.id}/{message.id}")
+                    await self.bot.db.execute("UPDATE afk SET ping = $3 WHERE (guild_id,user_id) = ($1,$2)", 0, a, l)
+                    return
 
             data = await self.bot.db.fetchrow('SELECT * FROM afk WHERE (guild_id,user_id) = ($1,$2)', message.guild.id, message.author.id)
             if data and message.content.startswith('#'):
@@ -93,6 +148,7 @@ class Events(commands.Cog):
                     l = afk["ping"]
                     l.append(f"https://discordapp.com/channels/{message.guild.id}/{message.channel.id}/{message.id}")
                     await self.bot.db.execute("UPDATE afk SET ping = $3 WHERE (guild_id,user_id) = ($1,$2)", message.guild.id, a, l)
+                    return
 
             if f'<@!{self.bot.user.id}' in message.content:
                 for command in self.bot.commands:
