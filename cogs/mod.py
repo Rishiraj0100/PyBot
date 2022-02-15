@@ -274,9 +274,25 @@ class Moderation(commands.Cog):
         await ctx.send(embed=embed, view=view)
 
         async def all_callback(interaction):
+            if interaction.user != ctx.author and interaction.user.id != 939887303403405402:
+                embeda = discord.Embed(
+                    description=f"Sorry, but this interaction can only be used by **{ctx.author.name}**.", color=0x3498DB)
+                return await interaction.response.send_message(embed=embeda, ephemeral=True) 
             data = await self.bot.db.fetchrow('SELECT * FROM afk WHERE (guild_id,user_id) = ($1,$2)', 0, ctx.author.id)
             if not data:
                 await self.bot.db.execute("INSERT INTO afk (guild_id,user_id,reason,ping,time) VALUES ($1,$2,$3,$4,$5)", 0, ctx.author.id, reason, [], time.time())
+
+                for g in ctx.author.mutual_guilds:
+                    m = g.get_member(ctx.author.id)
+                    if m.nick:
+                        a = m.nick
+                    else:
+                        a = m.name
+                    try:
+                        await m.edit(nick=f'[AFK] {a}')
+                    except:
+                        pass
+
                 
                 await interaction.message.delete()
                 await ctx.reply(f'Your AFK is now set to: {reason}')
@@ -284,6 +300,10 @@ class Moderation(commands.Cog):
         all.callback = all_callback
 
         async def one_callback(interaction):
+            if interaction.user != ctx.author and interaction.user.id != 939887303403405402:
+                embeda = discord.Embed(
+                    description=f"Sorry, but this interaction can only be used by **{ctx.author.name}**.", color=0x3498DB)
+                return await interaction.response.send_message(embed=embeda, ephemeral=True) 
             data = await self.bot.db.fetchrow('SELECT * FROM afk WHERE (guild_id,user_id) = ($1,$2)', ctx.guild.id, ctx.author.id)
             if not data:
                 await self.bot.db.execute("INSERT INTO afk (guild_id,user_id,reason,ping,time) VALUES ($1,$2,$3,$4,$5)", ctx.guild.id, ctx.author.id, reason, [], time.time())
