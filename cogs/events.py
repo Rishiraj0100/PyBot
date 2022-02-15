@@ -313,11 +313,33 @@ class Events(commands.Cog):
         async def on_guild_join(self, guild):
             pdata = await self.bot.db.fetchrow('SELECT * FROM prefix WHERE guild_id = $1', guild.id)
             if not pdata:
-                return await self.bot.db.execute("INSERT INTO prefix (guild_id,prefix) VALUES ($1,$2)", guild.id, '-')
-            
-            wdata = await self.bot.db.fetchrow('SELECT * FROM welcomer WHERE guild_id = $1', guild.id)
-            if not pdata:
-                return await self.bot.db.execute("INSERT INTO welcomer (guild_id,welcomer,type,autorole,autorole_human,autorole_bot,channel,message,title,description,image,thumbnail,footer) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)", guild.id, False, 'embed', False, 0, 0, 0, '{user} Welcome to {server}', "Hello {user} Welcome to {server}", "Have a great time here!", "none", "none", "{server}")
+                return await self.bot.db.execute("INSERT INTO prefix (guild_id, prefix) VALUES ($1,$2)", guild.id, '-')
+
+            wdata = await self.bot.welcomer.get_by_id(guild.id)
+            if not wdata or "welcomer" not in wdata:
+                await self.bot.welcomer.upsert({"_id": guild.id, "welcomer": False})
+            if not wdata or "type" not in wdata:
+                await self.bot.welcomer.upsert({"_id": guild.id, "type": "embed"})
+            if not wdata or "autorole" not in wdata:
+                await self.bot.welcomer.upsert({"_id": guild.id, "autorole": False})
+            if not wdata or "autorole_human" not in wdata:
+                await self.bot.welcomer.upsert({"_id": guild.id, "autorole_human": 0})
+            if not wdata or "autorole_bot" not in wdata:
+                await self.bot.welcomer.upsert({"_id": guild.id, "autorole_bot": 0})
+            if not wdata or "channel" not in wdata:
+                await self.bot.welcomer.upsert({"_id": guild.id, "channel": 0})
+            if not wdata or "message" not in wdata:
+                await self.bot.welcomer.upsert({"_id": guild.id, "message": "{user} Welcome to {server}"})
+            if not wdata or "title" not in wdata:
+                await self.bot.welcomer.upsert({"_id": guild.id, "title": "Hello {user} Welcome to {server}"})
+            if not wdata or "description" not in wdata:
+                await self.bot.welcomer.upsert({"_id": guild.id, "description": "Have a great time here!"})
+            if not wdata or "image" not in wdata:
+                await self.bot.welcomer.upsert({"_id": guild.id, "image": "none"})
+            if not wdata or "thumbnail" not in wdata:
+                await self.bot.welcomer.upsert({"_id": guild.id, "thumbnail": "none"})
+            if not wdata or "footer" not in wdata:
+                await self.bot.welcomer.upsert({"_id": guild.id, "footer": "{server}"})
             
 
         @commands.Cog.listener()
