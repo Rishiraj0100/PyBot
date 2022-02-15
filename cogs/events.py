@@ -38,6 +38,16 @@ class Events(commands.Cog):
             
             if record:
                 await self.bot.db.execute('DELETE FROM afk WHERE (guild_id,user_id) = ($1,$2)', 0, message.author.id)
+                
+                for g in message.author.mutual_guilds:
+                    try:
+                        m = g.get_member(message.author.id)
+                        a = m.nick
+                        a = a.replace('[AFK]', '')
+                        a = a.replace('AFK', '')
+                        await m.edit(nick=f'{a}')
+                    except:
+                        pass
 
                 if len(record["ping"]) == 0:
                     pmsg  = '\n**You were not pinged while you were AFK.**'
@@ -73,7 +83,7 @@ class Events(commands.Cog):
                 except:
                     name = 'User'
                 
-                afk = await self.bot.db.fetchrow('SELECT * FROM afk WHERE (guild_id,user_id) = ($1,$2)', message.guild.id, a)
+                afk = await self.bot.db.fetchrow('SELECT * FROM afk WHERE (guild_id,user_id) = ($1,$2)', 0, a)
 
                 if afk:
                     if "reason" not in afk:
@@ -136,7 +146,7 @@ class Events(commands.Cog):
                 except:
                     name = 'User'
                 
-                afk = await self.bot.db.fetchrow('SELECT * FROM afk WHERE (guild_id,user_id) = ($1,$2)', 0, a)
+                afk = await self.bot.db.fetchrow('SELECT * FROM afk WHERE (guild_id,user_id) = ($1,$2)', message.guild.id, a)
 
                 if afk:
                     if "reason" not in afk:
@@ -147,7 +157,7 @@ class Events(commands.Cog):
                     await message.reply(f'**{name}** went afk <t:{t}:R> : {reason}')
                     l = afk["ping"]
                     l.append(f"https://discordapp.com/channels/{message.guild.id}/{message.channel.id}/{message.id}")
-                    await self.bot.db.execute("UPDATE afk SET ping = $3 WHERE (guild_id,user_id) = ($1,$2)", 0, a, l)
+                    await self.bot.db.execute("UPDATE afk SET ping = $3 WHERE (guild_id,user_id) = ($1,$2)", message.guild.id, a, l)
                     return
 
             if f'<@!{self.bot.user.id}' in message.content:
