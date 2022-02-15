@@ -136,18 +136,18 @@ class Events(commands.Cog):
                 except:
                     name = 'User'
                 
-                afk = await self.bot.db.fetchrow('SELECT * FROM afk WHERE (guild_id,user_id) = ($1,$2)', message.guild.id, a)
+                afk = await self.bot.db.fetchrow('SELECT * FROM afk WHERE (guild_id,user_id) = ($1,$2)', 0, a)
 
                 if afk:
                     if "reason" not in afk:
                         reason = 'I am AFK :)'
                     else:
-                        reason = data["reason"]
+                        reason = afk["reason"]
                     t = int(afk["time"])
                     await message.reply(f'**{name}** went afk <t:{t}:R> : {reason}')
-                    l = data["ping"]
+                    l = afk["ping"]
                     l.append(f"https://discordapp.com/channels/{message.guild.id}/{message.channel.id}/{message.id}")
-                    await self.bot.db.execute("UPDATE afk SET ping = $3 WHERE (guild_id,user_id) = ($1,$2)", message.guild.id, a, l)
+                    await self.bot.db.execute("UPDATE afk SET ping = $3 WHERE (guild_id,user_id) = ($1,$2)", 0, a, l)
                     return
 
             if f'<@!{self.bot.user.id}' in message.content:
