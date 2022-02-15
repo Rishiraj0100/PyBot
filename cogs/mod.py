@@ -289,7 +289,7 @@ class Moderation(commands.Cog):
                     else:
                         a = m.name
                     try:
-                        await m.edit(nick=f'[AFK] {a}')
+                        await m.edit(nick=f'[AFK] {a}', reason='AFK')
                     except:
                         pass
 
@@ -313,7 +313,7 @@ class Moderation(commands.Cog):
                 else:
                     a = ctx.author.name
                 try:
-                    await ctx.author.edit(nick=f'[AFK] {a}')
+                    await ctx.author.edit(nick=f'[AFK] {a}', reason='AFK')
                 except:
                     pass
                 
