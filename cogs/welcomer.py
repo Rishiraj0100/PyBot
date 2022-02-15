@@ -1620,7 +1620,7 @@ class Welcomer(commands.Cog):
                                 await emb_embed.edit(embed=description_embed, view=edit_view)
 
 
-                        if data["title"].lower() == 'none':
+                        elif data["title"].lower() == 'none':
                             description_embed = discord.Embed(description=description.content)
                             if data["color"] != 'none':
                                 try:
