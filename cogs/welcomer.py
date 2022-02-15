@@ -482,7 +482,14 @@ class Welcomer(commands.Cog):
                     await interaction.response.send_message(f'{data["message"]}', ephemeral=True)
                 elif data["type"] == "embed":
                     if data["title"].lower() == "none" and data["description"].lower() == "none":
-                        embed = discord.Embed(color=discord.Color.blue())
+                        embed = discord.Embed()
+                        if data["color"] != 'none':
+                            try:
+                                embed.color = eval(f'0x{data["color"]}')
+                            except:
+                                embed.color = discord.Color.blue()
+                        else:
+                            embed.color = discord.Color.blue()
                         try:
                             if data["image"].lower() != 'none':
                                 embed.set_image(url=data["image"])
@@ -499,12 +506,21 @@ class Welcomer(commands.Cog):
                         except:
                             pass
                         try:
-                            await interaction.response.send_message(embed=embed, ephemeral=True)
+                            if data["content"].lower() != 'none':
+                                 await interaction.response.send_message(content=data["content"], embed=embed, ephemeral=True)
+                            else:
+                                await interaction.response.send_message(embed=embed, ephemeral=True)
                         except:
                             await interaction.response.send_message('Embed not Set', ephemeral=True)
                     elif data["title"].lower() != "none" and data["description"].lower() != "none":
-                        embed = discord.Embed(color=discord.Color.blue(
-                        ), title=data["title"], description=data["description"])
+                        embed = discord.Embed(title=data["title"], description=data["description"])
+                        if data["color"] != 'none':
+                            try:
+                                embed.color = eval(f'0x{data["color"]}')
+                            except:
+                                embed.color = discord.Color.blue()
+                        else:
+                            embed.color = discord.Color.blue()
                         try:
                             if data["image"].lower() != 'none':
                                 embed.set_image(url=data["image"])
@@ -520,10 +536,19 @@ class Welcomer(commands.Cog):
                                 embed.set_footer(text=data["footer"])
                         except:
                             pass
-                        await interaction.response.send_message(embed=embed, ephemeral=True)
+                        if data["content"].lower() != 'none':
+                            await interaction.response.send_message(content=data["content"], embed=embed, ephemeral=True)
+                        else:
+                            await interaction.response.send_message(embed=embed, ephemeral=True)
                     elif data["title"].lower() != "none" and data["description"].lower() == "none":
-                        embed = discord.Embed(
-                            color=discord.Color.blue(), title=data["title"])
+                        embed = discord.Embed(title=data["title"])
+                        if data["color"] != 'none':
+                            try:
+                                embed.color = eval(f'0x{data["color"]}')
+                            except:
+                                embed.color = discord.Color.blue()
+                        else:
+                            embed.color = discord.Color.blue()
                         try:
                             if data["image"].lower() != 'none':
                                 embed.set_image(url=data["image"])
@@ -539,10 +564,19 @@ class Welcomer(commands.Cog):
                                 embed.set_footer(text=data["footer"])
                         except:
                             pass
-                        await interaction.response.send_message(embed=embed, ephemeral=True)
+                        if data["content"].lower() != 'none':
+                            await interaction.response.send_message(content=data["content"], embed=embed, ephemeral=True)
+                        else:
+                            await interaction.response.send_message(embed=embed, ephemeral=True)
                     elif data["title"].lower() == "none" and data["description"].lower() != "none":
-                        embed = discord.Embed(
-                            color=discord.Color.blue(), description=data["description"])
+                        embed = discord.Embed(description=data["description"])
+                        if data["color"] != 'none':
+                            try:
+                                embed.color = eval(f'0x{data["color"]}')
+                            except:
+                                embed.color = discord.Color.blue()
+                        else:
+                            embed.color = discord.Color.blue()
                         try:
                             if data["image"].lower() != 'none':
                                 embed.set_image(url=data["image"])
@@ -558,7 +592,10 @@ class Welcomer(commands.Cog):
                                 embed.set_footer(text=data["footer"])
                         except:
                             pass
-                        await interaction.response.send_message(embed=embed, ephemeral=True)
+                        if data["content"].lower() != 'none':
+                            await interaction.response.send_message(content=data["content"], embed=embed, ephemeral=True)
+                        else:
+                            await interaction.response.send_message(embed=embed, ephemeral=True)
                     else:
                         await interaction.response.send_message('Embed Not Set', ephemeral=True)
 
@@ -579,6 +616,11 @@ class Welcomer(commands.Cog):
                     await interaction.response.send_message(ab, ephemeral=True)
                 elif data["type"] == "embed":
 
+                    content = data["content"]
+                    content = content.replace('{user}', f'{ctx.author.mention}')
+                    content = content.replace('{username}', f'{ctx.author.name}')
+                    content = content.replace('{server}', f'{ctx.guild.name}')
+
                     title = data["title"]
                     title = title.replace('{user}', f'{ctx.author.name}')
                     title = title.replace('{username}', f'{ctx.author.name}')
@@ -598,7 +640,14 @@ class Welcomer(commands.Cog):
                     footer = footer.replace('{server}', f'{ctx.guild.name}')
 
                     if data["title"].lower() == "none" and data["description"].lower() == "none":
-                        embed = discord.Embed(color=discord.Color.blue())
+                        embed = discord.Embed()
+                        if data["color"] != 'none':
+                            try:
+                                embed.color = eval(f'0x{data["color"]}')
+                            except:
+                                embed.color = discord.Color.blue()
+                        else:
+                            embed.color = discord.Color.blue()
                         try:
                             if data["image"].lower() != 'none':
                                 embed.set_image(url=data["image"])
@@ -615,12 +664,21 @@ class Welcomer(commands.Cog):
                         except:
                             pass
                         try:
-                            await interaction.response.send_message(embed=embed, ephemeral=True)
+                            if data["content"].lower() != 'none':
+                                 await interaction.response.send_message(content=content, embed=embed, ephemeral=True)
+                            else:
+                                await interaction.response.send_message(embed=embed, ephemeral=True)
                         except:
                             await interaction.response.send_message('Embed not Set', ephemeral=True)
                     elif data["title"].lower() != "none" and data["description"].lower() != "none":
-                        embed = discord.Embed(
-                            color=discord.Color.blue(), title=title, description=description)
+                        embed = discord.Embed(title=title, description=description)
+                        if data["color"] != 'none':
+                            try:
+                                embed.color = eval(f'0x{data["color"]}')
+                            except:
+                                embed.color = discord.Color.blue()
+                        else:
+                            embed.color = discord.Color.blue()
                         try:
                             if data["image"].lower() != 'none':
                                 embed.set_image(url=data["image"])
@@ -636,10 +694,19 @@ class Welcomer(commands.Cog):
                                 embed.set_footer(text=footer)
                         except:
                             pass
-                        await interaction.response.send_message(embed=embed, ephemeral=True)
+                        if data["content"].lower() != 'none':
+                            await interaction.response.send_message(content=content, embed=embed, ephemeral=True)
+                        else:
+                            await interaction.response.send_message(embed=embed, ephemeral=True)
                     elif data["title"].lower() != "none" and data["description"].lower() == "none":
-                        embed = discord.Embed(
-                            color=discord.Color.blue(), title=title)
+                        embed = discord.Embed(title=title)
+                        if data["color"] != 'none':
+                            try:
+                                embed.color = eval(f'0x{data["color"]}')
+                            except:
+                                embed.color = discord.Color.blue()
+                        else:
+                            embed.color = discord.Color.blue()
                         try:
                             if data["image"].lower() != 'none':
                                 embed.set_image(url=data["image"])
@@ -655,10 +722,19 @@ class Welcomer(commands.Cog):
                                 embed.set_footer(text=footer)
                         except:
                             pass
-                        await interaction.response.send_message(embed=embed, ephemeral=True)
+                        if data["content"].lower() != 'none':
+                            await interaction.response.send_message(content=content, embed=embed, ephemeral=True)
+                        else:
+                            await interaction.response.send_message(embed=embed, ephemeral=True)
                     elif data["title"].lower() == "none" and data["description"].lower() != "none":
-                        embed = discord.Embed(
-                            color=discord.Color.blue(), description=description)
+                        embed = discord.Embed(description=description)
+                        if data["color"] != 'none':
+                            try:
+                                embed.color = eval(f'0x{data["color"]}')
+                            except:
+                                embed.color = discord.Color.blue()
+                        else:
+                            embed.color = discord.Color.blue()
                         try:
                             if data["image"].lower() != 'none':
                                 embed.set_image(url=data["image"])
@@ -674,7 +750,10 @@ class Welcomer(commands.Cog):
                                 embed.set_footer(text=footer)
                         except:
                             pass
-                        await interaction.response.send_message(embed=embed, ephemeral=True)
+                        if data["content"].lower() != 'none':
+                            await interaction.response.send_message(content=content, embed=embed, ephemeral=True)
+                        else:
+                            await interaction.response.send_message(embed=embed, ephemeral=True)
                     else:
                         await interaction.response.send_message('Embed Not Set', ephemeral=True)
 
@@ -708,6 +787,8 @@ class Welcomer(commands.Cog):
                     await self.bot.welcomer.upsert({"_id": ctx.guild.id, "message": res})
 
                 elif data["type"] == "embed":
+                    content_button = Button(
+                        style=discord.ButtonStyle.blurple, label='Set Content')
                     title_button = Button(
                         style=discord.ButtonStyle.blurple, label='Set Title')
                     description_button = Button(
@@ -718,17 +799,29 @@ class Welcomer(commands.Cog):
                         style=discord.ButtonStyle.blurple, label='Set Footer')
                     thumbnail_button = Button(
                         style=discord.ButtonStyle.blurple, label='Set Thumbnail')
+                    color_button = Button(
+                        style=discord.ButtonStyle.blurple, label='Set Color')
                     done_button = Button(
                         style=discord.ButtonStyle.green, label='Done')
                     edit_view = View()
+                    edit_view.add_item(content_button)
                     edit_view.add_item(title_button)
                     edit_view.add_item(description_button)
                     edit_view.add_item(image_button)
                     edit_view.add_item(footer_button)
                     edit_view.add_item(thumbnail_button)
+                    edit_view.add_item(color_button)
                     edit_view.add_item(done_button)
+
                     if data["title"].lower() == "none" and data["description"].lower() == "none":
-                        embed = discord.Embed(color=discord.Color.blue())
+                        embed = discord.Embed()
+                        if data["color"] != 'none':
+                            try:
+                                embed.color = eval(f'0x{data["color"]}')
+                            except:
+                                embed.color = discord.Color.blue()
+                        else:
+                            embed.color = discord.Color.blue()
                         try:
                             if data["image"].lower() != 'none':
                                 embed.set_image(url=data["image"])
@@ -748,10 +841,22 @@ class Welcomer(commands.Cog):
                             editm = discord.Embed(
                             description='**Variables**\n```yaml\n{user} - The mention of the user calling the command.\n{username} - The username of the user.\n{server} - The server name.\n```\n__**Note - Emojis should be in this Server or else they would not be displayed while Greeting Someone**__', color=0x3498DB)
                             await interaction.response.send_message(embed=editm, ephemeral=True)
-
-                            emb_embed = await ctx.send(embed=embed, view=edit_view)
+                            
+                            if data["content"].lower() != 'none':
+                                emb_embed = await ctx.send(content=data['content'], embed=embed, view=edit_view)
+                            else:
+                                emb_embed = await ctx.send(embed=embed, view=edit_view)
                         except:
-                            e_embed = discord.Embed(description='Use Buttons to Customize this Embed',color=discord.Color.blue())
+                            e_embed = discord.Embed(description='Use Buttons to Customize this Embed')
+
+                            if data["color"] != 'none':
+                                try:
+                                    e_embed.color = eval(f'0x{data["color"]}')
+                                except:
+                                    e_embed.color = discord.Color.blue()
+                            else:
+                                e_embed.color = discord.Color.blue()
+
                             try:
                                 if data["image"].lower() != 'none':
                                     e_embed.set_image(url=data["image"])
@@ -768,10 +873,21 @@ class Welcomer(commands.Cog):
                             except:
                                 pass
 
-                            emb_embed = await ctx.send(embed=e_embed, view=edit_view)
+                            if data["content"].lower() != 'none':
+                                emb_embed = await ctx.send(content=data['content'], embed=e_embed, view=edit_view)
+                            else:
+                                emb_embed = await ctx.send(embed=e_embed, view=edit_view)
                     elif data["title"].lower() != "none" and data["description"].lower() != "none":
-                        embed = discord.Embed(color=discord.Color.blue(
-                        ), title=data["title"], description=data["description"])
+                        embed = discord.Embed(title=data["title"], description=data["description"])
+
+                        if data["color"] != 'none':
+                            try:
+                                embed.color = eval(f'0x{data["color"]}')
+                            except:
+                                embed.color = discord.Color.blue()
+                        else:
+                            embed.color = discord.Color.blue()
+
                         try:
                             if data["image"].lower() != 'none':
                                 embed.set_image(url=data["image"])
@@ -792,9 +908,21 @@ class Welcomer(commands.Cog):
                             description='**Variables**\n```yaml\n{user} - The mention of the user calling the command.\n{username} - The username of the user.\n{server} - The server name.\n```\n__**Note - Emojis should be in this Server or else they would not be displayed while Greeting Someone**__', color=0x3498DB)
                             await interaction.response.send_message(embed=editm, ephemeral=True)
 
-                            emb_embed = await ctx.send(embed=embed, view=edit_view)
+                            if data["content"].lower() != 'none':
+                                emb_embed = await ctx.send(content=data['content'], embed=embed, view=edit_view)
+                            else:
+                                emb_embed = await ctx.send(embed=embed, view=edit_view)
                         except:
-                            e_embed = discord.Embed(description='Use Buttons to Customize this Embed',color=discord.Color.blue())
+                            e_embed = discord.Embed(description='Use Buttons to Customize this Embed')
+
+                            if data["color"] != 'none':
+                                try:
+                                    e_embed.color = eval(f'0x{data["color"]}')
+                                except:
+                                    e_embed.color = discord.Color.blue()
+                            else:
+                                e_embed.color = discord.Color.blue()
+
                             try:
                                 if data["image"].lower() != 'none':
                                     e_embed.set_image(url=data["image"])
@@ -811,11 +939,20 @@ class Welcomer(commands.Cog):
                             except:
                                 pass
 
-                            emb_embed = await ctx.send(embed=e_embed, view=edit_view)
+                            if data["content"].lower() != 'none':
+                                emb_embed = await ctx.send(content=data['content'], embed=e_embed, view=edit_view)
+                            else:
+                                emb_embed = await ctx.send(embed=e_embed, view=edit_view)
 
                     elif data["title"].lower() != "none" and data["description"].lower() == "none":
-                        embed = discord.Embed(
-                            color=discord.Color.blue(), title=data["title"])
+                        embed = discord.Embed(title=data["title"])
+                        if data["color"] != 'none':
+                            try:
+                                embed.color = eval(f'0x{data["color"]}')
+                            except:
+                                embed.color = discord.Color.blue()
+                        else:
+                            embed.color = discord.Color.blue()
                         try:
                             if data["image"].lower() != 'none':
                                 embed.set_image(url=data["image"])
@@ -836,9 +973,21 @@ class Welcomer(commands.Cog):
                             description='**Variables**\n```yaml\n{user} - The mention of the user calling the command.\n{username} - The username of the user.\n{server} - The server name.\n```\n__**Note - Emojis should be in this Server or else they would not be displayed while Greeting Someone**__', color=0x3498DB)
                             await interaction.response.send_message(embed=editm, ephemeral=True)
 
-                            emb_embed = await ctx.send(embed=embed, view=edit_view)
+                            if data["content"].lower() != 'none':
+                                emb_embed = await ctx.send(content=data['content'], embed=embed, view=edit_view)
+                            else:
+                                emb_embed = await ctx.send(embed=embed, view=edit_view)
                         except:
-                            e_embed = discord.Embed(description='Use Buttons to Customize this Embed',color=discord.Color.blue())
+                            e_embed = discord.Embed(description='Use Buttons to Customize this Embed')
+
+                            if data["color"] != 'none':
+                                try:
+                                    e_embed.color = eval(f'0x{data["color"]}')
+                                except:
+                                    e_embed.color = discord.Color.blue()
+                            else:
+                                e_embed.color = discord.Color.blue()
+
                             try:
                                 if data["image"].lower() != 'none':
                                     e_embed.set_image(url=data["image"])
@@ -855,11 +1004,22 @@ class Welcomer(commands.Cog):
                             except:
                                 pass
 
-                            emb_embed = await ctx.send(embed=e_embed, view=edit_view)
+                            if data["content"].lower() != 'none':
+                                emb_embed = await ctx.send(content=data['content'], embed=e_embed, view=edit_view)
+                            else:
+                                emb_embed = await ctx.send(embed=e_embed, view=edit_view)
 
                     elif data["title"].lower() == "none" and data["description"].lower() != "none":
-                        embed = discord.Embed(
-                            color=discord.Color.blue(), description=data["description"])
+                        embed = discord.Embed(description=data["description"])
+
+                        if data["color"] != 'none':
+                            try:
+                                embed.color = eval(f'0x{data["color"]}')
+                            except:
+                                embed.color = discord.Color.blue()
+                        else:
+                            embed.color = discord.Color.blue()
+
                         try:
                             if data["image"].lower() != 'none':
                                 embed.set_image(url=data["image"])
@@ -880,9 +1040,21 @@ class Welcomer(commands.Cog):
                             description='**Variables**\n```yaml\n{user} - The mention of the user calling the command.\n{username} - The username of the user.\n{server} - The server name.\n```\n__**Note - Emojis should be in this Server or else they would not be displayed while Greeting Someone**__', color=0x3498DB)
                             await interaction.response.send_message(embed=editm, ephemeral=True)
 
-                            emb_embed = await ctx.send(embed=embed, view=edit_view)
+                            if data["content"].lower() != 'none':
+                                emb_embed = await ctx.send(content=data['content'], embed=embed, view=edit_view)
+                            else:
+                                emb_embed = await ctx.send(embed=embed, view=edit_view)
                         except:
-                            e_embed = discord.Embed(description='Use Buttons to Customize this Embed',color=discord.Color.blue())
+                            e_embed = discord.Embed(description='Use Buttons to Customize this Embed')
+
+                            if data["color"] != 'none':
+                                try:
+                                    e_embed.color = eval(f'0x{data["color"]}')
+                                except:
+                                    e_embed.color = discord.Color.blue()
+                            else:
+                                e_embed.color = discord.Color.blue()
+
                             try:
                                 if data["image"].lower() != 'none':
                                     e_embed.set_image(url=data["image"])
@@ -899,10 +1071,22 @@ class Welcomer(commands.Cog):
                             except:
                                 pass
 
-                            emb_embed = await ctx.send(embed=e_embed, view=edit_view)
+                            if data["content"].lower() != 'none':
+                                emb_embed = await ctx.send(content=data['content'], embed=e_embed, view=edit_view)
+                            else:
+                                emb_embed = await ctx.send(embed=e_embed, view=edit_view)
 
                     else:
-                            e_embed = discord.Embed(description='Use Buttons to Customize this Embed',color=discord.Color.blue())
+                            e_embed = discord.Embed(description='Use Buttons to Customize this Embed')
+
+                            if data["color"] != 'none':
+                                try:
+                                    e_embed.color = eval(f'0x{data["color"]}')
+                                except:
+                                    e_embed.color = discord.Color.blue()
+                            else:
+                                e_embed.color = discord.Color.blue()
+
                             try:
                                 if data["image"].lower() != 'none':
                                     e_embed.set_image(url=data["image"])
@@ -919,7 +1103,271 @@ class Welcomer(commands.Cog):
                             except:
                                 pass
 
-                            emb_embed = await ctx.send(embed=e_embed, view=edit_view)
+                            if data["content"].lower() != 'none':
+                                emb_embed = await ctx.send(content=data['content'], embed=e_embed, view=edit_view)
+                            else:
+                                emb_embed = await ctx.send(embed=e_embed, view=edit_view)
+                    
+                    async def content_button_callback(interaction):
+                        if interaction.user != ctx.author:
+                            embeda = discord.Embed(
+                            description=f"Sorry, but this interaction can only be used by **{ctx.author.name}**.", color=0x3498DB)
+                            return await interaction.response.send_message(embed=embeda, ephemeral=True)
+
+                        ask = discord.Embed(description='**Enter the Content** *(Use None to remove)*', color=discord.Color.blue())
+                        await interaction.response.send_message(embed=ask)
+                        content = await self.bot.wait_for(
+                        "message",
+                        check=lambda x: x.channel.id == ctx.channel.id
+                        and ctx.author.id == x.author.id,
+                        timeout=None,
+                    )
+                        await self.bot.welcomer.upsert({"_id": interaction.guild.id, "content": content.content})
+                        await ctx.channel.purge(limit=2)
+                        data = await self.bot.welcomer.get_by_id(interaction.guild.id)
+                        if content.content.lower() == 'none':
+                            if data["title"].lower() == 'none' and data["description"].lower() == 'none':
+                                content_embed = discord.Embed()
+                                if data["color"] != 'none':
+                                    try:
+                                        content_embed.color = eval(f'0x{data["color"]}')
+                                    except:
+                                        content_embed.color = discord.Color.blue()
+                                else:
+                                    content_embed.color = discord.Color.blue()
+                                try:
+                                    if data["image"].lower() != 'none':
+                                        content_embed.set_image(url=data["image"])
+                                except:
+                                    pass
+                                try:
+                                    if data["thumbnail"].lower() != 'none':
+                                        content_embed.set_thumbnail(url=data["thumbnail"])
+                                except:
+                                    pass
+                                try:
+                                    if data["footer"].lower() != 'none':
+                                        content_embed.set_footer(text=data["footer"])
+                                except:
+                                    pass
+
+                            elif data["title"].lower() != 'none' and data["description"].lower() != 'none':
+                                content_embed = discord.Embed(title=data["title"], description=data["description"])
+
+                                if data["color"] != 'none':
+                                    try:
+                                        content_embed.color = eval(f'0x{data["color"]}')
+                                    except:
+                                        content_embed.color = discord.Color.blue()
+                                else:
+                                    content_embed.color = discord.Color.blue()
+
+                                try:
+                                    if data["image"].lower() != 'none':
+                                        content_embed.set_image(url=data["image"])
+                                except:
+                                    pass
+                                try:
+                                    if data["thumbnail"].lower() != 'none':
+                                        content_embed.set_thumbnail(url=data["thumbnail"])
+                                except:
+                                    pass
+                                try:
+                                    if data["footer"].lower() != 'none':
+                                        content_embed.set_footer(text=data["footer"])
+                                except:
+                                    pass
+
+                            elif data["title"].lower() == 'none' and data["description"].lower() != 'none':
+                                content_embed = discord.Embed(description=data["description"])
+                                if data["color"] != 'none':
+                                    try:
+                                        embed.color = eval(f'0x{data["color"]}')
+                                    except:
+                                        embed.color = discord.Color.blue()
+                                else:
+                                    embed.color = discord.Color.blue()
+                                try:
+                                    if data["image"].lower() != 'none':
+                                        content_embed.set_image(url=data["image"])
+                                except:
+                                    pass
+                                try:
+                                    if data["thumbnail"].lower() != 'none':
+                                        content_embed.set_thumbnail(url=data["thumbnail"])
+                                except:
+                                    pass
+                                try:
+                                    if data["footer"].lower() != 'none':
+                                        content_embed.set_footer(text=data["footer"])
+                                except:
+                                    pass
+                            elif data["title"].lower() != 'none' and data["description"].lower() == 'none':
+                                content_embed = discord.Embed(title=data["title"])
+                                if data["color"] != 'none':
+                                    try:
+                                        content_embed.color = eval(f'0x{data["color"]}')
+                                    except:
+                                        content_embed.color = discord.Color.blue()
+                                else:
+                                    content_embed.color = discord.Color.blue()
+                                try:
+                                    if data["image"].lower() != 'none':
+                                        content_embed.set_image(url=data["image"])
+                                except:
+                                    pass
+                                try:
+                                    if data["thumbnail"].lower() != 'none':
+                                        content_embed.set_thumbnail(url=data["thumbnail"])
+                                except:
+                                    pass
+                                try:
+                                    if data["footer"].lower() != 'none':
+                                        content_embed.set_footer(text=data["footer"])
+                                except:
+                                    pass
+                            
+                            try:
+                                await emb_embed.edit(embed=emb_embed, view=edit_view)
+                            except:
+                                content_embed = discord.Embed(description='Use Buttons to Customize this Embed')
+                                if data["color"] != 'none':
+                                    try:
+                                        content_embed.color = eval(f'0x{data["color"]}')
+                                    except:
+                                        content_embed.color = discord.Color.blue()
+                                else:
+                                    content_embed.color = discord.Color.blue()
+                                try:
+                                    if data["image"].lower() != 'none':
+                                        content_embed.set_image(url=data["image"])
+                                except:
+                                    pass
+                                try:
+                                    if data["thumbnail"].lower() != 'none':
+                                        content_embed.set_thumbnail(url=data["thumbnail"])
+                                except:
+                                    pass
+                                try:
+                                    if data["footer"].lower() != 'none':
+                                        content_embed.set_footer(text=data["footer"])
+                                except:
+                                    pass
+                                
+                                if data["content"].lower() != 'none':
+                                    await emb_embed.edit(content=data["content"],embed=content_embed, view=edit_view)
+                                else:
+                                    await emb_embed.edit(embed=content_embed, view=edit_view)
+
+                        if data["title"].lower() == 'none' and data["description"].lower() == 'none':
+                            content_embed = discord.Embed()
+                            if data["color"] != 'none':
+                                try:
+                                    content_embed.color = eval(f'0x{data["color"]}')
+                                except:
+                                    content_embed.color = discord.Color.blue()
+                            else:
+                                content_embed.color = discord.Color.blue()
+                            try:
+                                if data["image"].lower() != 'none':
+                                    content_embed.set_image(url=data["image"])
+                            except:
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
+                                await ctx.send(embed=errembed)
+                            try:
+                                if data["thumbnail"].lower() != 'none':
+                                    content_embed.set_thumbnail(url=data["thumbnail"])
+                            except:
+                                pass
+                            try:
+                                if data["footer"].lower() != 'none':
+                                    content_embed.set_footer(text=data["footer"])
+                            except:
+                                pass
+
+                        elif data["title"].lower() != 'none' and data["description"].lower() != 'none':
+                            content_embed = discord.Embed(title=data["title"], description=data["description"])
+                            if data["color"] != 'none':
+                                try:
+                                    content_embed.color = eval(f'0x{data["color"]}')
+                                except:
+                                    content_embed.color = discord.Color.blue()
+                            else:
+                                content_embed.color = discord.Color.blue()
+                            try:
+                                if data["image"].lower() != 'none':
+                                    content_embed.set_image(url=data["image"])
+                            except:
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
+                                await ctx.send(embed=errembed)
+                            try:
+                                if data["thumbnail"].lower() != 'none':
+                                    content_embed.set_thumbnail(url=data["thumbnail"])
+                            except:
+                                pass
+                            try:
+                                if data["footer"].lower() != 'none':
+                                    content_embed.set_footer(text=data["footer"])
+                            except:
+                                pass
+                        elif data["title"].lower() == 'none' and data["description"].lower() != 'none':
+                            content_embed = discord.Embed(description=data["description"])
+                            if data["color"] != 'none':
+                                try:
+                                    content_embed.color = eval(f'0x{data["color"]}')
+                                except:
+                                    content_embed.color = discord.Color.blue()
+                            else:
+                                content_embed.color = discord.Color.blue()
+                            try:
+                                if data["image"].lower() != 'none':
+                                    content_embed.set_image(url=data["image"])
+                            except:
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
+                                await ctx.send(embed=errembed)
+                            try:
+                                if data["thumbnail"].lower() != 'none':
+                                    content_embed.set_thumbnail(url=data["thumbnail"])
+                            except:
+                                pass
+                            try:
+                                if data["footer"].lower() != 'none':
+                                    content_embed.set_footer(text=data["footer"])
+                            except:
+                                pass
+                        elif data["title"].lower() != 'none' and data["description"].lower() == 'none':
+                            content_embed = discord.Embed(title=data["title"], description=data["description"])
+
+                            if data["color"] != 'none':
+                                try:
+                                    content_embed.color = eval(f'0x{data["color"]}')
+                                except:
+                                    content_embed.color = discord.Color.blue()
+                            else:
+                                content_embed.color = discord.Color.blue()
+
+                            try:
+                                if data["image"].lower() != 'none':
+                                    content_embed.set_image(url=data["image"])
+                            except:
+                                    pass
+                            try:
+                                if data["thumbnail"].lower() != 'none':
+                                    content_embed.set_thumbnail(url=data["thumbnail"])
+                            except:
+                                pass
+                            try:
+                                if data["footer"].lower() != 'none':
+                                    content_embed.set_footer(text=data["footer"])
+                            except:
+                                pass
+                            
+                        if data["content"].lower() != 'none':
+                            await emb_embed.edit(content=data["content"],embed=content_embed, view=edit_view)
+                        else:
+                            await emb_embed.edit(embed=content_embed, view=edit_view)
+                    
+                    content_button.callback = content_button_callback
 
                     async def title_button_callback(interaction):
                         if interaction.user != ctx.author:
@@ -941,7 +1389,14 @@ class Welcomer(commands.Cog):
                         data = await self.bot.welcomer.get_by_id(interaction.guild.id)
                         if title.content.lower() == 'none':
                             if data["description"].lower() == 'none':
-                                title_embed = discord.Embed(color=discord.Color.blue())
+                                title_embed = discord.Embed()
+                                if data["color"] != 'none':
+                                    try:
+                                        title_embed.color = eval(f'0x{data["color"]}')
+                                    except:
+                                        title_embed.color = discord.Color.blue()
+                                else:
+                                    title_embed.color = discord.Color.blue()
                                 try:
                                     if data["image"].lower() != 'none':
                                         title_embed.set_image(url=data["image"])
@@ -959,7 +1414,14 @@ class Welcomer(commands.Cog):
                                     pass
 
                             elif data["description"].lower() != 'none':
-                                title_embed = discord.Embed(description=data["description"], color=discord.Color.blue())
+                                title_embed = discord.Embed(description=data["description"])
+                                if data["color"] != 'none':
+                                    try:
+                                        title_embed.color = eval(f'0x{data["color"]}')
+                                    except:
+                                        title_embed.color = discord.Color.blue()
+                                else:
+                                    title_embed.color = discord.Color.blue()
                                 try:
                                     if data["image"].lower() != 'none':
                                         title_embed.set_image(url=data["image"])
@@ -979,7 +1441,14 @@ class Welcomer(commands.Cog):
                             try:
                                 await emb_embed.edit(embed=title_embed, view=edit_view)
                             except:
-                                title_embed = discord.Embed(description='Use Buttons to Customize this Embed',color=discord.Color.blue())
+                                title_embed = discord.Embed(description='Use Buttons to Customize this Embed')
+                                if data["color"] != 'none':
+                                    try:
+                                        title_embed.color = eval(f'0x{data["color"]}')
+                                    except:
+                                        title_embed.color = discord.Color.blue()
+                                else:
+                                    title_embed.color = discord.Color.blue()
                                 try:
                                     if data["image"].lower() != 'none':
                                         title_embed.set_image(url=data["image"])
@@ -1000,7 +1469,14 @@ class Welcomer(commands.Cog):
 
 
                         if data["description"].lower() == 'none':
-                            title_embed = discord.Embed(title=title.content, color=discord.Color.blue())
+                            title_embed = discord.Embed(title=title.content)
+                            if data["color"] != 'none':
+                                try:
+                                    title_embed.color = eval(f'0x{data["color"]}')
+                                except:
+                                    title_embed.color = discord.Color.blue()
+                            else:
+                                title_embed.color = discord.Color.blue()
                             try:
                                 if data["image"].lower() != 'none':
                                     title_embed.set_image(url=data["image"])
@@ -1018,7 +1494,14 @@ class Welcomer(commands.Cog):
                                 pass
 
                         elif data["description"].lower() != 'none':
-                            title_embed = discord.Embed(title=title.content, description=data["description"], color=discord.Color.blue())
+                            title_embed = discord.Embed(title=title.content, description=data["description"])
+                            if data["color"] != 'none':
+                                try:
+                                    title_embed.color = eval(f'0x{data["color"]}')
+                                except:
+                                    title_embed.color = discord.Color.blue()
+                            else:
+                                title_embed.color = discord.Color.blue()
                             try:
                                 if data["image"].lower() != 'none':
                                     title_embed.set_image(url=data["image"])
@@ -1058,7 +1541,14 @@ class Welcomer(commands.Cog):
                         data = await self.bot.welcomer.get_by_id(interaction.guild.id)
                         if description.content.lower() == 'none':
                             if data["title"].lower() == 'none':
-                                description_embed = discord.Embed(color=discord.Color.blue())
+                                description_embed = discord.Embed()
+                                if data["color"] != 'none':
+                                    try:
+                                        description_embed.color = eval(f'0x{data["color"]}')
+                                    except:
+                                        description_embed.color = discord.Color.blue()
+                                else:
+                                    description_embed.color = discord.Color.blue()
                                 try:
                                     if data["image"].lower() != 'none':
                                         description_embed.set_image(url=data["image"])
@@ -1076,7 +1566,14 @@ class Welcomer(commands.Cog):
                                     pass
 
                             elif data["title"].lower() != 'none':
-                                description_embed = discord.Embed(title=data["title"], color=discord.Color.blue())
+                                description_embed = discord.Embed(title=data["title"])
+                                if data["color"] != 'none':
+                                    try:
+                                        description_embed.color = eval(f'0x{data["color"]}')
+                                    except:
+                                        description_embed.color = discord.Color.blue()
+                                else:
+                                    description_embed.color = discord.Color.blue()
                                 try:
                                     if data["image"].lower() != 'none':
                                         description_embed.set_image(url=data["image"])
@@ -1096,7 +1593,14 @@ class Welcomer(commands.Cog):
                             try:
                                 await emb_embed.edit(embed=description_embed, view=edit_view)
                             except:
-                                description_embed = discord.Embed(description='Use Buttons to Customize this Embed',color=discord.Color.blue())
+                                description_embed = discord.Embed(description='Use Buttons to Customize this Embed')
+                                if data["color"] != 'none':
+                                    try:
+                                        description_embed.color = eval(f'0x{data["color"]}')
+                                    except:
+                                        description_embed.color = discord.Color.blue()
+                                else:
+                                    description_embed.color = discord.Color.blue()
                                 try:
                                     if data["image"].lower() != 'none':
                                         description_embed.set_image(url=data["image"])
@@ -1117,7 +1621,14 @@ class Welcomer(commands.Cog):
 
 
                         if data["title"].lower() == 'none':
-                            description_embed = discord.Embed(description=description.content, color=discord.Color.blue())
+                            description_embed = discord.Embed(description=description.content)
+                            if data["color"] != 'none':
+                                try:
+                                    description_embed.color = eval(f'0x{data["color"]}')
+                                except:
+                                    description_embed.color = discord.Color.blue()
+                            else:
+                                description_embed.color = discord.Color.blue()
                             try:
                                 if data["image"].lower() != 'none':
                                     description_embed.set_image(url=data["image"])
@@ -1135,7 +1646,14 @@ class Welcomer(commands.Cog):
                                 pass
 
                         elif data["title"].lower() != 'none':
-                            description_embed = discord.Embed(title=data["title"], description=description.content, color=discord.Color.blue())
+                            description_embed = discord.Embed(title=data["title"], description=description.content)
+                            if data["color"] != 'none':
+                                try:
+                                    description_embed.color = eval(f'0x{data["color"]}')
+                                except:
+                                    description_embed.color = discord.Color.blue()
+                            else:
+                                description_embed.color = discord.Color.blue()
                             try:
                                 if data["image"].lower() != 'none':
                                     description_embed.set_image(url=data["image"])
@@ -1185,7 +1703,14 @@ class Welcomer(commands.Cog):
                         data = await self.bot.welcomer.get_by_id(interaction.guild.id)
                         if image.content.lower() == 'none':
                             if data["title"].lower() == 'none' and data["description"].lower() == 'none':
-                                image_embed = discord.Embed(color=discord.Color.blue())
+                                image_embed = discord.Embed()
+                                if data["color"] != 'none':
+                                    try:
+                                        image_embed.color = eval(f'0x{data["color"]}')
+                                    except:
+                                        image_embed.color = discord.Color.blue()
+                                else:
+                                    image_embed.color = discord.Color.blue()
                                 try:
                                     if image.content.lower() != 'none':
                                         image_embed.set_image(url=data["image"])
@@ -1203,7 +1728,14 @@ class Welcomer(commands.Cog):
                                     pass
 
                             elif data["title"].lower() != 'none' and data["description"].lower() != 'none':
-                                image_embed = discord.Embed(title=data["title"], description=data["description"],color=discord.Color.blue())
+                                image_embed = discord.Embed(title=data["title"], description=data["description"])
+                                if data["color"] != 'none':
+                                    try:
+                                        image_embed.color = eval(f'0x{data["color"]}')
+                                    except:
+                                        image_embed.color = discord.Color.blue()
+                                else:
+                                    image_embed.color = discord.Color.blue()
                                 try:
                                     if image.content.lower() != 'none':
                                         image_embed.set_image(url=data["image"])
@@ -1221,7 +1753,14 @@ class Welcomer(commands.Cog):
                                     pass
 
                             elif data["title"].lower() == 'none' and data["description"].lower() != 'none':
-                                image_embed = discord.Embed(description=data["description"],color=discord.Color.blue())
+                                image_embed = discord.Embed(description=data["description"])
+                                if data["color"] != 'none':
+                                    try:
+                                        image_embed.color = eval(f'0x{data["color"]}')
+                                    except:
+                                        image_embed.color = discord.Color.blue()
+                                else:
+                                    image_embed.color = discord.Color.blue()
                                 try:
                                     if image.content.lower() != 'none':
                                         image_embed.set_image(url=data["image"])
@@ -1238,7 +1777,14 @@ class Welcomer(commands.Cog):
                                 except:
                                     pass
                             elif data["title"].lower() != 'none' and data["description"].lower() == 'none':
-                                image_embed = discord.Embed(title=data["title"],color=discord.Color.blue())
+                                image_embed = discord.Embed(title=data["title"])
+                                if data["color"] != 'none':
+                                    try:
+                                        image_embed.color = eval(f'0x{data["color"]}')
+                                    except:
+                                        image_embed.color = discord.Color.blue()
+                                else:
+                                    image_embed.color = discord.Color.blue()
                                 try:
                                     if image.content.lower() != 'none':
                                         image_embed.set_image(url=data["image"])
@@ -1258,7 +1804,14 @@ class Welcomer(commands.Cog):
                             try:
                                 await emb_embed.edit(embed=image_embed, view=edit_view)
                             except:
-                                image_embed = discord.Embed(description='Use Buttons to Customize this Embed',color=discord.Color.blue())
+                                image_embed = discord.Embed(description='Use Buttons to Customize this Embed')
+                                if data["color"] != 'none':
+                                    try:
+                                        image_embed.color = eval(f'0x{data["color"]}')
+                                    except:
+                                        image_embed.color = discord.Color.blue()
+                                else:
+                                    image_embed.color = discord.Color.blue()
                                 try:
                                     if image.content.lower() != 'none':
                                         image_embed.set_image(url=data["image"])
@@ -1278,13 +1831,22 @@ class Welcomer(commands.Cog):
                                 await emb_embed.edit(embed=image_embed, view=edit_view)
 
                         if data["title"].lower() == 'none' and data["description"].lower() == 'none':
-                            image_embed = discord.Embed(color=discord.Color.blue())
+                            image_embed = discord.Embed()
+                            if data["color"] != 'none':
+                                try:
+                                    image_embed.color = eval(f'0x{data["color"]}')
+                                except:
+                                    image_embed.color = discord.Color.blue()
+                            else:
+                                image_embed.color = discord.Color.blue()
                             try:
                                 if image.content.lower() != 'none':
                                     image_embed.set_image(url=image.content)
                             except:
                                 errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
                                 await ctx.send(embed=errembed)
+                                await asyncio.sleep(5)
+                                await errembed.delete()
                             try:
                                 if data["thumbnail"].lower() != 'none':
                                     image_embed.set_thumbnail(url=data["thumbnail"])
@@ -1297,7 +1859,14 @@ class Welcomer(commands.Cog):
                                 pass
 
                         elif data["title"].lower() != 'none' and data["description"].lower() != 'none':
-                            image_embed = discord.Embed(title=data["title"], description=data["description"], color=discord.Color.blue())
+                            image_embed = discord.Embed(title=data["title"], description=data["description"])
+                            if data["color"] != 'none':
+                                try:
+                                    image_embed.color = eval(f'0x{data["color"]}')
+                                except:
+                                    image_embed.color = discord.Color.blue()
+                            else:
+                                image_embed.color = discord.Color.blue()
                             try:
                                 if image.content.lower() != 'none':
                                     image_embed.set_image(url=image.content)
@@ -1315,7 +1884,14 @@ class Welcomer(commands.Cog):
                             except:
                                 pass
                         elif data["title"].lower() == 'none' and data["description"].lower() != 'none':
-                            image_embed = discord.Embed(description=data["description"], color=discord.Color.blue())
+                            image_embed = discord.Embed(description=data["description"])
+                            if data["color"] != 'none':
+                                try:
+                                    image_embed.color = eval(f'0x{data["color"]}')
+                                except:
+                                    image_embed.color = discord.Color.blue()
+                            else:
+                                image_embed.color = discord.Color.blue()
                             try:
                                 if image.content.lower() != 'none':
                                     image_embed.set_image(url=image.content)
@@ -1333,7 +1909,14 @@ class Welcomer(commands.Cog):
                             except:
                                 pass
                         elif data["title"].lower() != 'none' and data["description"].lower() == 'none':
-                            image_embed = discord.Embed(title=data["title"], description=data["description"], color=discord.Color.blue())
+                            image_embed = discord.Embed(title=data["title"], description=data["description"])
+                            if data["color"] != 'none':
+                                try:
+                                    image_embed.color = eval(f'0x{data["color"]}')
+                                except:
+                                    image_embed.color = discord.Color.blue()
+                            else:
+                                image_embed.color = discord.Color.blue()
                             try:
                                 if image.content.lower() != 'none':
                                     image_embed.set_image(url=image.content)
@@ -1389,7 +1972,14 @@ class Welcomer(commands.Cog):
                         data = await self.bot.welcomer.get_by_id(interaction.guild.id)
                         if thumb.content.lower() == 'none':
                             if data["title"].lower() == 'none' and data["description"].lower() == 'none':
-                                thumb_embed = discord.Embed(color=discord.Color.blue())
+                                thumb_embed = discord.Embed()
+                                if data["color"] != 'none':
+                                    try:
+                                        thumb_embed.color = eval(f'0x{data["color"]}')
+                                    except:
+                                        thumb_embed.color = discord.Color.blue()
+                                else:
+                                    thumb_embed.color = discord.Color.blue()
                                 try:
                                     if data["image"].lower() != 'none':
                                         thumb_embed.set_image(url=data["image"])
@@ -1407,7 +1997,14 @@ class Welcomer(commands.Cog):
                                     pass
 
                             elif data["title"].lower() != 'none' and data["description"].lower() != 'none':
-                                thumb_embed = discord.Embed(title=data["title"], description=data["description"],color=discord.Color.blue())
+                                thumb_embed = discord.Embed(title=data["title"], description=data["description"])
+                                if data["color"] != 'none':
+                                    try:
+                                        thumb_embed.color = eval(f'0x{data["color"]}')
+                                    except:
+                                        thumb_embed.color = discord.Color.blue()
+                                else:
+                                    thumb_embed.color = discord.Color.blue()
                                 try:
                                     if data["image"].lower() != 'none':
                                         thumb_embed.set_image(url=data["image"])
@@ -1425,7 +2022,14 @@ class Welcomer(commands.Cog):
                                     pass
 
                             elif data["title"].lower() == 'none' and data["description"].lower() != 'none':
-                                thumb_embed = discord.Embed(description=data["description"],color=discord.Color.blue())
+                                thumb_embed = discord.Embed(description=data["description"])
+                                if data["color"] != 'none':
+                                    try:
+                                        thumb_embed.color = eval(f'0x{data["color"]}')
+                                    except:
+                                        thumb_embed.color = discord.Color.blue()
+                                else:
+                                    thumb_embed.color = discord.Color.blue()
                                 try:
                                     if data["image"].lower() != 'none':
                                         thumb_embed.set_image(url=data["image"])
@@ -1442,7 +2046,14 @@ class Welcomer(commands.Cog):
                                 except:
                                     pass
                             elif data["title"].lower() != 'none' and data["description"].lower() == 'none':
-                                thumb_embed = discord.Embed(title=data["title"],color=discord.Color.blue())
+                                thumb_embed = discord.Embed(title=data["title"])
+                                if data["color"] != 'none':
+                                    try:
+                                        thumb_embed.color = eval(f'0x{data["color"]}')
+                                    except:
+                                        thumb_embed.color = discord.Color.blue()
+                                else:
+                                    thumb_embed.color = discord.Color.blue()
                                 try:
                                     if data["image"].lower() != 'none':
                                         thumb_embed.set_image(url=data["image"])
@@ -1462,7 +2073,14 @@ class Welcomer(commands.Cog):
                             try:
                                 await emb_embed.edit(embed=thumb_embed, view=edit_view)
                             except:
-                                thumb_embed = discord.Embed(description='Use Buttons to Customize this Embed',color=discord.Color.blue())
+                                thumb_embed = discord.Embed(description='Use Buttons to Customize this Embed')
+                                if data["color"] != 'none':
+                                    try:
+                                        thumb_embed.color = eval(f'0x{data["color"]}')
+                                    except:
+                                        thumb_embed.color = discord.Color.blue()
+                                else:
+                                    thumb_embed.color = discord.Color.blue()
                                 try:
                                     if data["image"].lower() != 'none':
                                         thumb_embed.set_image(url=data["image"])
@@ -1482,7 +2100,14 @@ class Welcomer(commands.Cog):
                                 await emb_embed.edit(embed=thumb_embed, view=edit_view)
 
                         if data["title"].lower() == 'none' and data["description"].lower() == 'none':
-                            thumb_embed = discord.Embed(color=discord.Color.blue())
+                            thumb_embed = discord.Embed()
+                            if data["color"] != 'none':
+                                try:
+                                    thumb_embed.color = eval(f'0x{data["color"]}')
+                                except:
+                                    thumb_embed.color = discord.Color.blue()
+                            else:
+                                thumb_embed.color = discord.Color.blue()
                             try:
                                 if data["image"].lower() != 'none':
                                     thumb_embed.set_image(url=data["image"])
@@ -1501,7 +2126,14 @@ class Welcomer(commands.Cog):
                                 pass
 
                         elif data["title"].lower() != 'none' and data["description"].lower() != 'none':
-                            thumb_embed = discord.Embed(title=data["title"], description=data["description"], color=discord.Color.blue())
+                            thumb_embed = discord.Embed(title=data["title"], description=data["description"])
+                            if data["color"] != 'none':
+                                try:
+                                    thumb_embed.color = eval(f'0x{data["color"]}')
+                                except:
+                                    thumb_embed.color = discord.Color.blue()
+                            else:
+                                thumb_embed.color = discord.Color.blue()
                             try:
                                 if data["image"].lower() != 'none':
                                     thumb_embed.set_image(url=data["image"])
@@ -1519,13 +2151,22 @@ class Welcomer(commands.Cog):
                             except:
                                 pass
                         elif data["title"].lower() == 'none' and data["description"].lower() != 'none':
-                            thumb_embed = discord.Embed(description=data["description"], color=discord.Color.blue())
+                            thumb_embed = discord.Embed(description=data["description"])
+                            if data["color"] != 'none':
+                                try:
+                                    thumb_embed.color = eval(f'0x{data["color"]}')
+                                except:
+                                    thumb_embed.color = discord.Color.blue()
+                            else:
+                                thumb_embed.color = discord.Color.blue()
                             try:
                                 if data["image"].lower() != 'none':
                                     thumb_embed.set_image(url=data["image"])
                             except:
                                 errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
                                 await ctx.send(embed=errembed)
+                                await asyncio.sleep(5)
+                                await errembed.delete()
                             try:
                                 if thumb.content.lower() != 'none':
                                     thumb_embed.set_thumbnail(url=thumb.content)
@@ -1537,7 +2178,14 @@ class Welcomer(commands.Cog):
                             except:
                                 pass
                         elif data["title"].lower() != 'none' and data["description"].lower() == 'none':
-                            thumb_embed = discord.Embed(title=data["title"], description=data["description"], color=discord.Color.blue())
+                            thumb_embed = discord.Embed(title=data["title"], description=data["description"])
+                            if data["color"] != 'none':
+                                try:
+                                    thumb_embed.color = eval(f'0x{data["color"]}')
+                                except:
+                                    thumb_embed.color = discord.Color.blue()
+                            else:
+                                thumb_embed.color = discord.Color.blue()
                             try:
                                 if data["image"].lower() != 'none':
                                     thumb_embed.set_image(url=data["image"])
@@ -1583,7 +2231,14 @@ class Welcomer(commands.Cog):
                         data = await self.bot.welcomer.get_by_id(interaction.guild.id)
                         if footer.content.lower() == 'none':
                             if data["title"].lower() == 'none' and data["description"].lower() == 'none':
-                                footer_embed = discord.Embed(color=discord.Color.blue())
+                                footer_embed = discord.Embed()
+                                if data["color"] != 'none':
+                                    try:
+                                        footer_embed.color = eval(f'0x{data["color"]}')
+                                    except:
+                                        footer_embed.color = discord.Color.blue()
+                                else:
+                                    footer_embed.color = discord.Color.blue()
                                 try:
                                     if data["image"].lower() != 'none':
                                         footer_embed.set_image(url=data["image"])
@@ -1601,7 +2256,14 @@ class Welcomer(commands.Cog):
                                     pass
 
                             elif data["title"].lower() != 'none' and data["description"].lower() != 'none':
-                                footer_embed = discord.Embed(title=data["title"], description=data["description"],color=discord.Color.blue())
+                                footer_embed = discord.Embed(title=data["title"], description=data["description"])
+                                if data["color"] != 'none':
+                                    try:
+                                        footer_embed.color = eval(f'0x{data["color"]}')
+                                    except:
+                                        footer_embed.color = discord.Color.blue()
+                                else:
+                                    footer_embed.color = discord.Color.blue()
                                 try:
                                     if data["image"].lower() != 'none':
                                         footer_embed.set_image(url=data["image"])
@@ -1613,13 +2275,20 @@ class Welcomer(commands.Cog):
                                 except:
                                     pass
                                 try:
-                                    if data["footer"].lower() != 'none':
-                                        footer_embed.set_footer(text=data["footer"])
+                                    if footer.content.lower() != 'none':
+                                        footer_embed.set_footer(text=footer.content)
                                 except:
                                     pass
 
                             elif data["title"].lower() == 'none' and data["description"].lower() != 'none':
-                                footer_embed = discord.Embed(description=data["description"],color=discord.Color.blue())
+                                footer_embed = discord.Embed(description=data["description"])
+                                if data["color"] != 'none':
+                                    try:
+                                        footer_embed.color = eval(f'0x{data["color"]}')
+                                    except:
+                                        footer_embed.color = discord.Color.blue()
+                                else:
+                                    footer_embed.color = discord.Color.blue()
                                 try:
                                     if data["image"].lower() != 'none':
                                         footer_embed.set_image(url=data["image"])
@@ -1636,7 +2305,14 @@ class Welcomer(commands.Cog):
                                 except:
                                     pass
                             elif data["title"].lower() != 'none' and data["description"].lower() == 'none':
-                                footer_embed = discord.Embed(title=data["title"],color=discord.Color.blue())
+                                footer_embed = discord.Embed(title=data["title"])
+                                if data["color"] != 'none':
+                                    try:
+                                        footer_embed.color = eval(f'0x{data["color"]}')
+                                    except:
+                                        footer_embed.color = discord.Color.blue()
+                                else:
+                                    footer_embed.color = discord.Color.blue()
                                 try:
                                     if data["image"].lower() != 'none':
                                         footer_embed.set_image(url=data["image"])
@@ -1656,7 +2332,14 @@ class Welcomer(commands.Cog):
                             try:
                                 await emb_embed.edit(embed=footer_embed, view=edit_view)
                             except:
-                                footer_embed = discord.Embed(description='Use Buttons to Customize this Embed',color=discord.Color.blue())
+                                footer_embed = discord.Embed(description='Use Buttons to Customize this Embed')
+                                if data["color"] != 'none':
+                                    try:
+                                        footer_embed.color = eval(f'0x{data["color"]}')
+                                    except:
+                                        footer_embed.color = discord.Color.blue()
+                                else:
+                                    footer_embed.color = discord.Color.blue()
                                 try:
                                     if data["image"].lower() != 'none':
                                         footer_embed.set_image(url=data["image"])
@@ -1676,7 +2359,14 @@ class Welcomer(commands.Cog):
                                 await emb_embed.edit(embed=footer_embed, view=edit_view)
 
                         if data["title"].lower() == 'none' and data["description"].lower() == 'none':
-                            footer_embed = discord.Embed(color=discord.Color.blue())
+                            footer_embed = discord.Embed()
+                            if data["color"] != 'none':
+                                try:
+                                    footer_embed.color = eval(f'0x{data["color"]}')
+                                except:
+                                    footer_embed.color = discord.Color.blue()
+                            else:
+                                footer_embed.color = discord.Color.blue()
                             try:
                                 if data["image"].lower() != 'none':
                                     footer_embed.set_image(url=data["image"])
@@ -1695,7 +2385,14 @@ class Welcomer(commands.Cog):
                                 pass
 
                         elif data["title"].lower() != 'none' and data["description"].lower() != 'none':
-                            footer_embed = discord.Embed(title=data["title"], description=data["description"], color=discord.Color.blue())
+                            footer_embed = discord.Embed(title=data["title"], description=data["description"])
+                            if data["color"] != 'none':
+                                try:
+                                    footer_embed.color = eval(f'0x{data["color"]}')
+                                except:
+                                    footer_embed.color = discord.Color.blue()
+                            else:
+                                footer_embed.color = discord.Color.blue()
                             try:
                                 if data["image"].lower() != 'none':
                                     footer_embed.set_image(url=data["image"])
@@ -1713,7 +2410,14 @@ class Welcomer(commands.Cog):
                             except:
                                 pass
                         elif data["title"].lower() == 'none' and data["description"].lower() != 'none':
-                            footer_embed = discord.Embed(description=data["description"], color=discord.Color.blue())
+                            footer_embed = discord.Embed(description=data["description"])
+                            if data["color"] != 'none':
+                                try:
+                                    footer_embed.color = eval(f'0x{data["color"]}')
+                                except:
+                                    footer_embed.color = discord.Color.blue()
+                            else:
+                                footer_embed.color = discord.Color.blue()
                             try:
                                 if data["image"].lower() != 'none':
                                     footer_embed.set_image(url=data["image"])
@@ -1731,18 +2435,19 @@ class Welcomer(commands.Cog):
                             except:
                                 pass
                         elif data["title"].lower() != 'none' and data["description"].lower() == 'none':
-                            footer_embed = discord.Embed(title=data["title"], description=data["description"], color=discord.Color.blue())
+                            footer_embed = discord.Embed(title=data["title"], description=data["description"])
+                            if data["color"] != 'none':
+                                try:
+                                    footer_embed.color = eval(f'0x{data["color"]}')
+                                except:
+                                    footer_embed.color = discord.Color.blue()
+                            else:
+                                footer_embed.color = discord.Color.blue()
                             try:
                                 if data["image"].lower() != 'none':
                                     footer_embed.set_image(url=data["image"])
                             except:
-                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
-                                d = await ctx.send(embed=errembed)
-                                await asyncio.sleep(5)
-                                try:
-                                    await d.delete()
-                                except:
-                                    pass
+                                pass
                             try:
                                 if data["thumbnail"].lower() != 'none':
                                     footer_embed.set_thumbnail(url=data["thumbnail"])
@@ -1756,6 +2461,262 @@ class Welcomer(commands.Cog):
                             
                         await emb_embed.edit(embed=footer_embed, view=edit_view)
                     footer_button.callback = footer_button_callback
+
+                    async def color_button_callback(interaction):
+                        if interaction.user != ctx.author:
+                            embeda = discord.Embed(
+                            description=f"Sorry, but this interaction can only be used by **{ctx.author.name}**.", color=0x3498DB)
+                            return await interaction.response.send_message(embed=embeda, ephemeral=True)
+
+                        ask = discord.Embed(description='**Enter the Color** *(In Hex Code)* *(Use None for default color)*', color=discord.Color.blue())
+                        await interaction.response.send_message(embed=ask)
+                        color = await self.bot.wait_for(
+                        "message",
+                        check=lambda x: x.channel.id == ctx.channel.id
+                        and ctx.author.id == x.author.id,
+                        timeout=None,
+                    )
+                        colo = color.content.replace('#', '')
+                        await self.bot.welcomer.upsert({"_id": interaction.guild.id, "color": colo})
+                        await ctx.channel.purge(limit=2)
+                        data = await self.bot.welcomer.get_by_id(interaction.guild.id)
+                        if color.content.lower() == 'none':
+                            if data["title"].lower() == 'none' and data["description"].lower() == 'none':
+                                color_embed = discord.Embed()
+                                color_embed.color = discord.Color.blue()
+                                try:
+                                    if data["image"].lower() != 'none':
+                                        color_embed.set_image(url=data["image"])
+                                except:
+                                    pass
+                                try:
+                                    if data["thumbnail"].lower() != 'none':
+                                        color_embed.set_thumbnail(url=data["thumbnail"])
+                                except:
+                                    pass
+                                try:
+                                    if data["footer"].lower() != 'none':
+                                        color_embed.set_footer(text=data["footer"])
+                                except:
+                                    pass
+
+                            elif data["title"].lower() != 'none' and data["description"].lower() != 'none':
+                                color_embed = discord.Embed(title=data["title"], description=data["description"])
+
+                                if colo != 'none':
+                                    try:
+                                        color_embed.color = eval(f'0x{colo}')
+                                    except:
+                                        color_embed.color = discord.Color.blue()
+                                else:
+                                    color_embed.color = discord.Color.blue()
+
+                                try:
+                                    if data["image"].lower() != 'none':
+                                        color_embed.set_image(url=data["image"])
+                                except:
+                                    pass
+                                try:
+                                    if data["thumbnail"].lower() != 'none':
+                                        color_embed.set_thumbnail(url=data["thumbnail"])
+                                except:
+                                    pass
+                                try:
+                                    if data["footer"].lower() != 'none':
+                                        color_embed.set_footer(text=data["footer"])
+                                except:
+                                    pass
+
+                            elif data["title"].lower() == 'none' and data["description"].lower() != 'none':
+                                color_embed = discord.Embed(description=data["description"])
+                                if colo != 'none':
+                                    try:
+                                        embed.color = eval(f'0x{colo}')
+                                    except:
+                                        embed.color = discord.Color.blue()
+                                else:
+                                    embed.color = discord.Color.blue()
+                                try:
+                                    if data["image"].lower() != 'none':
+                                        color_embed.set_image(url=data["image"])
+                                except:
+                                    pass
+                                try:
+                                    if data["thumbnail"].lower() != 'none':
+                                        color_embed.set_thumbnail(url=data["thumbnail"])
+                                except:
+                                    pass
+                                try:
+                                    if data["footer"].lower() != 'none':
+                                        color_embed.set_footer(text=data["footer"])
+                                except:
+                                    pass
+                            elif data["title"].lower() != 'none' and data["description"].lower() == 'none':
+                                color_embed = discord.Embed(title=data["title"])
+                                if colo != 'none':
+                                    try:
+                                        color_embed.color = eval(f'0x{colo}')
+                                    except:
+                                        color_embed.color = discord.Color.blue()
+                                else:
+                                    color_embed.color = discord.Color.blue()
+                                try:
+                                    if data["image"].lower() != 'none':
+                                        color_embed.set_image(url=data["image"])
+                                except:
+                                    pass
+                                try:
+                                    if data["thumbnail"].lower() != 'none':
+                                        color_embed.set_thumbnail(url=data["thumbnail"])
+                                except:
+                                    pass
+                                try:
+                                    if data["footer"].lower() != 'none':
+                                        color_embed.set_footer(text=data["footer"])
+                                except:
+                                    pass
+                            
+                            try:
+                                await emb_embed.edit(embed=emb_embed, view=edit_view)
+                            except:
+                                color_embed = discord.Embed(description='Use Buttons to Customize this Embed')
+                                if colo != 'none':
+                                    try:
+                                        color_embed.color = eval(f'0x{colo}')
+                                    except:
+                                        color_embed.color = discord.Color.blue()
+                                else:
+                                    color_embed.color = discord.Color.blue()
+                                try:
+                                    if data["image"].lower() != 'none':
+                                        color_embed.set_image(url=data["image"])
+                                except:
+                                    pass
+                                try:
+                                    if data["thumbnail"].lower() != 'none':
+                                        color_embed.set_thumbnail(url=data["thumbnail"])
+                                except:
+                                    pass
+                                try:
+                                    if data["footer"].lower() != 'none':
+                                        color_embed.set_footer(text=data["footer"])
+                                except:
+                                    pass
+                                
+                                if data["content"].lower() != 'none':
+                                    await emb_embed.edit(content=data["content"],embed=color_embed, view=edit_view)
+                                else:
+                                    await emb_embed.edit(embed=color_embed, view=edit_view)
+
+                        if data["title"].lower() == 'none' and data["description"].lower() == 'none':
+                            color_embed = discord.Embed()
+                            if colo != 'none':
+                                try:
+                                    color_embed.color = eval(f'0x{colo}')
+                                except:
+                                    color_embed.color = discord.Color.blue()
+                            else:
+                                color_embed.color = discord.Color.blue()
+                            try:
+                                if data["image"].lower() != 'none':
+                                    color_embed.set_image(url=data["image"])
+                            except:
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
+                                await ctx.send(embed=errembed)
+                            try:
+                                if data["thumbnail"].lower() != 'none':
+                                    color_embed.set_thumbnail(url=data["thumbnail"])
+                            except:
+                                pass
+                            try:
+                                if data["footer"].lower() != 'none':
+                                    color_embed.set_footer(text=data["footer"])
+                            except:
+                                pass
+
+                        elif data["title"].lower() != 'none' and data["description"].lower() != 'none':
+                            color_embed = discord.Embed(title=data["title"], description=data["description"])
+                            if colo != 'none':
+                                try:
+                                    color_embed.color = eval(f'0x{colo}')
+                                except:
+                                    color_embed.color = discord.Color.blue()
+                            else:
+                                color_embed.color = discord.Color.blue()
+                            try:
+                                if data["image"].lower() != 'none':
+                                    color_embed.set_image(url=data["image"])
+                            except:
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
+                                await ctx.send(embed=errembed)
+                            try:
+                                if data["thumbnail"].lower() != 'none':
+                                    color_embed.set_thumbnail(url=data["thumbnail"])
+                            except:
+                                pass
+                            try:
+                                if data["footer"].lower() != 'none':
+                                    color_embed.set_footer(text=data["footer"])
+                            except:
+                                pass
+                        elif data["title"].lower() == 'none' and data["description"].lower() != 'none':
+                            color_embed = discord.Embed(description=data["description"])
+                            if colo != 'none':
+                                try:
+                                    color_embed.color = eval(f'0x{colo}')
+                                except:
+                                    color_embed.color = discord.Color.blue()
+                            else:
+                                color_embed.color = discord.Color.blue()
+                            try:
+                                if data["image"].lower() != 'none':
+                                    color_embed.set_image(url=data["image"])
+                            except:
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
+                                await ctx.send(embed=errembed)
+                            try:
+                                if data["thumbnail"].lower() != 'none':
+                                    color_embed.set_thumbnail(url=data["thumbnail"])
+                            except:
+                                pass
+                            try:
+                                if data["footer"].lower() != 'none':
+                                    color_embed.set_footer(text=data["footer"])
+                            except:
+                                pass
+                        elif data["title"].lower() != 'none' and data["description"].lower() == 'none':
+                            color_embed = discord.Embed(title=data["title"], description=data["description"])
+
+                            if colo != 'none':
+                                try:
+                                    color_embed.color = eval(f'0x{colo}')
+                                except:
+                                    color_embed.color = discord.Color.blue()
+                            else:
+                                color_embed.color = discord.Color.blue()
+
+                            try:
+                                if data["image"].lower() != 'none':
+                                    color_embed.set_image(url=data["image"])
+                            except:
+                                    pass
+                            try:
+                                if data["thumbnail"].lower() != 'none':
+                                    color_embed.set_thumbnail(url=data["thumbnail"])
+                            except:
+                                pass
+                            try:
+                                if data["footer"].lower() != 'none':
+                                    color_embed.set_footer(text=data["footer"])
+                            except:
+                                pass
+                            
+                        if data["content"].lower() != 'none':
+                            await emb_embed.edit(content=data["content"],embed=color_embed, view=edit_view)
+                        else:
+                            await emb_embed.edit(embed=color_embed, view=edit_view)
+                    
+                    color_button.callback = color_button_callback
 
                     async def done_button_callback(interaction):
                         try:

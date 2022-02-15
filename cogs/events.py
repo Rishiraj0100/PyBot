@@ -211,6 +211,12 @@ class Events(commands.Cog):
                 title = title.replace('{username}', f'{member.name}')
                 title = title.replace('{server}', f'{member.guild.name}')
 
+                content = data["content"]
+                content = content.replace('{user}', f'{member.mention}')
+                content = content.replace('{username}', f'{member.name}')
+                content = content.replace('{server}', f'{member.guild.name}')
+
+
                 description = data["description"]
                 description = description.replace(
                     '{user}', f'{member.mention}')
@@ -225,7 +231,14 @@ class Events(commands.Cog):
                 footer = footer.replace('{server}', f'{member.guild.name}')
 
                 if data["title"].lower() == "none" and data["description"].lower() == "none":
-                    embed = discord.Embed(color=discord.Color.blue())
+                    embed = discord.Embed()
+                    if data["color"] != 'none':
+                        try:
+                            embed.color = eval(f'0x{data["color"]}')
+                        except:
+                            embed.color = discord.Color.blue()
+                    else:
+                            embed.color = discord.Color.blue()
                     try:
                         if data["image"].lower() != 'none':
                             embed.set_image(url=data["image"])
@@ -246,8 +259,14 @@ class Events(commands.Cog):
                     except:
                         pass
                 elif data["title"].lower() != "none" and data["description"].lower() != "none":
-                    embed = discord.Embed(
-                        color=discord.Color.blue(), title=title, description=description)
+                    embed = discord.Embed(title=title, description=description)
+                    if data["color"] != 'none':
+                        try:
+                            embed.color = eval(f'0x{data["color"]}')
+                        except:
+                            embed.color = discord.Color.blue()
+                    else:
+                            embed.color = discord.Color.blue()
                     try:
                         if data["image"].lower() != 'none':
                             embed.set_image(url=data["image"])
@@ -268,8 +287,14 @@ class Events(commands.Cog):
                     except:
                         pass
                 elif data["title"].lower() != "none" and data["description"].lower() == "none":
-                    embed = discord.Embed(
-                        color=discord.Color.blue(), title=title)
+                    embed = discord.Embed(title=title)
+                    if data["color"] != 'none':
+                        try:
+                            embed.color = eval(f'0x{data["color"]}')
+                        except:
+                            embed.color = discord.Color.blue()
+                    else:
+                            embed.color = discord.Color.blue()
                     try:
                         if data["image"].lower() != 'none':
                                 embed.set_image(url=data["image"])
@@ -290,8 +315,14 @@ class Events(commands.Cog):
                     except:
                         pass
                 elif data["title"].lower() == "none" and data["description"].lower() != "none":
-                    embed = discord.Embed(
-                        color=discord.Color.blue(), description=description)
+                    embed = discord.Embed(description=description)
+                    if data["color"] != 'none':
+                        try:
+                            embed.color = eval(f'0x{data["color"]}')
+                        except:
+                            embed.color = discord.Color.blue()
+                    else:
+                            embed.color = discord.Color.blue()
                     try:
                         if data["image"].lower() != 'none':
                                 embed.set_image(url=data["image"])
@@ -307,7 +338,10 @@ class Events(commands.Cog):
                             embed.set_footer(text=footer)
                     except:
                         pass
-                    await channel.send(embed=embed)
+                    if data["content"] != 'none':
+                        await channel.send(content=content, embed=embed)
+                    else:
+                        await channel.send(embed=embed)
 
         @commands.Cog.listener()
         async def on_guild_join(self, guild):
@@ -340,6 +374,10 @@ class Events(commands.Cog):
                 await self.bot.welcomer.upsert({"_id": guild.id, "thumbnail": "none"})
             if not wdata or "footer" not in wdata:
                 await self.bot.welcomer.upsert({"_id": guild.id, "footer": "{server}"})
+            if not wdata or "content" not in wdata:
+                await self.bot.welcomer.upsert({"_id": guild.id, "content": "{user}"})
+            if not wdata or "color" not in wdata:
+                await self.bot.welcomer.upsert({"_id": guild.id, "color": "none"})
             
 
         @commands.Cog.listener()

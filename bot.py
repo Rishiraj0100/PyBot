@@ -79,7 +79,6 @@ async def on_ready():
 
     bot.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(bot.connection_url))
     bot.mongodb = bot.mongo["pybot"]
-    bot.blacklist = Document(bot.mongodb, "blacklist")
     bot.welcomer = Document(bot.mongodb, "welcomer")
 
     
