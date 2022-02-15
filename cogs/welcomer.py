@@ -19,75 +19,43 @@ class Welcomer(commands.Cog):
         """
         Welcome everyone with a Sweet Greeting
         """
-        data = await self.bot.welcomer.get_by_id(ctx.guild.id)
-        if not data or "welcomer" not in data:
+        global data
+        data = await self.bot.db.fetchrow('SELECT * FROM welcomer WHERE guild_id = $1', ctx.guild.id)
+        if not data:
             toggle = False
-            await self.bot.welcomer.upsert({"_id": ctx.guild.id, "welcomer": False})
+            await self.bot.db.execute("INSERT INTO welcome (guild_id) VALUES ($1)", False)
         else:
-            if data["welcomer"] == True:
+            if data["welcome"] == True:
                 toggle = 'On'
             else:
                 toggle = 'Off'
 
-        data = await self.bot.welcomer.get_by_id(ctx.guild.id)
-        if "type" not in data:
+        if data["type"] == 'message':
+            type = 'Message'
+        elif data["type"] == 'embed':
             type = 'Embed'
-            await self.bot.welcomer.upsert({"_id": ctx.guild.id, "type": 'embed'})
-        else:
-            if data["type"] == 'message':
-                type = 'Message'
-            elif data["type"] == 'embed':
-                type = 'Embed'
-            elif data["type"] == 'embedtext':
-                type = 'Embed and Text'
+        elif data["type"] == 'embedtext':
+            type = 'Embed and Text'
 
-        data = await self.bot.welcomer.get_by_id(ctx.guild.id)
-        if "autorole" not in data:
-            auto = False
-            await self.bot.welcomer.upsert({"_id": ctx.guild.id, "autorole": False})
+        if data["autorole"] == True:
+            auto = 'On'
         else:
-            if data["autorole"] == True:
-                auto = 'On'
-            else:
-                auto = 'Off'
+            auto = 'Off'
 
-        data = await self.bot.welcomer.get_by_id(ctx.guild.id)
-        if "autorole_human" not in data:
-            autoh = 0
-            await self.bot.welcomer.upsert({"_id": ctx.guild.id, "autorole_human": 0})
+        if data["autorole_human"] == 0:
+            autoh = '`Not Set`'
         else:
-            if data["autorole_human"] == 0:
-                autoh = '`Not Set`'
-            else:
-                autoh = '<@&'+str(data["autorole_human"])+'>'
+            autoh = '<@&'+str(data["autorole_human"])+'>'
 
-        data = await self.bot.welcomer.get_by_id(ctx.guild.id)
-        if "autorole_bot" not in data:
-            auto = 0
-            await self.bot.welcomer.upsert({"_id": ctx.guild.id, "autorole_bot": 0})
+        if data["autorole_bot"] == 0:
+            autob = '`Not Set`'
         else:
-            if data["autorole_bot"] == 0:
-                autob = '`Not Set`'
-            else:
-                autob = '<@&'+str(data["autorole_bot"])+'>'
+            autob = '<@&'+str(data["autorole_bot"])+'>'
 
-        data = await self.bot.welcomer.get_by_id(ctx.guild.id)
-        if "channel" not in data:
-            channel = '`Not Set`'
-            await self.bot.welcomer.upsert({"_id": ctx.guild.id, "channel": 0})
+        if data["channel"] == 0:
+            channel = '`No Channel`'
         else:
-            if data["channel"] == 0:
-                channel = '`No Channel`'
-            else:
-                channel = '<#'+str(data["channel"])+'>'
-        if "message" not in data:
-            ms = '`Not Set`'
-            await self.bot.welcomer.upsert({"_id": ctx.guild.id, "channel": 0})
-        else:
-            if data["channel"] == 0:
-                channel = '`No Channel`'
-            else:
-                channel = '<#'+str(data["channel"])+'>'
+            channel = '<#'+str(data["channel"])+'>'
 
         embed = discord.Embed(title='Welcomer and Autorole', color=0x3498DB)
 
@@ -144,19 +112,18 @@ class Welcomer(commands.Cog):
                 embeda = discord.Embed(
                     description=f"Sorry, but this interaction can only be used by **{ctx.author.name}**.", color=0x3498DB)
                 return await interaction.response.send_message(embed=embeda, ephemeral=True)
-            data = await self.bot.welcomer.get_by_id(interaction.guild.id)
-            if data["welcomer"] == True:
-                await self.bot.welcomer.upsert({"_id": interaction.guild.id, "welcomer": False})
+
+            if data["welcome"] == True:
+                await self.bot.db.execute("UPDATE welcomer SET welcome = $2 WHERE guild_id = $1", ctx.guild.id, False)
                 # embed.remove_field(0)
                 embed.set_field_at(
                     0, name=f'<:Dot_One:939397712779042856>⠀ **Welcomer**', value=f'`Off`')
             else:
-                await self.bot.welcomer.upsert({"_id": interaction.guild.id, "welcomer": True})
+                await self.bot.db.execute("UPDATE welcomer SET welcome = $2 WHERE guild_id = $1", ctx.guild.id, True)
                 # embed.remove_field(0)
                 embed.set_field_at(
                     0, name=f'<:Dot_One:939397712779042856>⠀ **Welcomer**', value=f'`On`')
-            await asyncio.sleep(0.2)
-
+            # await asyncio.sleep(0.2)
             await interaction.response.edit_message(embed=embed, view=view)
 
         toggle_button.callback = toggle_button_callback
@@ -166,19 +133,19 @@ class Welcomer(commands.Cog):
                 embeda = discord.Embed(
                     description=f"Sorry, but this interaction can only be used by **{ctx.author.name}**.", color=0x3498DB)
                 return await interaction.response.send_message(embed=embeda, ephemeral=True)
-            data = await self.bot.welcomer.get_by_id(interaction.guild.id)
-            if data["welcomer"] == False:
+
+            if data["welcome"] == False:
                 warn = discord.Embed(
-                    description=f'<a:cross1:941287490986315776> **Turn on Welcomer to use this!**', color=0xff0000)
+                    description=f'<a:cross1:941287490986315776> **Turn on Welcomer to use this!**', color=0xfe4d49)
                 return await interaction.response.send_message(embed=warn, ephemeral=True)
             if data["type"] == 'message':
-                await self.bot.welcomer.upsert({"_id": interaction.guild.id, "type": 'embed'})
+                await self.bot.db.execute("UPDATE welcomer SET type = $2 WHERE guild_id = $1", ctx.guild.id, 'embed')
                 # embed.remove_field(1)
                 embed.set_field_at(
                     1, name=f'<:Dot_Two:939397728616726528>⠀ **Message Type**', value=f'`Embed`', inline=False)
             elif data["type"] == 'embed':
                 # await self.bot.welcomer.upsert({"_id": interaction.guild.id, "type": 'embedtext'})
-                await self.bot.welcomer.upsert({"_id": interaction.guild.id, "type": 'message'})
+                await self.bot.db.execute("UPDATE welcomer SET type = $2 WHERE guild_id = $1", ctx.guild.id, 'message')
                 # embed.remove_field(1)
                 embed.set_field_at(
                     1, name=f'<:Dot_Two:939397728616726528>⠀ **Message Type**', value=f'`Message`', inline=False)
@@ -188,7 +155,6 @@ class Welcomer(commands.Cog):
             #     embed.set_field_at(
             #         1, name=f'<:Dot_Two:939397728616726528>⠀ **Message Type**', value=f'`Message`', inline=False)
             await asyncio.sleep(0.2)
-
             await interaction.response.edit_message(embed=embed, view=view)
 
         type_button.callback = type_button_callback
@@ -198,10 +164,10 @@ class Welcomer(commands.Cog):
                 embeda = discord.Embed(
                     description=f"Sorry, but this interaction can only be used by **{ctx.author.name}**.", color=0x3498DB)
                 return await interaction.response.send_message(embed=embeda, ephemeral=True)
-            data = await self.bot.welcomer.get_by_id(interaction.guild.id)
-            if data["welcomer"] == False:
+
+            if data["welcome"] == False:
                 warn = discord.Embed(
-                    description=f'<a:cross1:941287490986315776> **Turn on Welcomer to use this!**', color=0xff0000)
+                    description=f'<a:cross1:941287490986315776> **Turn on Welcomer to use this!**', color=0xfe4d49)
                 return await interaction.response.send_message(embed=warn, ephemeral=True)
 
             def check(message):
@@ -218,10 +184,16 @@ class Welcomer(commands.Cog):
             await ctx.channel.purge(limit=2)
             a = res.content.replace('<#', '')
             chid = a.replace('>', '')
+            
+            if res.content == '0':
+                await self.bot.db.execute("UPDATE welcomer SET channel = $2 WHERE guild_id = $1", ctx.guild.id, 0)
+                embed.set_field_at(
+                    2, name=f'<:Dot_Three:939397746329255976>⠀ **Channel**', value='`Not Set`', inline=False)
+                return await msg.edit(embed=embed, view=view)
 
             for channel in ctx.guild.channels:
                 if str(channel.id) in str(chid):
-                    await self.bot.welcomer.upsert({"_id": interaction.guild.id, "channel": int(chid)})
+                    await self.bot.db.execute("UPDATE welcomer SET channel = $2 WHERE guild_id = $1", ctx.guild.id, int(chid))
                     embed.set_field_at(
                         2, name=f'<:Dot_Three:939397746329255976>⠀ **Channel**', value='<#'+str(chid)+'>', inline=False)
                     await msg.edit(embed=embed, view=view)
@@ -229,7 +201,7 @@ class Welcomer(commands.Cog):
 
             else:
                 mesc = discord.Embed(
-                    description='Channel Not Found!', color=0xff0000)
+                    description='Channel Not Found!', color=0xfe4d49)
                 mes = await ctx.send(embed=mesc)
                 await asyncio.sleep(5)
                 try:
@@ -252,19 +224,18 @@ class Welcomer(commands.Cog):
                 embeda = discord.Embed(
                     description=f"Sorry, but this interaction can only be used by **{ctx.author.name}**.", color=0x3498DB)
                 return await interaction.response.send_message(embed=embeda, ephemeral=True)
-            data = await self.bot.welcomer.get_by_id(interaction.guild.id)
+
             if data["autorole"] == True:
-                await self.bot.welcomer.upsert({"_id": interaction.guild.id, "autorole": False})
+                await self.bot.db.execute("UPDATE welcomer SET autorole = $2 WHERE guild_id = $1", ctx.guild.id, False)
                 # embed.remove_field(0)
                 embed.set_field_at(
                     4, name=f'<:Dot_Five:939397784887504896>⠀ **Autorole**', value=f'`Off`')
             else:
-                await self.bot.welcomer.upsert({"_id": interaction.guild.id, "autorole": True})
+                await self.bot.db.execute("UPDATE welcomer SET autorole = $2 WHERE guild_id = $1", ctx.guild.id, True)
                 # embed.remove_field(0)
                 embed.set_field_at(
                     4, name=f'<:Dot_Five:939397784887504896>⠀ **Autorole**', value=f'`On`')
             await asyncio.sleep(0.2)
-
             await interaction.response.edit_message(embed=embed, view=view)
 
         autorole_button.callback = autorole_button_callback
@@ -275,10 +246,10 @@ class Welcomer(commands.Cog):
                     description=f"Sorry, but this interaction can only be used by **{ctx.author.name}**.", color=0x3498DB)
                 return await interaction.response.send_message(embed=embeda, ephemeral=True)
             bt = []
-            data = await self.bot.welcomer.get_by_id(interaction.guild.id)
+
             if data["autorole"] == False:
                 warn = discord.Embed(
-                    description=f'<a:cross1:941287490986315776> **Turn on Autorole to use this!**', color=0xff0000)
+                    description=f'<a:cross1:941287490986315776> **Turn on Autorole to use this!**', color=0xfe4d49)
                 return await interaction.response.send_message(embed=warn, ephemeral=True)
 
             def check(message):
@@ -294,7 +265,7 @@ class Welcomer(commands.Cog):
             )
             await ctx.channel.purge(limit=2)
             if res.content == '0':
-                await self.bot.welcomer.upsert({"_id": interaction.guild.id, "autorole_human": 0})
+                await self.bot.db.execute("UPDATE welcomer SET autorole_human = $2 WHERE guild_id = $1", ctx.guild.id, 0)
                 embed.set_field_at(
                     5, name=f'<:Dot_Six:939397798057615360>⠀ **Human Autorole**', value='`Not Set`', inline=False)
                 await msg.edit(embed=embed, view=view)
@@ -305,7 +276,7 @@ class Welcomer(commands.Cog):
                     hr = ctx.guild.get_role(int(auhid))
                     if ctx.guild.me.top_role <= hr:
                         emh = discord.Embed(
-                            description=f'<a:cross1:941287490986315776> **{hr.mention} is above My Highest Role ({ctx.guild.me.top_role.mention}).**', color=0x00ff0000)
+                            description=f'<a:cross1:941287490986315776> **{hr.mention} is above My Highest Role ({ctx.guild.me.top_role.mention}).**', color=0xfe4d49)
                         hm = await ctx.send(embed=emh)
                         await asyncio.sleep(5)
                         try:
@@ -325,7 +296,7 @@ class Welcomer(commands.Cog):
                     for r in bt:
                         if str(r) == str(auhid):
                             both = discord.Embed(
-                                description='**<a:cross1:941287490986315776> Cannot use a Bot Role!**', color=0xff0000)
+                                description='**<a:cross1:941287490986315776> Cannot use a Bot Role!**', color=0xfe4d49)
                             bot = await ctx.send(embed=both)
                             await asyncio.sleep(5)
                             try:
@@ -337,7 +308,7 @@ class Welcomer(commands.Cog):
                 for role in ctx.guild.roles:
                     # print(f'{role.id} :: {auhid}')
                     if str(role.id) == str(auhid):
-                        await self.bot.welcomer.upsert({"_id": interaction.guild.id, "autorole_human": int(auhid)})
+                        await self.bot.db.execute("UPDATE welcomer SET autorole_human = $2 WHERE guild_id = $1", ctx.guild.id, int(auhid))
                         embed.set_field_at(
                             5, name=f'<:Dot_Six:939397798057615360>⠀ **Human Autorole**', value='<@&'+str(auhid)+'>', inline=False)
                         await msg.edit(embed=embed, view=view)
@@ -345,7 +316,7 @@ class Welcomer(commands.Cog):
                 else:
                     print()
                     mesc = discord.Embed(
-                        description='Role Not Found!', color=0xff0000)
+                        description='Role Not Found!', color=0xfe4d49)
                     mes = await ctx.send(embed=mesc)
                     await asyncio.sleep(5)
                     try:
@@ -361,10 +332,10 @@ class Welcomer(commands.Cog):
                     description=f"Sorry, but this interaction can only be used by **{ctx.author.name}**.", color=0x3498DB)
                 return await interaction.response.send_message(embed=embeda, ephemeral=True)
             bt = []
-            data = await self.bot.welcomer.get_by_id(interaction.guild.id)
+
             if data["autorole"] == False:
                 warn = discord.Embed(
-                    description=f'<a:cross1:941287490986315776> **Turn on Autorole to use this!**', color=0xff0000)
+                    description=f'<a:cross1:941287490986315776> **Turn on Autorole to use this!**', color=0xfe4d49)
                 return await interaction.response.send_message(embed=warn, ephemeral=True)
 
             def check(message):
@@ -380,7 +351,7 @@ class Welcomer(commands.Cog):
             )
             await ctx.channel.purge(limit=2)
             if res.content == '0':
-                await self.bot.welcomer.upsert({"_id": interaction.guild.id, "autorole_human": 0})
+                await self.bot.db.execute("UPDATE welcomer SET autorole_bot = $2 WHERE guild_id = $1", ctx.guild.id, 0)
                 embed.set_field_at(
                     6, name=f'<:Dot_Seven:939397814780325958>⠀ **Bot Autorole**', value='`Not Set`', inline=False)
                 await msg.edit(embed=embed, view=view)
@@ -391,7 +362,7 @@ class Welcomer(commands.Cog):
                     hr = ctx.guild.get_role(int(auhid))
                     if ctx.guild.me.top_role <= hr:
                         emh = discord.Embed(
-                            description=f'<a:cross1:941287490986315776> **{hr.mention} is above My Highest Role ({ctx.guild.me.top_role.mention}).**', color=0x00ff0000)
+                            description=f'<a:cross1:941287490986315776> **{hr.mention} is above My Highest Role ({ctx.guild.me.top_role.mention}).**', color=0xfe4d49)
                         hm = await ctx.send(embed=emh)
                         await asyncio.sleep(5)
                         try:
@@ -411,7 +382,7 @@ class Welcomer(commands.Cog):
                     for r in bt:
                         if str(r) == str(auhid):
                             both = discord.Embed(
-                                description='**<a:cross1:941287490986315776> Cannot use a Bot Role!**', color=0xff0000)
+                                description='**<a:cross1:941287490986315776> Cannot use a Bot Role!**', color=0xfe4d49)
                             bot = await ctx.send(embed=both)
                             await asyncio.sleep(5)
                             try:
@@ -423,7 +394,7 @@ class Welcomer(commands.Cog):
                 for role in ctx.guild.roles:
                     # print(f'{role.id} :: {auhid}')
                     if str(role.id) == str(auhid):
-                        await self.bot.welcomer.upsert({"_id": interaction.guild.id, "autorole_bot": int(auhid)})
+                        await self.bot.db.execute("UPDATE welcomer SET autorole_bot = $2 WHERE guild_id = $1", ctx.guild.id, int(auhid))
                         embed.set_field_at(
                             6, name=f'<:Dot_Seven:939397814780325958>⠀ **Bot Autorole**', value='<@&'+str(auhid)+'>', inline=False)
                         await msg.edit(embed=embed, view=view)
@@ -431,7 +402,7 @@ class Welcomer(commands.Cog):
                 else:
                     print()
                     mesc = discord.Embed(
-                        description='Role Not Found!', color=0xff0000)
+                        description='Role Not Found!', color=0xfe4d49)
                     mes = await ctx.send(embed=mesc)
                     await asyncio.sleep(5)
                     try:
@@ -456,18 +427,14 @@ class Welcomer(commands.Cog):
             preview.add_item(get_button)
             preview.add_item(pre_button)
             preview.add_item(edit_button)
-            data = await self.bot.welcomer.get_by_id(m_interaction.guild.id)
-            if "message" not in data:
-                ms = '{user} Welcome to {server}'
-                await self.bot.welcomer.upsert({"_id": ctx.guild.id, "message": "{user} Welcome to {server}"})
+
+            if data["message"] == 'none':
+                ms = '`{user} Welcome to {server}`'
             else:
-                if data["message"] == 'none':
-                    ms = '`{user} Welcome to {server}`'
-                else:
-                    ms = data["message"]
-            if data["welcomer"] == False:
+                ms = data["message"]
+            if data["welcome"] == False:
                 warn = discord.Embed(
-                    description=f'<a:cross1:941287490986315776> **Turn on Welcomer to use this!**', color=0xff0000)
+                    description=f'<a:cross1:941287490986315776> **Turn on Welcomer to use this!**', color=0xfe4d49)
                 return await m_interaction.response.send_message(embed=warn, ephemeral=True)
 
             await m_interaction.response.send_message(f'\u200b', view=preview, ephemeral=True)
@@ -477,7 +444,7 @@ class Welcomer(commands.Cog):
                     embeda = discord.Embed(
                         description=f"Sorry, but this interaction can only be used by **{ctx.author.name}**.", color=0x3498DB)
                     return await interaction.response.send_message(embed=embeda, ephemeral=True)
-                data = await self.bot.welcomer.get_by_id(interaction.guild.id)
+
                 if data["type"] == "message":
                     await interaction.response.send_message(f'{data["message"]}', ephemeral=True)
                 elif data["type"] == "embed":
@@ -569,9 +536,8 @@ class Welcomer(commands.Cog):
                     embeda = discord.Embed(
                         description=f"Sorry, but this interaction can only be used by **{ctx.author.name}**.", color=0x3498DB)
                     return await interaction.response.send_message(embed=embeda, ephemeral=True)
-                data = await self.bot.welcomer.get_by_id(interaction.guild.id)
+
                 if data["type"] == "message":
-                    data = await self.bot.welcomer.get_by_id(interaction.guild.id)
                     ab = data["message"]
                     ab = ab.replace('{user}', f'{ctx.author.mention}')
                     ab = ab.replace('{username}', f'{ctx.author.name}')
@@ -685,7 +651,7 @@ class Welcomer(commands.Cog):
                     embeda = discord.Embed(
                         description=f"Sorry, but this interaction can only be used by **{ctx.author.name}**.", color=0x3498DB)
                     return await interaction.response.send_message(embed=embeda, ephemeral=True)
-                data = await self.bot.welcomer.get_by_id(interaction.guild.id)
+
                 if data["type"] == "message":
                     editm = discord.Embed(
                         description='**Enter the Message to Set**\n\n**Variables**\n```yaml\n{user} - The mention of the user calling the command.\n{username} - The username of the user.\n{server} - The server name.\n```\n__**Note - Emojis should be in this Server or else they would not be displayed while Greeting Someone**__', color=0x3498DB)
@@ -705,7 +671,7 @@ class Welcomer(commands.Cog):
                     await interaction.followup.send(embed=emb, ephemeral=True)
                     await ctx.channel.purge(limit=1)
 
-                    await self.bot.welcomer.upsert({"_id": ctx.guild.id, "message": res})
+                    await self.bot.db.execute("UPDATE welcomer SET message = $2 WHERE guild_id = $1", ctx.guild.id, res)
 
                 elif data["type"] == "embed":
                     title_button = Button(
@@ -935,10 +901,9 @@ class Welcomer(commands.Cog):
                         and ctx.author.id == x.author.id,
                         timeout=None,
                     )
-                        await self.bot.welcomer.upsert({"_id": interaction.guild.id, "title": title.content})
+                        await self.bot.db.execute("UPDATE welcomer SET title = $2 WHERE guild_id = $1", ctx.guild.id, title.content)
                         await ctx.channel.purge(limit=2)
                         
-                        data = await self.bot.welcomer.get_by_id(interaction.guild.id)
                         if title.content.lower() == 'none':
                             if data["description"].lower() == 'none':
                                 title_embed = discord.Embed(color=discord.Color.blue())
@@ -1052,10 +1017,10 @@ class Welcomer(commands.Cog):
                         and ctx.author.id == x.author.id,
                         timeout=None,
                     )
-                        await self.bot.welcomer.upsert({"_id": interaction.guild.id, "description": description.content})
+                        await self.bot.db.execute("UPDATE welcomer SET description = $2 WHERE guild_id = $1", ctx.guild.id, description.content)
+
                         await ctx.channel.purge(limit=2)
                         
-                        data = await self.bot.welcomer.get_by_id(interaction.guild.id)
                         if description.content.lower() == 'none':
                             if data["title"].lower() == 'none':
                                 description_embed = discord.Embed(color=discord.Color.blue())
@@ -1169,7 +1134,7 @@ class Welcomer(commands.Cog):
                         and ctx.author.id == x.author.id,
                         timeout=None,
                     )
-                        data = await self.bot.welcomer.get_by_id(interaction.guild.id)
+
                         await ctx.channel.purge(limit=2)
                         if image.content.lower() != 'none':
                             image_formats = ("image/png", "image/jpeg", "image/gif")
@@ -1177,12 +1142,11 @@ class Welcomer(commands.Cog):
                             site = urlopen(url)
                             meta = site.info()
                             if meta["content-type"] in image_formats:
-                                await self.bot.welcomer.upsert({"_id": interaction.guild.id, "image": image.content})
+                                await self.bot.db.execute("UPDATE welcomer SET image = $2 WHERE guild_id = $1", ctx.guild.id, image.content)
                             else:
-                                error_emb = discord.Embed(color=0x00ff0000, description='**Invalid URL**')
+                                error_emb = discord.Embed(color=0xfe4d49, description='**Invalid URL**')
                                 await ctx.send(embed=error_emb)
                         
-                        data = await self.bot.welcomer.get_by_id(interaction.guild.id)
                         if image.content.lower() == 'none':
                             if data["title"].lower() == 'none' and data["description"].lower() == 'none':
                                 image_embed = discord.Embed(color=discord.Color.blue())
@@ -1283,7 +1247,7 @@ class Welcomer(commands.Cog):
                                 if image.content.lower() != 'none':
                                     image_embed.set_image(url=image.content)
                             except:
-                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0xfe4d49)
                                 await ctx.send(embed=errembed)
                             try:
                                 if data["thumbnail"].lower() != 'none':
@@ -1302,7 +1266,7 @@ class Welcomer(commands.Cog):
                                 if image.content.lower() != 'none':
                                     image_embed.set_image(url=image.content)
                             except:
-                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0xfe4d49)
                                 await ctx.send(embed=errembed)
                             try:
                                 if data["thumbnail"].lower() != 'none':
@@ -1320,7 +1284,7 @@ class Welcomer(commands.Cog):
                                 if image.content.lower() != 'none':
                                     image_embed.set_image(url=image.content)
                             except:
-                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0xfe4d49)
                                 await ctx.send(embed=errembed)
                             try:
                                 if data["thumbnail"].lower() != 'none':
@@ -1338,7 +1302,7 @@ class Welcomer(commands.Cog):
                                 if image.content.lower() != 'none':
                                     image_embed.set_image(url=image.content)
                             except:
-                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0xfe4d49)
                                 d = await ctx.send(embed=errembed)
                                 await asyncio.sleep(5)
                                 try:
@@ -1373,7 +1337,7 @@ class Welcomer(commands.Cog):
                         and ctx.author.id == x.author.id,
                         timeout=None,
                     )
-                        data = await self.bot.welcomer.get_by_id(interaction.guild.id)
+
                         try:
                             await ctx.channel.purge(limit=2)
                         except:
@@ -1384,9 +1348,8 @@ class Welcomer(commands.Cog):
                             site = urlopen(url)
                             meta = site.info()
                             if meta["content-type"] in image_formats:
-                                await self.bot.welcomer.upsert({"_id": interaction.guild.id, "thumbnail": thumb.content})
+                                await self.bot.db.execute("UPDATE welcomer SET thumbnail = $2 WHERE guild_id = $1", ctx.guild.id, thumb.content)
                         
-                        data = await self.bot.welcomer.get_by_id(interaction.guild.id)
                         if thumb.content.lower() == 'none':
                             if data["title"].lower() == 'none' and data["description"].lower() == 'none':
                                 thumb_embed = discord.Embed(color=discord.Color.blue())
@@ -1487,7 +1450,7 @@ class Welcomer(commands.Cog):
                                 if data["image"].lower() != 'none':
                                     thumb_embed.set_image(url=data["image"])
                             except:
-                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0xfe4d49)
                                 await ctx.send(embed=errembed)
                             try:
                                 if thumb.content.lower() != 'none':
@@ -1506,7 +1469,7 @@ class Welcomer(commands.Cog):
                                 if data["image"].lower() != 'none':
                                     thumb_embed.set_image(url=data["image"])
                             except:
-                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0xfe4d49)
                                 await ctx.send(embed=errembed)
                             try:
                                 if thumb.content.lower() != 'none':
@@ -1524,7 +1487,7 @@ class Welcomer(commands.Cog):
                                 if data["image"].lower() != 'none':
                                     thumb_embed.set_image(url=data["image"])
                             except:
-                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0xfe4d49)
                                 await ctx.send(embed=errembed)
                             try:
                                 if thumb.content.lower() != 'none':
@@ -1542,7 +1505,7 @@ class Welcomer(commands.Cog):
                                 if data["image"].lower() != 'none':
                                     thumb_embed.set_image(url=data["image"])
                             except:
-                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0xfe4d49)
                                 d = await ctx.send(embed=errembed)
                                 await asyncio.sleep(5)
                                 try:
@@ -1577,10 +1540,9 @@ class Welcomer(commands.Cog):
                         and ctx.author.id == x.author.id,
                         timeout=None,
                     )
-                        await self.bot.welcomer.upsert({"_id": interaction.guild.id, "footer": footer.content})
+                        await self.bot.db.execute("UPDATE welcomer SET footer = $2 WHERE guild_id = $1", ctx.guild.id, footer.content)
                         await ctx.channel.purge(limit=2)
                         
-                        data = await self.bot.welcomer.get_by_id(interaction.guild.id)
                         if footer.content.lower() == 'none':
                             if data["title"].lower() == 'none' and data["description"].lower() == 'none':
                                 footer_embed = discord.Embed(color=discord.Color.blue())
@@ -1681,7 +1643,7 @@ class Welcomer(commands.Cog):
                                 if data["image"].lower() != 'none':
                                     footer_embed.set_image(url=data["image"])
                             except:
-                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0xfe4d49)
                                 await ctx.send(embed=errembed)
                             try:
                                 if data["thumbnail"].lower() != 'none':
@@ -1700,7 +1662,7 @@ class Welcomer(commands.Cog):
                                 if data["image"].lower() != 'none':
                                     footer_embed.set_image(url=data["image"])
                             except:
-                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0xfe4d49)
                                 await ctx.send(embed=errembed)
                             try:
                                 if data["thumbnail"].lower() != 'none':
@@ -1718,7 +1680,7 @@ class Welcomer(commands.Cog):
                                 if data["image"].lower() != 'none':
                                     footer_embed.set_image(url=data["image"])
                             except:
-                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0xfe4d49)
                                 await ctx.send(embed=errembed)
                             try:
                                 if data["thumbnail"].lower() != 'none':
@@ -1736,7 +1698,7 @@ class Welcomer(commands.Cog):
                                 if data["image"].lower() != 'none':
                                     footer_embed.set_image(url=data["image"])
                             except:
-                                errembed = discord.Embed(description='**Invalid URL !**', color=0x00ff0000)
+                                errembed = discord.Embed(description='**Invalid URL !**', color=0xfe4d49)
                                 d = await ctx.send(embed=errembed)
                                 await asyncio.sleep(5)
                                 try:
@@ -1771,7 +1733,7 @@ class Welcomer(commands.Cog):
     @welcome.error
     async def welcome_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):
-            embed = discord.Embed(description='**<a:cross1:941287490986315776> You lack Administrator Permissions to use this Command**', color=0x00ff0000)
+            embed = discord.Embed(description='**<a:cross1:941287490986315776> You lack Administrator Permissions to use this Command**', color=0xfe4d49)
             await ctx.send(embed=embed)
 
 
