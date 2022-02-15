@@ -216,7 +216,6 @@ class Events(commands.Cog):
                 content = content.replace('{username}', f'{member.name}')
                 content = content.replace('{server}', f'{member.guild.name}')
 
-
                 description = data["description"]
                 description = description.replace(
                     '{user}', f'{member.mention}')
@@ -255,7 +254,10 @@ class Events(commands.Cog):
                     except:
                         pass
                     try:
-                        await channel.send(embed=embed)
+                        if data["content"] != 'none':
+                            await channel.send(content=content, embed=embed)
+                        else:
+                            await channel.send(embed=embed)
                     except:
                         pass
                 elif data["title"].lower() != "none" and data["description"].lower() != "none":
@@ -283,7 +285,10 @@ class Events(commands.Cog):
                     except:
                         pass
                     try:
-                        await channel.send(embed=embed)
+                        if data["content"] != 'none':
+                            await channel.send(content=content, embed=embed)
+                        else:
+                            await channel.send(embed=embed)
                     except:
                         pass
                 elif data["title"].lower() != "none" and data["description"].lower() == "none":
@@ -311,7 +316,10 @@ class Events(commands.Cog):
                     except:
                         pass
                     try:
-                        await channel.send(embed=embed)
+                        if data["content"] != 'none':
+                            await channel.send(content=content, embed=embed)
+                        else:
+                            await channel.send(embed=embed)
                     except:
                         pass
                 elif data["title"].lower() == "none" and data["description"].lower() != "none":
@@ -338,6 +346,7 @@ class Events(commands.Cog):
                             embed.set_footer(text=footer)
                     except:
                         pass
+
                     if data["content"] != 'none':
                         await channel.send(content=content, embed=embed)
                     else:
