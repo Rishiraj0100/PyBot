@@ -142,10 +142,10 @@ class Events(commands.Cog):
                     if "reason" not in afk:
                         reason = 'I am AFK :)'
                     else:
-                        reason = afk["reason"]
+                        reason = data["reason"]
                     t = int(afk["time"])
                     await message.reply(f'**{name}** went afk <t:{t}:R> : {reason}')
-                    l = afk["ping"]
+                    l = data["ping"]
                     l.append(f"https://discordapp.com/channels/{message.guild.id}/{message.channel.id}/{message.id}")
                     await self.bot.db.execute("UPDATE afk SET ping = $3 WHERE (guild_id,user_id) = ($1,$2)", message.guild.id, a, l)
                     return
