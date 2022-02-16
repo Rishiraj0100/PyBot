@@ -56,7 +56,7 @@ class Moderation(commands.Cog):
         if(reason):
             embed = discord.Embed(description=f'<a:tick:940816615237357608> **{member} was Banned** | {reason}', color=0x3498DB)
             await ctx.send(embed=embed)
-            memberembed = discord.Embed(description=f'**You have been banned from {ctx.guild.name}** for {reason}', color=0x3498DB)
+            memberembed = discord.Embed(title="Banned | 🔨", description=f'You have been **banned** from **{ctx.guild.name}**\n **Reason : **{reason}', color=0x3498DB)
             try:
                 await member.send(embed=memberembed)
             except: 
@@ -65,7 +65,7 @@ class Moderation(commands.Cog):
         else:
             embed = discord.Embed(description=f'<a:tick:940816615237357608> **{member} was Banned** | No Reason Given', color=0x3498DB)
             await ctx.send(embed=embed)
-            memberembed = discord.Embed(description=f'**You have been banned from {ctx.guild.name}**', color=0x3498DB)
+            memberembed = discord.Embed(title="Banned | 🔨", description=f'**You have been **banned** from **{ctx.guild.name}**', color=0x3498DB)
             try:
                 await member.send(embed=memberembed)
             except:
