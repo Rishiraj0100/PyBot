@@ -6,8 +6,8 @@ from urllib.request import urlopen, Request
 
 class Welcomer(commands.Cog):
 
-    def __init__(self, bot):
-        self.bot = bot
+    def __init__(self, Pybot):
+        self.bot = Pybot
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -380,7 +380,7 @@ class Welcomer(commands.Cog):
             )
             await ctx.channel.purge(limit=2)
             if res.content == '0':
-                await self.bot.welcomer.upsert({"_id": interaction.guild.id, "autorole_human": 0})
+                await self.bot.welcomer.upsert({"_id": interaction.guild.id, "autorole_bot": 0})
                 embed.set_field_at(
                     6, name=f'<:Dot_Seven:939397814780325958>⠀ **Bot Autorole**', value='`Not Set`', inline=False)
                 await msg.edit(embed=embed, view=view)
