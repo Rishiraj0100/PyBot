@@ -22,6 +22,30 @@ class Utilities(commands.Cog):
         print("Utilities Cog has been loaded\n-------------------------")
     global start_time
     start_time = int(time.time())
+
+    # @commands.command(aliases=['announce'], usage='embed [channel]')
+    # async def embed(self, ctx, channel: discord.TextChannel=None):
+    #     """Make a beautiful Embed for your Channels"""
+    #     embed = discord.Embed(color=discord.Colour.blue(), description='*Use buttons to Customize this embed.*')
+    #     title = Button(label='Set Title', style=discord.ButtonStyle.blurple)
+    #     content = Button(label='Set Content', style=discord.ButtonStyle.blurple)
+    #     description = Button(label='Set Description', style=discord.ButtonStyle.blurple)
+    #     image = Button(label='Set Image', style=discord.ButtonStyle.blurple)
+    #     thumbnail = Button(label='Set Thumbnail', style=discord.ButtonStyle.blurple)
+    #     color = Button(label='Set Color', style=discord.ButtonStyle.blurple)
+    #     send = Button(label='Send', style=discord.ButtonStyle.green)
+    #     abort = Button(label='Abort', style=discord.ButtonStyle.danger)
+
+        # aa = View()
+        # aa.add_item(content)
+        # aa.add_item(title)
+        # aa.add_item(description)
+        # aa.add_item(image)
+        # aa.add_item(thumbnail)
+        # aa.add_item(color)
+        # aa.add_item(abort)
+        # aa.add_item(send)
+        # await ctx.send(embed=embed, view=aa)
     
     @commands.command(name='invite', aliases=['inv'], brief='-invite')
     async def invite(self, ctx):
@@ -189,7 +213,7 @@ class Utilities(commands.Cog):
         """
         Get the MemberCount of the Server
         """
-        embed = discord.Embed(title='Member Count', description=f'**{len(ctx.guild.members)}**', color=0x3498DB)
+        embed = discord.Embed(title='Member Count', description=f'**<:partner:941603900685975642> Total - {len(ctx.guild.members)}\n<:human:941603080082952202> Humans - {len([member for member in ctx.guild.members if not member.bot])}\n<:blurple_bot:941601824379645953> Bots - {len([member for member in ctx.guild.members if member.bot])}**', color=0x3498DB)
         await ctx.send(embed=embed)
     
     @commands.command(name="uptime")
