@@ -6,8 +6,8 @@ from discord.ui import Button, View
 
 class Moderation(commands.Cog):
 
-    def __init__(self, Pybot):
-        self.bot = Pybot
+    def __init__(self, bot):
+        self.bot = bot
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -271,7 +271,7 @@ class Moderation(commands.Cog):
         view.add_item(all)
         view.add_item(one)
 
-        await ctx.send(embed=embed, view=view)
+        await ctx.reply(embed=embed, view=view)
 
         async def all_callback(interaction):
             if interaction.user != ctx.author and interaction.user.id != 939887303403405402:
@@ -280,7 +280,6 @@ class Moderation(commands.Cog):
                 return await interaction.response.send_message(embed=embeda, ephemeral=True) 
             data = await self.bot.db.fetchrow('SELECT * FROM afk WHERE (guild_id,user_id) = ($1,$2)', 0, ctx.author.id)
             if not data:
-                await self.bot.db.execute("INSERT INTO afk (guild_id,user_id,reason,ping,time) VALUES ($1,$2,$3,$4,$5)", 0, ctx.author.id, reason, [], time.time())
 
                 for g in ctx.author.mutual_guilds:
                     m = g.get_member(ctx.author.id)
@@ -296,6 +295,7 @@ class Moderation(commands.Cog):
                 
                 await interaction.message.delete()
                 await ctx.reply(f'Your AFK is now set to: {reason}')
+                await self.bot.db.execute("INSERT INTO afk (guild_id,user_id,reason,ping,time) VALUES ($1,$2,$3,$4,$5)", 0, ctx.author.id, reason, [], time.time())
         
         all.callback = all_callback
 
@@ -306,7 +306,6 @@ class Moderation(commands.Cog):
                 return await interaction.response.send_message(embed=embeda, ephemeral=True) 
             data = await self.bot.db.fetchrow('SELECT * FROM afk WHERE (guild_id,user_id) = ($1,$2)', ctx.guild.id, ctx.author.id)
             if not data:
-                await self.bot.db.execute("INSERT INTO afk (guild_id,user_id,reason,ping,time) VALUES ($1,$2,$3,$4,$5)", ctx.guild.id, ctx.author.id, reason, [], time.time())
                 
                 if ctx.author.nick:
                     a = ctx.author.nick
@@ -319,6 +318,7 @@ class Moderation(commands.Cog):
                 
                 await interaction.message.delete()
                 await ctx.reply(f'Your AFK is now set to: {reason}')
+                await self.bot.db.execute("INSERT INTO afk (guild_id,user_id,reason,ping,time) VALUES ($1,$2,$3,$4,$5)", ctx.guild.id, ctx.author.id, reason, [], time.time())
         
         one.callback = one_callback
             

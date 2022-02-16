@@ -11,8 +11,12 @@ class Help(commands.Cog):
     async def on_ready(self):
         print("Help Cog has loaded\n-------------------------")
 
-    def __init__(self, Pybot):
-        self.bot = Pybot
+    def __init__(self, bot):
+        """! 
+        Constructor
+        @param bot The bot instance to be used.
+        """
+        self.bot = bot
 
     @commands.command(aliases=['h'], hidden=True)
     # @commands.bot_has_permissions(add_reactions=True,embed_links=True)

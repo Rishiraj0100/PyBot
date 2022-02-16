@@ -14,8 +14,8 @@ import itertools
 
 class Utilities(commands.Cog):
 
-    def __init__(self, Pybot):
-        self.bot = Pybot
+    def __init__(self, bot):
+        self.bot = bot
 
     @commands.Cog.listener()
     async def on_ready(self):

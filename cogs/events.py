@@ -4,8 +4,8 @@ import time, calendar, datetime
 
 class Events(commands.Cog):
 
-        def __init__(self, Pybot):
-            self.bot = Pybot
+        def __init__(self, bot):
+            self.bot = bot
 
         @commands.Cog.listener()
         async def on_ready(self):
@@ -37,7 +37,6 @@ class Events(commands.Cog):
                 return
             
             if record:
-                await self.bot.db.execute('DELETE FROM afk WHERE (guild_id,user_id) = ($1,$2)', 0, message.author.id)
                 
                 for g in message.author.mutual_guilds:
                     try:
@@ -67,6 +66,7 @@ class Events(commands.Cog):
                 if not view:
                     view = None
                 await message.channel.send(embed=embed, view=view)
+                await self.bot.db.execute('DELETE FROM afk WHERE (guild_id,user_id) = ($1,$2)', 0, message.author.id)
 
             a = None
             res = message.content.split()
@@ -102,7 +102,6 @@ class Events(commands.Cog):
                 return
 
             if data:
-                await self.bot.db.execute('DELETE FROM afk WHERE (guild_id,user_id) = ($1,$2)', message.guild.id, message.author.id)
                 
                 try:
                     a = message.author.nick
@@ -130,6 +129,7 @@ class Events(commands.Cog):
                 if not view:
                     view = None
                 await message.channel.send(embed=embed, view=view)
+                await self.bot.db.execute('DELETE FROM afk WHERE (guild_id,user_id) = ($1,$2)', message.guild.id, message.author.id)
 
             a = None
             res = message.content.split()
