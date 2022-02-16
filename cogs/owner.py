@@ -4,8 +4,8 @@ from discord.ext import commands
 
 class OwnerOnly(commands.Cog):
 
-    def __init__(self, bot):
-        self.bot = bot
+    def __init__(self, Pybot):
+        self.bot = Pybot
 
     @commands.Cog.listener()
     async def on_ready(self):

@@ -6,8 +6,8 @@ from discord.ui import Button, View
 
 class Moderation(commands.Cog):
 
-    def __init__(self, bot):
-        self.bot = bot
+    def __init__(self, Pybot):
+        self.bot = Pybot
 
     @commands.Cog.listener()
     async def on_ready(self):
