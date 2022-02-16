@@ -11,6 +11,7 @@ from datetime import datetime, timedelta, timezone
 from utils.git import format_relative, truncate_string, format_relative
 import pygit2
 import itertools
+import random
 
 class Utilities(commands.Cog):
 
@@ -303,7 +304,11 @@ class Utilities(commands.Cog):
 
         chnl_count = Counter(map(lambda ch: ch.type, self.bot.get_all_channels()))
 
-        embed = discord.Embed(colour=discord.Color.blue(), timestamp=ctx.message.created_at)    
+        b = Button(label='Invite Me', style=discord.ButtonStyle.link, url='https://discord.com/api/oauth2/authorize?client_id=938699822922346536&permissions=21175985838&scope=bot')
+        view = View()
+        view.add_item(b)
+
+        embed = discord.Embed(colour=discord.Color.blue())
 
         # start_time = calendar.timegm(time.strptime(start_time.strftime("%Y-%m-%d %H:%M:%S+00:00"), '%Y-%m-%d %H:%M:%S+00:00'))
 
@@ -334,7 +339,14 @@ class Utilities(commands.Cog):
         embed.set_author(name=f"{self.bot.user.name} Stats", icon_url=self.bot.user.display_avatar.url)
         embed.add_field(name='Latest Changes', value=revision, inline=False)
 
-        await ctx.send(embed=embed)
+        ran = random.randint(1,2)
+
+        if ran == 1:
+            embed.set_footer(text='Made with 🤍 by Jash_2312 and Anshuman..!!', icon_url='https://images-ext-2.discordapp.net/external/9uZU0K1ngMtQgIElGm3XSqPOSxuty4T7ADJQ_kIbcpA/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/749559849460826112/cac1f6ee316353004c9e8bdce8a54b75.png')
+        else:
+            embed.set_footer(text='Made with 🤍 by Anshuman..!! and Jash_2312', icon_url='https://cdn.discordapp.com/avatars/939887303403405402/0ac574b14a954715efe8cd81196cb042.png')
+
+        await ctx.send(embed=embed, view=view)
 
     
     # @commands.command(name="roleinfo", aliases=["ri"], usage='roleinfo <role>', brief='-roleinfo @owner')
