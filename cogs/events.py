@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import time, calendar, datetime
+import asyncio
 
 class Events(commands.Cog):
 
@@ -402,11 +403,20 @@ class Events(commands.Cog):
                 m, s = divmod(error.retry_after, 60)
                 h, m = divmod(m, 60)
                 if int(h) == 0 and int(m) == 0:
-                    await ctx.send(f' You must wait {int(s)} seconds to use this command!')
-                elif int(h) == 0 and int(m) != 0:
-                    await ctx.send(f' You must wait {int(m)} minutes and {int(s)} seconds to use this command!')
+                    message = await ctx.send(f'**⏱️ | {ctx.author.name}**! Please wait **{int(s)}s** and try again!')
+                    await asyncio.sleep(int(s))
+                    await message.delete()
+                elif int(h) == 0 and int(m)  != 0:
+                    message = await ctx.send(f'**⏱️ | {ctx.author.name}**! Please wait **{int(m)}m** and **{int(s)}s** and try again!')
+                    await asyncio.sleep(({int(m)}*60)+{int(s)})
+                    await message.delete()
                 else:
-                    await ctx.send(f' You must wait {int(h)} hours, {int(m)} minutes and {int(s)} seconds to use this command!')
+                    message = await ctx.send(f'**⏱️ | {ctx.author.name}**! Please wait **{int(h)}h**, **{int(m)}m** and **{int(s)}s** and try again!')
+                    await asyncio.sleep(({int(h)}*3600)+({int(m)}*60)+{int(s)})
+                    await message.delete()
+                return
+    
+
             # elif isinstance(error, commands.CheckFailure):
             #     # If the command has failed a check, trip this
             #     await ctx.send("Hey! You lack permission to use this command.")
