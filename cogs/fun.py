@@ -10,11 +10,16 @@ from cogs.music import MyView
 
 class memeView(View):
 
-    def __init__(self):
+    def __init__(self, ctx):
         super().__init__(timeout=20)
+        self.ctx = ctx
 
     @discord.ui.button(label='Next Meme', style=discord.ButtonStyle.green, custom_id='meme')
     async def meme_callback(self, button, interaction):
+        if interaction.user != self.ctx.author:
+            embeda = discord.Embed(
+            description=f"Sorry, but this interaction can only be used by **{self.ctx.author.name}**.", color=0x3498DB)
+            return await interaction.response.send_message(embed=embeda, ephemeral=True)
         r = requests.get('https://memes.blademaker.tv/api?lang=en')
         res = r.json()
         title = res["title"]
@@ -30,6 +35,10 @@ class memeView(View):
     
     @discord.ui.button(label='End Interaction', style=discord.ButtonStyle.danger, custom_id='end')
     async def end_callback(self, button, interaction):
+        if interaction.user != self.ctx.author:
+            embeda = discord.Embed(
+            description=f"Sorry, but this interaction can only be used by **{self.ctx.author.name}**.", color=0x3498DB)
+            return await interaction.response.send_message(embed=embeda, ephemeral=True)
         self.stop()
     
     # async def on_timeout(self) -> None:
@@ -52,7 +61,7 @@ class Fun(commands.Cog):
     @commands.command(usage='meme')
     @commands.cooldown(1, 10, commands.BucketType.member)
     async def meme(self, ctx):
-        view = memeView()
+        view = memeView(ctx)
         r = requests.get('https://memes.blademaker.tv/api?lang=en')
         res = r.json()
         title = res["title"]
