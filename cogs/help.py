@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from discord.ui import Button, View
+import random
 
 class Help(commands.Cog):
     """
@@ -38,14 +39,20 @@ class Help(commands.Cog):
         if not params:
             # checks if owner is on this server - used to 'tag' owner
             # starting to build embed
-            # button = Button(label='Invite Me', style=discord.ButtonStyle.link, url='https://discord.com/api/oauth2/authorize?client_id=936523168116535316&permissions=8&scope=bot' )
-            # view = View()
-            # view.add_item(button)
+            invite = Button(label='Invite Me', style=discord.ButtonStyle.link, url='https://discord.com/api/oauth2/authorize?client_id=938699822922346536&permissions=21175985838&scope=bot' )
+            # support = Button(label='Support Server', style=discord.ButtonStyle.link, url='https://discord.com/api/oauth2/authorize?client_id=936523168116535316&permissions=8&scope=bot' )
+            view = View()
+            # view.add_item(support)
+            view.add_item(invite)
 
             emb = discord.Embed(color=0x2097d8,
                                 description=f'⇛ Prefix for {ctx.guild.name} is `{PREFIX}`\n\n')
                                             # f'⇛ `{PREFIX} <command> for more information on a particular Command.`\n\n')
-            emb.set_footer(text='Made with 🤍 by Jash_2312 and Anshuman..!!', icon_url='https://images-ext-2.discordapp.net/external/9uZU0K1ngMtQgIElGm3XSqPOSxuty4T7ADJQ_kIbcpA/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/749559849460826112/cac1f6ee316353004c9e8bdce8a54b75.png')
+            ran = random.randint(1,2)
+            if ran == 1:
+                emb.set_footer(text='Made with 🤍 by Jash_2312 and Anshuman..!!', icon_url='https://images-ext-2.discordapp.net/external/9uZU0K1ngMtQgIElGm3XSqPOSxuty4T7ADJQ_kIbcpA/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/749559849460826112/cac1f6ee316353004c9e8bdce8a54b75.png')
+            else:
+                emb.set_footer(text='Made with 🤍 by Anshuman..!! and Jash_2312', icon_url='https://cdn.discordapp.com/avatars/939887303403405402/0ac574b14a954715efe8cd81196cb042.png')
             emb.set_author(name=ctx.author, icon_url=ctx.author.display_avatar.url)
             for cog in self.bot.cogs:
                 # check if cog is the matching one
@@ -62,7 +69,7 @@ class Help(commands.Cog):
                     except:
                         pass
             
-            await ctx.send(embed=emb)
+            await ctx.send(embed=emb, view=view)
 
             # setting information about author
 
