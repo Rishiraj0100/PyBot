@@ -1,12 +1,9 @@
-from code import interact
-from os import getloadavg
-from socket import timeout
 import discord
 from discord.ext import commands
 from discord.ui import Button, View
 import requests
-
-from cogs.music import MyView
+from nekobot import NekoBot
+api = NekoBot()
 
 class memeView(View):
 
@@ -41,12 +38,7 @@ class memeView(View):
             return await interaction.response.send_message(embed=embeda, ephemeral=True)
         self.stop()
     
-    # async def on_timeout(self) -> None:
-    #     memeButton = [x for x in self.children if x.custom_id == 'meme'][0]
-    #     end = [x for x in self.children if x.custom_id == 'end'][0]
-    #     end.disabled = True
-    #     memeButton.disabled = True
-    #     return await self.message.edit(view=self)
+
 
 
 class Fun(commands.Cog):
@@ -81,6 +73,151 @@ class Fun(commands.Cog):
         m.disabled = True
         e.disabled = True
         await msg.edit(view=view)
+    
+    @commands.command(usage='threats [member]')
+    async def threats(self, ctx, member: discord.Member=None):
+        if member is None:
+            member = ctx.author
+
+        avatar = member.display_avatar.url
+        img = (api.threats(avatar))
+        embed = discord.Embed(color=discord.Color.blue())
+        embed.set_image(url=img.message)
+        embed.set_footer(text=f'Requested by {ctx.author}')
+        await ctx.send(embed=embed)
+    
+    @commands.command(usage='bauguette [member]')
+    async def bauguette(self, ctx, member: discord.Member=None):
+        if member is None:
+            member = ctx.author
+
+        avatar = member.display_avatar.url
+        img = (api.baguette(avatar))
+        embed = discord.Embed(color=discord.Color.blue())
+        embed.set_image(url=img.message)
+        embed.set_footer(text=f'Requested by {ctx.author}')
+        await ctx.send(embed=embed)
+    
+
+    @commands.command(usage='cylde [member] [text]')
+    async def clyde(self, ctx, *, text=None):
+        if text is None:
+            text = 'PyBot is OP'
+
+        img = (api.clyde(f"{text}"))
+        embed = discord.Embed(color=discord.Color.blue())
+        embed.set_image(url=img.message)
+        embed.set_footer(text=f'Requested by {ctx.author}') 
+        await ctx.send(embed=embed)   
+
+    @commands.command(usage='captcha [member]')
+    async def captcha(self, ctx, member: discord.Member=None):
+        if member is None:
+            member = ctx.author
+
+        avatar = member.display_avatar.url
+        img = (api.captcha(avatar, f"{member.name}"))
+        embed = discord.Embed(color=discord.Color.blue())
+        embed.set_image(url=img.message)
+        embed.set_footer(text=f'Requested by {ctx.author}')
+        await ctx.send(embed=embed)
+    
+    @commands.command(usage='trash [member]')
+    async def trash(self, ctx, member: discord.Member=None):
+        if member is None:
+            member = ctx.author
+
+        avatar = member.display_avatar.url
+        img = (api.trash(avatar))
+        embed = discord.Embed(color=discord.Color.blue())
+        embed.set_image(url=img.message)
+        embed.set_footer(text=f'Requested by {ctx.author}')
+        await ctx.send(embed=embed)
+    
+    @commands.command(usage='iphone [member]')
+    async def iphone(self, ctx, member: discord.Member=None):
+        if member is None:
+            member = ctx.author
+
+        avatar = member.display_avatar.url
+        img = (api.iphonex(avatar))
+        embed = discord.Embed(color=discord.Color.blue())
+        embed.set_image(url=img.message)
+        embed.set_footer(text=f'Requested by {ctx.author}')
+        await ctx.send(embed=embed)
+    
+    @commands.command(usage='tweet [member] [text]')
+    async def tweet(self, ctx, member: discord.Member=None, *, text='PyBot is OP'):
+        if member is None:
+            member = ctx.author
+
+        img = (api.tweet(f"{member.name}", f"{text}"))
+        embed = discord.Embed(color=discord.Color.blue())
+        embed.set_image(url=img.message)
+        embed.set_footer(text=f'Requested by {ctx.author}')
+        await ctx.send(embed=embed)
+
+    @commands.command(usage='animeface [member]')
+    async def animeface(self, ctx, member: discord.Member=None):
+        if member is None:
+            member = ctx.author
+
+        avatar = member.display_avatar.url
+        img = (api.animeface(avatar))
+        embed = discord.Embed(color=discord.Color.blue())
+        embed.set_image(url=img.message)
+        embed.set_footer(text=f'Requested by {ctx.author}')
+        await ctx.send(embed=embed)
+    
+    @commands.command(usage='awooify [member]')
+    async def awooify(self, ctx, member: discord.Member=None):
+        if member is None:
+            member = ctx.author
+
+        avatar = member.display_avatar.url
+        img = (api.awooify(avatar))
+        embed = discord.Embed(color=discord.Color.blue())
+        embed.set_image(url=img.message)
+        embed.set_footer(text=f'Requested by {ctx.author}')
+        await ctx.send(embed=embed)
+    
+    @commands.command(usage='deepfry [member]')
+    async def deepfry(self, ctx, member: discord.Member=None):
+        if member is None:
+            member = ctx.author
+
+        avatar = member.display_avatar.url
+        img = (api.deepfry(avatar))
+        embed = discord.Embed(color=discord.Color.blue())
+        embed.set_image(url=img.message)
+        embed.set_footer(text=f'Requested by {ctx.author}')
+        await ctx.send(embed=embed)
+    
+    @commands.command(usage='stickbug [member]')
+    async def stickbug(self, ctx, member: discord.Member=None):
+        if member is None:
+            member = ctx.author
+
+        avatar = member.display_avatar.url
+        img = (api.stickbug(avatar))
+        embed = discord.Embed(color=discord.Color.blue())
+        embed.set_image(url=img.message)
+        embed.set_footer(text=f'Requested by {ctx.author}')
+        await ctx.send(embed=embed)
+
+    @commands.command(usage='magik [member]')
+    async def magik(self, ctx, member: discord.Member=None):
+        if member is None:
+            member = ctx.author
+
+        avatar = member.display_avatar.url
+        img = (api.magik(avatar))
+        embed = discord.Embed(color=discord.Color.blue())
+        embed.set_image(url=img.message)
+        embed.set_footer(text=f'Requested by {ctx.author}')
+        await ctx.send(embed=embed)
+
+    api.close()
 
 def setup(bot):
     bot.add_cog(Fun(bot))
