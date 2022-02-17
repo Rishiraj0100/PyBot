@@ -48,6 +48,17 @@ class Utilities(commands.Cog):
         # aa.add_item(send)
         # await ctx.send(embed=embed, view=aa)
     
+    @commands.command(aliases=["av"], usage='avatar [member]')
+    async def avatar(self, ctx, member: discord.Member=None):
+        if member == None:
+            member = ctx.author
+        embed = discord.Embed(color=discord.Color.blue(), description=f'[`PNG`]({member.display_avatar.replace(static_format="png").url}) | [`JPG`]({member.display_avatar.replace(static_format="jpg").url})')
+        embed.set_author(name=member.name, icon_url=member.display_avatar.url)
+        embed.set_image(url=member.display_avatar.url)
+        embed.set_footer(text=f'Requested By {ctx.author}', icon_url=ctx.author.display_avatar.url)
+
+        await ctx.send(embed=embed)
+    
     @commands.command(name='invite', aliases=['inv'], brief='-invite')
     async def invite(self, ctx):
         """
