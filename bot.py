@@ -99,7 +99,7 @@ if __name__ == '__main__':
             bot.load_extension(f"cogs.{file[:-3]}")
 
 async def create_db_pool():
-    bot.db = await asyncpg.create_pool(database='railway', user='postgres', password='iKfF0EalhC1Oa1AFXira', host='containers-us-west-27.railway.app', port='7301')
+    bot.db = await asyncpg.create_pool(database=secret_file["database"], user=secret_file['user'], password=secret_file['password'], host=secret_file['host'], port=secret_file['port'])
     print('-------------------------\nConnected to DataBase\n-------------------------')
 
 bot.loop.create_task(create_db_pool())
