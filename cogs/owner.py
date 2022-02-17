@@ -1,9 +1,9 @@
 import discord
 from discord.ext import commands
+from models import blacklist as B_Data
 
 
 class OwnerOnly(commands.Cog):
-
     def __init__(self, bot):
         self.bot = bot
 
@@ -18,20 +18,20 @@ class OwnerOnly(commands.Cog):
         # if ctx.message.author.id == user.id:
         #     await ctx.send("Hey!, you cannot blacklist yourself!")
         #     return
-        record = await self.bot.db.fetchrow('SELECT * FROM blacklist WHERE (user_id) = ($1)', user.id)
+        record = await B_Data.get_or_none(user_id=user.id)
         if record:
             return await ctx.send(f'**{user.name}** is already Blacklisted!')
-        await self.bot.db.execute("INSERT INTO blacklist (user_id) VALUES ($1)", user.id)
+        await B_Data.create(user_id=user.id)
         await ctx.send(f'Blacklisted **{user.name}**')
 
 
     @commands.command(name='whitelist', aliases=['wl'], hidden=True)
     @commands.is_owner()
     async def whitelist(self, ctx, user: discord.Member):
-        record = await self.bot.db.fetchrow('SELECT * FROM blacklist WHERE (user_id) = ($1)', user.id)
-        if not record:
+        record = B_Data.get_or_none(user_id=user.id)
+        if not await record:
             return await ctx.send(f'**{user.name}** is not Blacklisted!')
-        await self.bot.db.execute('DELETE FROM blacklist WHERE (user_id) = ($1)', user.id)
+        await record.delete()
         return await ctx.send(f'Whitelisted **{user.name}**')
 
 

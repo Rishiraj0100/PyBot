@@ -2,9 +2,9 @@ import discord
 from discord.ext import commands
 import time, calendar, datetime
 import asyncio
+from models import blacklist as B_Data
 
 class Events(commands.Cog):
-
         def __init__(self, bot):
             self.bot = bot
 
@@ -25,12 +25,10 @@ class Events(commands.Cog):
         
         @commands.Cog.listener()
         async def on_message(self, message):
-
             if message.author.id == self.bot.user.id:
                 return
 
-            data = await self.bot.db.fetchrow('SELECT * FROM blacklist WHERE (user_id) = ($1)', message.author.id)
-            if data:
+            if await B_Data.get_or_none(user_id=message.author.id):
                 return
             
             record = await self.bot.db.fetchrow('SELECT * FROM afk WHERE (guild_id,user_id) = ($1,$2)', 0, message.author.id)
