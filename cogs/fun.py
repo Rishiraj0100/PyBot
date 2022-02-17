@@ -156,18 +156,6 @@ class Fun(commands.Cog):
         embed.set_image(url=img.message)
         embed.set_footer(text=f'Requested by {ctx.author}')
         await ctx.send(embed=embed)
-
-    @commands.command(usage='animeface [member]')
-    async def animeface(self, ctx, member: discord.Member=None):
-        if member is None:
-            member = ctx.author
-
-        avatar = member.display_avatar.replace(static_format="png").url
-        img = (api.animeface(avatar))
-        embed = discord.Embed(color=discord.Color.blue())
-        embed.set_image(url=img.message)
-        embed.set_footer(text=f'Requested by {ctx.author}')
-        await ctx.send(embed=embed)
     
     @commands.command(usage='awooify [member]')
     async def awooify(self, ctx, member: discord.Member=None):
