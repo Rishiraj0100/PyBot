@@ -79,7 +79,7 @@ class Fun(commands.Cog):
         if member is None:
             member = ctx.author
 
-        avatar = member.display_avatar.url
+        avatar = member.display_avatar.replace(static_format="png").url
         img = (api.threats(avatar))
         embed = discord.Embed(color=discord.Color.blue())
         embed.set_image(url=img.message)
@@ -91,7 +91,7 @@ class Fun(commands.Cog):
         if member is None:
             member = ctx.author
 
-        avatar = member.display_avatar.url
+        avatar = member.display_avatar.replace(static_format="png").url
         img = (api.baguette(avatar))
         embed = discord.Embed(color=discord.Color.blue())
         embed.set_image(url=img.message)
@@ -115,7 +115,7 @@ class Fun(commands.Cog):
         if member is None:
             member = ctx.author
 
-        avatar = member.display_avatar.url
+        avatar = member.display_avatar.replace(static_format="png").url
         img = (api.captcha(avatar, f"{member.name}"))
         embed = discord.Embed(color=discord.Color.blue())
         embed.set_image(url=img.message)
@@ -127,7 +127,7 @@ class Fun(commands.Cog):
         if member is None:
             member = ctx.author
 
-        avatar = member.display_avatar.url
+        avatar = member.display_avatar.replace(static_format="png").url
         img = (api.trash(avatar))
         embed = discord.Embed(color=discord.Color.blue())
         embed.set_image(url=img.message)
@@ -139,7 +139,7 @@ class Fun(commands.Cog):
         if member is None:
             member = ctx.author
 
-        avatar = member.display_avatar.url
+        avatar = member.display_avatar.replace(static_format="png").url
         img = (api.iphonex(avatar))
         embed = discord.Embed(color=discord.Color.blue())
         embed.set_image(url=img.message)
@@ -162,7 +162,7 @@ class Fun(commands.Cog):
         if member is None:
             member = ctx.author
 
-        avatar = member.display_avatar.url
+        avatar = member.display_avatar.replace(static_format="png").url
         img = (api.animeface(avatar))
         embed = discord.Embed(color=discord.Color.blue())
         embed.set_image(url=img.message)
@@ -174,7 +174,7 @@ class Fun(commands.Cog):
         if member is None:
             member = ctx.author
 
-        avatar = member.display_avatar.url
+        avatar = member.display_avatar.replace(static_format="png").url
         img = (api.awooify(avatar))
         embed = discord.Embed(color=discord.Color.blue())
         embed.set_image(url=img.message)
@@ -186,7 +186,7 @@ class Fun(commands.Cog):
         if member is None:
             member = ctx.author
 
-        avatar = member.display_avatar.url
+        avatar = member.display_avatar.replace(static_format="png").url
         img = (api.deepfry(avatar))
         embed = discord.Embed(color=discord.Color.blue())
         embed.set_image(url=img.message)
@@ -198,7 +198,7 @@ class Fun(commands.Cog):
         if member is None:
             member = ctx.author
 
-        avatar = member.display_avatar.url
+        avatar = member.display_avatar.replace(static_format="png").url
         img = (api.stickbug(avatar))
         embed = discord.Embed(color=discord.Color.blue())
         embed.set_image(url=img.message)
@@ -210,7 +210,7 @@ class Fun(commands.Cog):
         if member is None:
             member = ctx.author
 
-        avatar = member.display_avatar.url
+        avatar = member.display_avatar.replace(static_format="png").url
         img = (api.magik(avatar))
         embed = discord.Embed(color=discord.Color.blue())
         embed.set_image(url=img.message)
