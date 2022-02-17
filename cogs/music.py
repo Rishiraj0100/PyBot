@@ -285,12 +285,6 @@ class Music(commands.Cog):
         await player.skip()
         
         await ctx.send('*⃣ | Skipped !')
-
-    # @commands.command()
-    # async def pause(self, ctx):
-    #     """Pause the Music Untill Resumed"""
-    #     player = self.bot.lavalink.player_manager.get(ctx.guild.id)
-    #     await player.pause()
     
     @commands.command()
     async def stop(self, ctx):

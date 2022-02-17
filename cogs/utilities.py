@@ -305,7 +305,9 @@ class Utilities(commands.Cog):
         chnl_count = Counter(map(lambda ch: ch.type, self.bot.get_all_channels()))
 
         b = Button(label='Invite Me', style=discord.ButtonStyle.link, url='https://discord.com/api/oauth2/authorize?client_id=938699822922346536&permissions=21175985838&scope=bot')
+        support = Button(label='Support Server', style=discord.ButtonStyle.link, url='https://discord.gg/WNJUBGvh4j')
         view = View()
+        view.add_item(support)
         view.add_item(b)
 
         embed = discord.Embed(colour=discord.Color.blue())
