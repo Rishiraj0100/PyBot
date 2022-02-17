@@ -11,9 +11,16 @@ import time
 import calendar
 import asyncpg
 
+from tortoise import Tortoise
+
 os.environ["SHELL"]="/bin/bash"
-import os;os.environ["JISHAKU_NO_UNDERSCORE"]="t"
+import os
+# Jsk Flags
+os.environ["JISHAKU_NO_UNDERSCORE"]="t"
 os.environ["JISHAKU_FORCE_PAGINATOR"]="t"
+os.environ["JISHAKU_NO_DM_TRACEBACK"]="t"
+os.environ["JISHAKU_RETAIN"]="t"
+
 
 cwd = Path(__file__).parents[0]
 cwd = str(cwd)
@@ -38,7 +45,15 @@ secret_file = json.load(open(cwd+'/config/config.json'))
 
 owners = [749559849460826112, 939887303403405402]
 
-bot = commands.AutoShardedBot(command_prefix=get_prefix, case_insensitive=True, owner_ids = set(owners), intents=intents, strip_after_prefix=True,)
+class PyBot(commands.AutoShardedBot):
+  @property
+  def db(self):
+    try:
+      return Tortoise.get_connection("default")._pool
+    except:
+      return None
+
+bot = PyBot(command_prefix=get_prefix, case_insensitive=True, owner_ids = set(owners), intents=intents, strip_after_prefix=True,)
 
 logging.basicConfig(level=logging.INFO)
 
@@ -98,10 +113,32 @@ if __name__ == '__main__':
         if file.endswith(".py") and not file.startswith("_"):
             bot.load_extension(f"cogs.{file[:-3]}")
 
+postgres_database_url = secret_file.get("psql_uri")
+
+
+from tortoise.backends.base.config_generator import expand_db_url
+
+
+tortoise_cfg = {
+  "connections": {
+    "default": expand_db_url(postgres_database_url),
+  },
+  "apps": {
+    "default": {
+      "models": [
+        "models"
+      ]
+    }
+  }
+}
+
+tortoise_cfg["connections"]["default"]["credentials"]["ssl"] = "disable"
+
 async def create_db_pool():
-    bot.db = await asyncpg.create_pool(database=secret_file["database"], user=secret_file['user'], password=secret_file['password'], host=secret_file['host'], port=secret_file['port'])
+    await Tortoise.init(config=tortoise_cfg)
+    await Tortoise.generate_schemas(safe=True)
     print('-------------------------\nConnected to DataBase\n-------------------------')
 
-bot.loop.create_task(create_db_pool())
+bot.loop.run_until_complete(create_db_pool())
 
 bot.run(bot.config_token)
