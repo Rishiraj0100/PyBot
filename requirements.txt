@@ -1,7 +1,7 @@
 async_property==0.2.1
-asyncpg==0.25.0
-discord.py @ git+https://github.com/Rapptz/discord.py.git@master ; python_full_version >= "3.8.0"
-jishaku==2.3.2
+asyncpg
+git+https://github.com/Rapptz/discord.py.git@master
+jishaku
 motor==2.5.1
 pymongo==3.12.3
 dnspython==2.2.0
@@ -10,7 +10,6 @@ opuslib==3.0.1
 youtube_dl==2021.12.17
 Pillow==9.0.1
 psutil==5.8.0
-setuptools==58.1.0
 pygit2==1.8.0
 lavalink==3.1.5
 requests==2.26.0
