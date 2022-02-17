@@ -3,6 +3,9 @@ from discord.ui import Button, View
 import discord
 import lavalink
 from discord.ext import commands
+import math
+import asyncio
+from utils.util import Pag
 
 url_rx = re.compile(r'https?://(?:www\.)?.+')
 
@@ -179,12 +182,92 @@ class Music(commands.Cog):
             # To save on resources, we can tell the bot to disconnect from the voicechannel.
             guild_id = int(event.player.guild_id)
             guild = self.bot.get_guild(guild_id)
-            # await guild.voice_client.disconnect(force=True)
+
+        
+    # async def trackStart(self, event):
+    #     if isinstance(event, lavalink.events.TrackStartEvent):
+
+    #         guild_id = int(event.player.guild_id)
+    #         guild = self.bot.get_guild(guild_id)
+    #         player = self.bot.lavalink.player_manager.get(guild.id)
+            # channel = player.channel
+            # print(channel)
+            # seconds=(player.current.duration/1000)%60
+            # minutes=(player.current.duration/(1000*60))%60
+            # hours=(player.current.duration/(1000*60*60))%24
+            # if int(hours) == 0:
+            #     time = f'{int(minutes)}:{int(seconds)}'
+            # else:
+            #     time = f'{int(hours)}:{int(minutes)}:{int(seconds)}'
+
+            # embed = discord.Embed(color=discord.Color.blue(), description=f'[{player.current.title}]({player.current.uri})')
+            # embed.set_author(name='Now Playing', url=self.bot.display_avatar.url)
+            # requester = await self.bot.fetch_user(player.current.requester)
+            # embed.add_field(name='**Requested By**', value=f'`{requester.name}`')
+            # embed.add_field(name='**Duration**', value=f'`{time}`')
+
+            # await 
+
+
+                # [CreateEmbed('info', `[${track.title}](${track.uri})`).setAuthor('Now Playing', 'https://cdn.discordapp.com/avatars/516289475865739294/82d504d54a7f04ce268e97376efc292a.png?size=1024').addField('**Requested By**', `${track.requester}`, true).addField('**Duration**', `\`${prettyMilliseconds(track.duration, { colonNotation: true })}\``, true)]});
+
     @commands.command(aliases=['connect'])
     async def join(self, ctx):
         """Join a VC"""
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
         await ctx.message.add_reaction('<a:tick:940816615237357608>')
+    
+    @commands.command(name='queue')
+    async def queue(self, ctx, page: int = 1):
+        player = self.bot.lavalink.player_manager.get(ctx.guild.id)
+
+        items_per_page = 10000000000000000000000000000000000000000000000000
+        pages = math.ceil(len(player.queue) / items_per_page)
+
+        start = (page - 1) * items_per_page
+        end = start + items_per_page
+
+        queue_list = []
+        for index, track in enumerate(player.queue):
+            seconds=(track.duration/1000)%60
+            minutes=(track.duration/(1000*60))%60
+            hours=(track.duration/(1000*60*60))%24
+            if int(hours) == 0:
+                time = f'{int(minutes)}:{int(seconds)}'
+            else:
+                time = f'{int(hours)}:{int(minutes)}:{int(seconds)}'
+            requester = await self.bot.fetch_user(track.requester)
+            queue_list.append(f'`{index + 1}.` [**{track.title}**]({track.uri})\n`{time}` • Requested By `{requester.name}`\n')
+
+        embed = discord.Embed(colour=discord.Color.blurple(),
+                            description=f'**{len(player.queue)} tracks**\n\n{queue_list}')
+        embed.set_footer(text=f'Viewing page {page}/{pages}')
+        # await Pag
+        # msg = await ctx.send(embed=embed)
+        try:
+            await Pag(title=f'{ctx.guild.name}\'s Queue',color=discord.Color.blue(), entries=queue_list, length=5).start(ctx)
+        except:
+            await ctx.send('No More Songs in the Queue')
+        # await msg.add_reaction('⬅️')
+        # await msg.add_reaction('⏹️')
+        # await msg.add_reaction('➡️')
+        # def check(reaction, user):
+        #     return reaction.message.id == msg.id and user == ctx.author 
+        # while True:
+        #     try:
+        #         reaction, _ = await self.bot.wait_for('reaction_add', timeout= 20.0, check=check)
+        #         if reaction.emoji == '⬅️' and page > 0:
+        #             page -= 1
+        #             embed = discord.Embed(title='Title Here', description=pages[page])
+        #             await msg.edit(embed=embed)
+            #     if reaction.emoji == '➡️' and page < len(pages) -1:
+            #         page += 1
+            #         embed = discord.Embed(title='Title Here', description= pages[page])
+            #         await msg.edit(embed=embed)
+            #     if reaction.emoji == '⏹️':
+            #         await msg.delete()
+            # except asyncio.TimeoutError:
+            #     await msg.delete()
 
     @commands.command(aliases=['p'])
     async def play(self, ctx, *, query: str):
