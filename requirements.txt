@@ -1,5 +1,6 @@
 async_property==0.2.1
 asyncpg
+tortoise-orm
 git+https://github.com/Rapptz/discord.py.git@master
 jishaku
 motor==2.5.1
