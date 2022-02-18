@@ -27,8 +27,9 @@ cwd = str(cwd)
 print(f"{cwd}\n-----")
 
 async def get_prefix(bot, message):
-    if message.author.id == 939887303403405402 or message.author.id == 749559849460826112:
-            return commands.when_mentioned_or('')(bot, message)
+    if message.author.id in bot.owner_ids:
+      if bot.get_command(message.lower().split(" ")[0]):
+        return commands.when_mentioned_or('')(bot, message)
     if not message.guild:
         return commands.when_mentioned_or("-")(bot, message)
     try:
